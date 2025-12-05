@@ -1,0 +1,15 @@
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+from __future__ import annotations
+
+from typing_extensions import Required, TypedDict
+
+__all__ = ["UserVerifyEmailParams"]
+
+
+class UserVerifyEmailParams(TypedDict, total=False):
+    email: Required[str]
+    """User's email address"""
+
+    verification_code: Required[str]
+    """Email verification code"""
