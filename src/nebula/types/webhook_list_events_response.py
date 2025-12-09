@@ -8,6 +8,8 @@ __all__ = ["WebhookListEventsResponse"]
 
 
 class WebhookListEventsResponse(BaseModel):
+    """Response model for webhook events list"""
+
     events: List[Dict[str, object]]
 
     total_count: int

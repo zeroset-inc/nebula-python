@@ -8,6 +8,8 @@ __all__ = ["SecretRetrieveHistoryResponse"]
 
 
 class SecretRetrieveHistoryResponse(BaseModel):
+    """Response model for rotation history"""
+
     history: List[Dict[str, object]]
 
     total_rotations: int

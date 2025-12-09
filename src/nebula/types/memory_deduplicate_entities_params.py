@@ -114,6 +114,8 @@ class MemoryDeduplicateEntitiesParams(TypedDict, total=False):
 
 
 class EntityDeduplication(TypedDict, total=False):
+    """Enhanced settings for entity deduplication."""
+
     auto_merge_threshold: float
     """Confidence threshold for automatic entity merging."""
 

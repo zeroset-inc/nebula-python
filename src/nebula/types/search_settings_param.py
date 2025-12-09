@@ -9,6 +9,10 @@ __all__ = ["SearchSettingsParam"]
 
 
 class SearchSettingsParam(TypedDict, total=False):
+    """
+    Simplified search settings with automatic hybrid search and type-specific limits.
+    """
+
     enable_conceptual_expansion: bool
     """
     Enable conceptual expansion for cross-domain discovery through overlapping SLPA

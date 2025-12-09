@@ -42,6 +42,8 @@ class MemoryCreateParams(TypedDict, total=False):
 
 
 class Message(TypedDict, total=False):
+    """A message in a conversation."""
+
     content: Required[str]
     """Message content"""
 

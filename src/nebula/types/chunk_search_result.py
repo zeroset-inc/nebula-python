@@ -9,6 +9,8 @@ __all__ = ["ChunkSearchResult"]
 
 
 class ChunkSearchResult(BaseModel):
+    """Result of a search operation."""
+
     id: str
 
     collection_ids: List[str]

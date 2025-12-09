@@ -8,6 +8,8 @@ __all__ = ["Entity"]
 
 
 class Entity(BaseModel):
+    """An entity extracted from a engram."""
+
     name: str
 
     id: Optional[str] = None
