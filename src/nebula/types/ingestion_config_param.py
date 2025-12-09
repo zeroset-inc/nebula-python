@@ -66,6 +66,8 @@ class App(TypedDict, total=False):
 
 
 class ChunkEnrichmentSettings(TypedDict, total=False):
+    """Settings for chunk enrichment."""
+
     chunk_enrichment_prompt: Optional[str]
     """The prompt to use for chunk enrichment"""
 

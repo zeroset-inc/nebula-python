@@ -10,6 +10,8 @@ __all__ = ["EngramResponse"]
 
 
 class EngramResponse(BaseModel):
+    """Base class for engram information handling."""
+
     id: str
 
     collection_ids: List[str]

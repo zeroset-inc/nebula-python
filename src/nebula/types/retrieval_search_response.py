@@ -140,6 +140,8 @@ class ResultsWebSearchResult(BaseModel):
 
 
 class Results(BaseModel):
+    """Result of an aggregate search operation."""
+
     chunk_search_results: Optional[List[ChunkSearchResult]] = None
 
     document_search_results: Optional[List[EngramResponse]] = None

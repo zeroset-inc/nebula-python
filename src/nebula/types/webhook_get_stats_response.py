@@ -9,6 +9,8 @@ __all__ = ["WebhookGetStatsResponse"]
 
 
 class WebhookGetStatsResponse(BaseModel):
+    """Response model for webhook event statistics"""
+
     earliest_event: Optional[datetime] = None
 
     failed_count: int

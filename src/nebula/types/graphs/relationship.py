@@ -9,6 +9,12 @@ __all__ = ["Relationship"]
 
 
 class Relationship(BaseModel):
+    """A relationship between two entities.
+
+    This is a generic relationship, and can be used to represent any type of
+    relationship between any two entities.
+    """
+
     object: str
 
     predicate: str

@@ -9,6 +9,8 @@ __all__ = ["SecretRotateResponse"]
 
 
 class SecretRotateResponse(BaseModel):
+    """Response model for secret rotation"""
+
     message: str
 
     success: bool
