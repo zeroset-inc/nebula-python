@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping
 from typing_extensions import Self, override
 
 import httpx
@@ -23,28 +23,13 @@ from ._types import (
     not_given,
 )
 from ._utils import is_given, get_async_library
+from ._compat import cached_property
 from ._version import __version__
 from ._response import (
     to_raw_response_wrapper,
     to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
-)
-from .resources import (
-    plans,
-    chunks,
-    health,
-    system,
-    billing,
-    engrams,
-    prompts,
-    version,
-    entities,
-    webhooks,
-    retrieval,
-    management,
-    contradictions,
-    temporal_events,
 )
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import APIStatusError
@@ -54,44 +39,59 @@ from ._base_client import (
     AsyncAPIClient,
     make_request_options,
 )
-from .resources.usage import usage
-from .resources.users import users
-from .resources.graphs import graphs
-from .resources.secrets import secrets
-from .resources.memories import memories
-from .resources.analytics import analytics
-from .resources.collections import collections
-from .resources.marketplace import marketplace
+
+if TYPE_CHECKING:
+    from .resources import (
+        plans,
+        usage,
+        users,
+        chunks,
+        graphs,
+        health,
+        system,
+        billing,
+        engrams,
+        prompts,
+        secrets,
+        version,
+        entities,
+        memories,
+        webhooks,
+        analytics,
+        retrieval,
+        management,
+        collections,
+        marketplace,
+        contradictions,
+        temporal_events,
+    )
+    from .resources.plans import PlansResource, AsyncPlansResource
+    from .resources.chunks import ChunksResource, AsyncChunksResource
+    from .resources.health import HealthResource, AsyncHealthResource
+    from .resources.system import SystemResource, AsyncSystemResource
+    from .resources.billing import BillingResource, AsyncBillingResource
+    from .resources.engrams import EngramsResource, AsyncEngramsResource
+    from .resources.prompts import PromptsResource, AsyncPromptsResource
+    from .resources.version import VersionResource, AsyncVersionResource
+    from .resources.entities import EntitiesResource, AsyncEntitiesResource
+    from .resources.webhooks import WebhooksResource, AsyncWebhooksResource
+    from .resources.retrieval import RetrievalResource, AsyncRetrievalResource
+    from .resources.management import ManagementResource, AsyncManagementResource
+    from .resources.usage.usage import UsageResource, AsyncUsageResource
+    from .resources.users.users import UsersResource, AsyncUsersResource
+    from .resources.graphs.graphs import GraphsResource, AsyncGraphsResource
+    from .resources.contradictions import ContradictionsResource, AsyncContradictionsResource
+    from .resources.secrets.secrets import SecretsResource, AsyncSecretsResource
+    from .resources.temporal_events import TemporalEventsResource, AsyncTemporalEventsResource
+    from .resources.memories.memories import MemoriesResource, AsyncMemoriesResource
+    from .resources.analytics.analytics import AnalyticsResource, AsyncAnalyticsResource
+    from .resources.collections.collections import CollectionsResource, AsyncCollectionsResource
+    from .resources.marketplace.marketplace import MarketplaceResource, AsyncMarketplaceResource
 
 __all__ = ["Timeout", "Transport", "ProxiesTypes", "RequestOptions", "Nebula", "AsyncNebula", "Client", "AsyncClient"]
 
 
 class Nebula(SyncAPIClient):
-    chunks: chunks.ChunksResource
-    collections: collections.CollectionsResource
-    memories: memories.MemoriesResource
-    graphs: graphs.GraphsResource
-    entities: entities.EntitiesResource
-    engrams: engrams.EngramsResource
-    prompts: prompts.PromptsResource
-    retrieval: retrieval.RetrievalResource
-    marketplace: marketplace.MarketplaceResource
-    analytics: analytics.AnalyticsResource
-    health: health.HealthResource
-    version: version.VersionResource
-    management: management.ManagementResource
-    plans: plans.PlansResource
-    usage: usage.UsageResource
-    system: system.SystemResource
-    secrets: secrets.SecretsResource
-    webhooks: webhooks.WebhooksResource
-    billing: billing.BillingResource
-    contradictions: contradictions.ContradictionsResource
-    temporal_events: temporal_events.TemporalEventsResource
-    users: users.UsersResource
-    with_raw_response: NebulaWithRawResponse
-    with_streaming_response: NebulaWithStreamedResponse
-
     # client options
     bearer_token: str | None
     api_key: str | None
@@ -150,30 +150,145 @@ class Nebula(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.chunks = chunks.ChunksResource(self)
-        self.collections = collections.CollectionsResource(self)
-        self.memories = memories.MemoriesResource(self)
-        self.graphs = graphs.GraphsResource(self)
-        self.entities = entities.EntitiesResource(self)
-        self.engrams = engrams.EngramsResource(self)
-        self.prompts = prompts.PromptsResource(self)
-        self.retrieval = retrieval.RetrievalResource(self)
-        self.marketplace = marketplace.MarketplaceResource(self)
-        self.analytics = analytics.AnalyticsResource(self)
-        self.health = health.HealthResource(self)
-        self.version = version.VersionResource(self)
-        self.management = management.ManagementResource(self)
-        self.plans = plans.PlansResource(self)
-        self.usage = usage.UsageResource(self)
-        self.system = system.SystemResource(self)
-        self.secrets = secrets.SecretsResource(self)
-        self.webhooks = webhooks.WebhooksResource(self)
-        self.billing = billing.BillingResource(self)
-        self.contradictions = contradictions.ContradictionsResource(self)
-        self.temporal_events = temporal_events.TemporalEventsResource(self)
-        self.users = users.UsersResource(self)
-        self.with_raw_response = NebulaWithRawResponse(self)
-        self.with_streaming_response = NebulaWithStreamedResponse(self)
+    @cached_property
+    def chunks(self) -> ChunksResource:
+        from .resources.chunks import ChunksResource
+
+        return ChunksResource(self)
+
+    @cached_property
+    def collections(self) -> CollectionsResource:
+        from .resources.collections import CollectionsResource
+
+        return CollectionsResource(self)
+
+    @cached_property
+    def memories(self) -> MemoriesResource:
+        from .resources.memories import MemoriesResource
+
+        return MemoriesResource(self)
+
+    @cached_property
+    def graphs(self) -> GraphsResource:
+        from .resources.graphs import GraphsResource
+
+        return GraphsResource(self)
+
+    @cached_property
+    def entities(self) -> EntitiesResource:
+        from .resources.entities import EntitiesResource
+
+        return EntitiesResource(self)
+
+    @cached_property
+    def engrams(self) -> EngramsResource:
+        from .resources.engrams import EngramsResource
+
+        return EngramsResource(self)
+
+    @cached_property
+    def prompts(self) -> PromptsResource:
+        from .resources.prompts import PromptsResource
+
+        return PromptsResource(self)
+
+    @cached_property
+    def retrieval(self) -> RetrievalResource:
+        from .resources.retrieval import RetrievalResource
+
+        return RetrievalResource(self)
+
+    @cached_property
+    def marketplace(self) -> MarketplaceResource:
+        from .resources.marketplace import MarketplaceResource
+
+        return MarketplaceResource(self)
+
+    @cached_property
+    def analytics(self) -> AnalyticsResource:
+        from .resources.analytics import AnalyticsResource
+
+        return AnalyticsResource(self)
+
+    @cached_property
+    def health(self) -> HealthResource:
+        from .resources.health import HealthResource
+
+        return HealthResource(self)
+
+    @cached_property
+    def version(self) -> VersionResource:
+        from .resources.version import VersionResource
+
+        return VersionResource(self)
+
+    @cached_property
+    def management(self) -> ManagementResource:
+        from .resources.management import ManagementResource
+
+        return ManagementResource(self)
+
+    @cached_property
+    def plans(self) -> PlansResource:
+        from .resources.plans import PlansResource
+
+        return PlansResource(self)
+
+    @cached_property
+    def usage(self) -> UsageResource:
+        from .resources.usage import UsageResource
+
+        return UsageResource(self)
+
+    @cached_property
+    def system(self) -> SystemResource:
+        from .resources.system import SystemResource
+
+        return SystemResource(self)
+
+    @cached_property
+    def secrets(self) -> SecretsResource:
+        from .resources.secrets import SecretsResource
+
+        return SecretsResource(self)
+
+    @cached_property
+    def webhooks(self) -> WebhooksResource:
+        from .resources.webhooks import WebhooksResource
+
+        return WebhooksResource(self)
+
+    @cached_property
+    def billing(self) -> BillingResource:
+        from .resources.billing import BillingResource
+
+        return BillingResource(self)
+
+    @cached_property
+    def contradictions(self) -> ContradictionsResource:
+        from .resources.contradictions import ContradictionsResource
+
+        return ContradictionsResource(self)
+
+    @cached_property
+    def temporal_events(self) -> TemporalEventsResource:
+        from .resources.temporal_events import TemporalEventsResource
+
+        return TemporalEventsResource(self)
+
+    @cached_property
+    def users(self) -> UsersResource:
+        from .resources.users import UsersResource
+
+        return UsersResource(self)
+
+    @cached_property
+    def with_raw_response(self) -> NebulaWithRawResponse:
+        return NebulaWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> NebulaWithStreamedResponse:
+        return NebulaWithStreamedResponse(self)
 
     @property
     @override
@@ -331,31 +446,6 @@ class Nebula(SyncAPIClient):
 
 
 class AsyncNebula(AsyncAPIClient):
-    chunks: chunks.AsyncChunksResource
-    collections: collections.AsyncCollectionsResource
-    memories: memories.AsyncMemoriesResource
-    graphs: graphs.AsyncGraphsResource
-    entities: entities.AsyncEntitiesResource
-    engrams: engrams.AsyncEngramsResource
-    prompts: prompts.AsyncPromptsResource
-    retrieval: retrieval.AsyncRetrievalResource
-    marketplace: marketplace.AsyncMarketplaceResource
-    analytics: analytics.AsyncAnalyticsResource
-    health: health.AsyncHealthResource
-    version: version.AsyncVersionResource
-    management: management.AsyncManagementResource
-    plans: plans.AsyncPlansResource
-    usage: usage.AsyncUsageResource
-    system: system.AsyncSystemResource
-    secrets: secrets.AsyncSecretsResource
-    webhooks: webhooks.AsyncWebhooksResource
-    billing: billing.AsyncBillingResource
-    contradictions: contradictions.AsyncContradictionsResource
-    temporal_events: temporal_events.AsyncTemporalEventsResource
-    users: users.AsyncUsersResource
-    with_raw_response: AsyncNebulaWithRawResponse
-    with_streaming_response: AsyncNebulaWithStreamedResponse
-
     # client options
     bearer_token: str | None
     api_key: str | None
@@ -414,30 +504,145 @@ class AsyncNebula(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.chunks = chunks.AsyncChunksResource(self)
-        self.collections = collections.AsyncCollectionsResource(self)
-        self.memories = memories.AsyncMemoriesResource(self)
-        self.graphs = graphs.AsyncGraphsResource(self)
-        self.entities = entities.AsyncEntitiesResource(self)
-        self.engrams = engrams.AsyncEngramsResource(self)
-        self.prompts = prompts.AsyncPromptsResource(self)
-        self.retrieval = retrieval.AsyncRetrievalResource(self)
-        self.marketplace = marketplace.AsyncMarketplaceResource(self)
-        self.analytics = analytics.AsyncAnalyticsResource(self)
-        self.health = health.AsyncHealthResource(self)
-        self.version = version.AsyncVersionResource(self)
-        self.management = management.AsyncManagementResource(self)
-        self.plans = plans.AsyncPlansResource(self)
-        self.usage = usage.AsyncUsageResource(self)
-        self.system = system.AsyncSystemResource(self)
-        self.secrets = secrets.AsyncSecretsResource(self)
-        self.webhooks = webhooks.AsyncWebhooksResource(self)
-        self.billing = billing.AsyncBillingResource(self)
-        self.contradictions = contradictions.AsyncContradictionsResource(self)
-        self.temporal_events = temporal_events.AsyncTemporalEventsResource(self)
-        self.users = users.AsyncUsersResource(self)
-        self.with_raw_response = AsyncNebulaWithRawResponse(self)
-        self.with_streaming_response = AsyncNebulaWithStreamedResponse(self)
+    @cached_property
+    def chunks(self) -> AsyncChunksResource:
+        from .resources.chunks import AsyncChunksResource
+
+        return AsyncChunksResource(self)
+
+    @cached_property
+    def collections(self) -> AsyncCollectionsResource:
+        from .resources.collections import AsyncCollectionsResource
+
+        return AsyncCollectionsResource(self)
+
+    @cached_property
+    def memories(self) -> AsyncMemoriesResource:
+        from .resources.memories import AsyncMemoriesResource
+
+        return AsyncMemoriesResource(self)
+
+    @cached_property
+    def graphs(self) -> AsyncGraphsResource:
+        from .resources.graphs import AsyncGraphsResource
+
+        return AsyncGraphsResource(self)
+
+    @cached_property
+    def entities(self) -> AsyncEntitiesResource:
+        from .resources.entities import AsyncEntitiesResource
+
+        return AsyncEntitiesResource(self)
+
+    @cached_property
+    def engrams(self) -> AsyncEngramsResource:
+        from .resources.engrams import AsyncEngramsResource
+
+        return AsyncEngramsResource(self)
+
+    @cached_property
+    def prompts(self) -> AsyncPromptsResource:
+        from .resources.prompts import AsyncPromptsResource
+
+        return AsyncPromptsResource(self)
+
+    @cached_property
+    def retrieval(self) -> AsyncRetrievalResource:
+        from .resources.retrieval import AsyncRetrievalResource
+
+        return AsyncRetrievalResource(self)
+
+    @cached_property
+    def marketplace(self) -> AsyncMarketplaceResource:
+        from .resources.marketplace import AsyncMarketplaceResource
+
+        return AsyncMarketplaceResource(self)
+
+    @cached_property
+    def analytics(self) -> AsyncAnalyticsResource:
+        from .resources.analytics import AsyncAnalyticsResource
+
+        return AsyncAnalyticsResource(self)
+
+    @cached_property
+    def health(self) -> AsyncHealthResource:
+        from .resources.health import AsyncHealthResource
+
+        return AsyncHealthResource(self)
+
+    @cached_property
+    def version(self) -> AsyncVersionResource:
+        from .resources.version import AsyncVersionResource
+
+        return AsyncVersionResource(self)
+
+    @cached_property
+    def management(self) -> AsyncManagementResource:
+        from .resources.management import AsyncManagementResource
+
+        return AsyncManagementResource(self)
+
+    @cached_property
+    def plans(self) -> AsyncPlansResource:
+        from .resources.plans import AsyncPlansResource
+
+        return AsyncPlansResource(self)
+
+    @cached_property
+    def usage(self) -> AsyncUsageResource:
+        from .resources.usage import AsyncUsageResource
+
+        return AsyncUsageResource(self)
+
+    @cached_property
+    def system(self) -> AsyncSystemResource:
+        from .resources.system import AsyncSystemResource
+
+        return AsyncSystemResource(self)
+
+    @cached_property
+    def secrets(self) -> AsyncSecretsResource:
+        from .resources.secrets import AsyncSecretsResource
+
+        return AsyncSecretsResource(self)
+
+    @cached_property
+    def webhooks(self) -> AsyncWebhooksResource:
+        from .resources.webhooks import AsyncWebhooksResource
+
+        return AsyncWebhooksResource(self)
+
+    @cached_property
+    def billing(self) -> AsyncBillingResource:
+        from .resources.billing import AsyncBillingResource
+
+        return AsyncBillingResource(self)
+
+    @cached_property
+    def contradictions(self) -> AsyncContradictionsResource:
+        from .resources.contradictions import AsyncContradictionsResource
+
+        return AsyncContradictionsResource(self)
+
+    @cached_property
+    def temporal_events(self) -> AsyncTemporalEventsResource:
+        from .resources.temporal_events import AsyncTemporalEventsResource
+
+        return AsyncTemporalEventsResource(self)
+
+    @cached_property
+    def users(self) -> AsyncUsersResource:
+        from .resources.users import AsyncUsersResource
+
+        return AsyncUsersResource(self)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncNebulaWithRawResponse:
+        return AsyncNebulaWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncNebulaWithStreamedResponse:
+        return AsyncNebulaWithStreamedResponse(self)
 
     @property
     @override
@@ -595,123 +800,575 @@ class AsyncNebula(AsyncAPIClient):
 
 
 class NebulaWithRawResponse:
+    _client: Nebula
+
     def __init__(self, client: Nebula) -> None:
-        self.chunks = chunks.ChunksResourceWithRawResponse(client.chunks)
-        self.collections = collections.CollectionsResourceWithRawResponse(client.collections)
-        self.memories = memories.MemoriesResourceWithRawResponse(client.memories)
-        self.graphs = graphs.GraphsResourceWithRawResponse(client.graphs)
-        self.entities = entities.EntitiesResourceWithRawResponse(client.entities)
-        self.engrams = engrams.EngramsResourceWithRawResponse(client.engrams)
-        self.prompts = prompts.PromptsResourceWithRawResponse(client.prompts)
-        self.retrieval = retrieval.RetrievalResourceWithRawResponse(client.retrieval)
-        self.marketplace = marketplace.MarketplaceResourceWithRawResponse(client.marketplace)
-        self.analytics = analytics.AnalyticsResourceWithRawResponse(client.analytics)
-        self.health = health.HealthResourceWithRawResponse(client.health)
-        self.version = version.VersionResourceWithRawResponse(client.version)
-        self.management = management.ManagementResourceWithRawResponse(client.management)
-        self.plans = plans.PlansResourceWithRawResponse(client.plans)
-        self.usage = usage.UsageResourceWithRawResponse(client.usage)
-        self.system = system.SystemResourceWithRawResponse(client.system)
-        self.secrets = secrets.SecretsResourceWithRawResponse(client.secrets)
-        self.webhooks = webhooks.WebhooksResourceWithRawResponse(client.webhooks)
-        self.billing = billing.BillingResourceWithRawResponse(client.billing)
-        self.contradictions = contradictions.ContradictionsResourceWithRawResponse(client.contradictions)
-        self.temporal_events = temporal_events.TemporalEventsResourceWithRawResponse(client.temporal_events)
-        self.users = users.UsersResourceWithRawResponse(client.users)
+        self._client = client
 
         self.get_status = to_raw_response_wrapper(
             client.get_status,
         )
 
+    @cached_property
+    def chunks(self) -> chunks.ChunksResourceWithRawResponse:
+        from .resources.chunks import ChunksResourceWithRawResponse
+
+        return ChunksResourceWithRawResponse(self._client.chunks)
+
+    @cached_property
+    def collections(self) -> collections.CollectionsResourceWithRawResponse:
+        from .resources.collections import CollectionsResourceWithRawResponse
+
+        return CollectionsResourceWithRawResponse(self._client.collections)
+
+    @cached_property
+    def memories(self) -> memories.MemoriesResourceWithRawResponse:
+        from .resources.memories import MemoriesResourceWithRawResponse
+
+        return MemoriesResourceWithRawResponse(self._client.memories)
+
+    @cached_property
+    def graphs(self) -> graphs.GraphsResourceWithRawResponse:
+        from .resources.graphs import GraphsResourceWithRawResponse
+
+        return GraphsResourceWithRawResponse(self._client.graphs)
+
+    @cached_property
+    def entities(self) -> entities.EntitiesResourceWithRawResponse:
+        from .resources.entities import EntitiesResourceWithRawResponse
+
+        return EntitiesResourceWithRawResponse(self._client.entities)
+
+    @cached_property
+    def engrams(self) -> engrams.EngramsResourceWithRawResponse:
+        from .resources.engrams import EngramsResourceWithRawResponse
+
+        return EngramsResourceWithRawResponse(self._client.engrams)
+
+    @cached_property
+    def prompts(self) -> prompts.PromptsResourceWithRawResponse:
+        from .resources.prompts import PromptsResourceWithRawResponse
+
+        return PromptsResourceWithRawResponse(self._client.prompts)
+
+    @cached_property
+    def retrieval(self) -> retrieval.RetrievalResourceWithRawResponse:
+        from .resources.retrieval import RetrievalResourceWithRawResponse
+
+        return RetrievalResourceWithRawResponse(self._client.retrieval)
+
+    @cached_property
+    def marketplace(self) -> marketplace.MarketplaceResourceWithRawResponse:
+        from .resources.marketplace import MarketplaceResourceWithRawResponse
+
+        return MarketplaceResourceWithRawResponse(self._client.marketplace)
+
+    @cached_property
+    def analytics(self) -> analytics.AnalyticsResourceWithRawResponse:
+        from .resources.analytics import AnalyticsResourceWithRawResponse
+
+        return AnalyticsResourceWithRawResponse(self._client.analytics)
+
+    @cached_property
+    def health(self) -> health.HealthResourceWithRawResponse:
+        from .resources.health import HealthResourceWithRawResponse
+
+        return HealthResourceWithRawResponse(self._client.health)
+
+    @cached_property
+    def version(self) -> version.VersionResourceWithRawResponse:
+        from .resources.version import VersionResourceWithRawResponse
+
+        return VersionResourceWithRawResponse(self._client.version)
+
+    @cached_property
+    def management(self) -> management.ManagementResourceWithRawResponse:
+        from .resources.management import ManagementResourceWithRawResponse
+
+        return ManagementResourceWithRawResponse(self._client.management)
+
+    @cached_property
+    def plans(self) -> plans.PlansResourceWithRawResponse:
+        from .resources.plans import PlansResourceWithRawResponse
+
+        return PlansResourceWithRawResponse(self._client.plans)
+
+    @cached_property
+    def usage(self) -> usage.UsageResourceWithRawResponse:
+        from .resources.usage import UsageResourceWithRawResponse
+
+        return UsageResourceWithRawResponse(self._client.usage)
+
+    @cached_property
+    def system(self) -> system.SystemResourceWithRawResponse:
+        from .resources.system import SystemResourceWithRawResponse
+
+        return SystemResourceWithRawResponse(self._client.system)
+
+    @cached_property
+    def secrets(self) -> secrets.SecretsResourceWithRawResponse:
+        from .resources.secrets import SecretsResourceWithRawResponse
+
+        return SecretsResourceWithRawResponse(self._client.secrets)
+
+    @cached_property
+    def webhooks(self) -> webhooks.WebhooksResourceWithRawResponse:
+        from .resources.webhooks import WebhooksResourceWithRawResponse
+
+        return WebhooksResourceWithRawResponse(self._client.webhooks)
+
+    @cached_property
+    def billing(self) -> billing.BillingResourceWithRawResponse:
+        from .resources.billing import BillingResourceWithRawResponse
+
+        return BillingResourceWithRawResponse(self._client.billing)
+
+    @cached_property
+    def contradictions(self) -> contradictions.ContradictionsResourceWithRawResponse:
+        from .resources.contradictions import ContradictionsResourceWithRawResponse
+
+        return ContradictionsResourceWithRawResponse(self._client.contradictions)
+
+    @cached_property
+    def temporal_events(self) -> temporal_events.TemporalEventsResourceWithRawResponse:
+        from .resources.temporal_events import TemporalEventsResourceWithRawResponse
+
+        return TemporalEventsResourceWithRawResponse(self._client.temporal_events)
+
+    @cached_property
+    def users(self) -> users.UsersResourceWithRawResponse:
+        from .resources.users import UsersResourceWithRawResponse
+
+        return UsersResourceWithRawResponse(self._client.users)
+
 
 class AsyncNebulaWithRawResponse:
+    _client: AsyncNebula
+
     def __init__(self, client: AsyncNebula) -> None:
-        self.chunks = chunks.AsyncChunksResourceWithRawResponse(client.chunks)
-        self.collections = collections.AsyncCollectionsResourceWithRawResponse(client.collections)
-        self.memories = memories.AsyncMemoriesResourceWithRawResponse(client.memories)
-        self.graphs = graphs.AsyncGraphsResourceWithRawResponse(client.graphs)
-        self.entities = entities.AsyncEntitiesResourceWithRawResponse(client.entities)
-        self.engrams = engrams.AsyncEngramsResourceWithRawResponse(client.engrams)
-        self.prompts = prompts.AsyncPromptsResourceWithRawResponse(client.prompts)
-        self.retrieval = retrieval.AsyncRetrievalResourceWithRawResponse(client.retrieval)
-        self.marketplace = marketplace.AsyncMarketplaceResourceWithRawResponse(client.marketplace)
-        self.analytics = analytics.AsyncAnalyticsResourceWithRawResponse(client.analytics)
-        self.health = health.AsyncHealthResourceWithRawResponse(client.health)
-        self.version = version.AsyncVersionResourceWithRawResponse(client.version)
-        self.management = management.AsyncManagementResourceWithRawResponse(client.management)
-        self.plans = plans.AsyncPlansResourceWithRawResponse(client.plans)
-        self.usage = usage.AsyncUsageResourceWithRawResponse(client.usage)
-        self.system = system.AsyncSystemResourceWithRawResponse(client.system)
-        self.secrets = secrets.AsyncSecretsResourceWithRawResponse(client.secrets)
-        self.webhooks = webhooks.AsyncWebhooksResourceWithRawResponse(client.webhooks)
-        self.billing = billing.AsyncBillingResourceWithRawResponse(client.billing)
-        self.contradictions = contradictions.AsyncContradictionsResourceWithRawResponse(client.contradictions)
-        self.temporal_events = temporal_events.AsyncTemporalEventsResourceWithRawResponse(client.temporal_events)
-        self.users = users.AsyncUsersResourceWithRawResponse(client.users)
+        self._client = client
 
         self.get_status = async_to_raw_response_wrapper(
             client.get_status,
         )
 
+    @cached_property
+    def chunks(self) -> chunks.AsyncChunksResourceWithRawResponse:
+        from .resources.chunks import AsyncChunksResourceWithRawResponse
+
+        return AsyncChunksResourceWithRawResponse(self._client.chunks)
+
+    @cached_property
+    def collections(self) -> collections.AsyncCollectionsResourceWithRawResponse:
+        from .resources.collections import AsyncCollectionsResourceWithRawResponse
+
+        return AsyncCollectionsResourceWithRawResponse(self._client.collections)
+
+    @cached_property
+    def memories(self) -> memories.AsyncMemoriesResourceWithRawResponse:
+        from .resources.memories import AsyncMemoriesResourceWithRawResponse
+
+        return AsyncMemoriesResourceWithRawResponse(self._client.memories)
+
+    @cached_property
+    def graphs(self) -> graphs.AsyncGraphsResourceWithRawResponse:
+        from .resources.graphs import AsyncGraphsResourceWithRawResponse
+
+        return AsyncGraphsResourceWithRawResponse(self._client.graphs)
+
+    @cached_property
+    def entities(self) -> entities.AsyncEntitiesResourceWithRawResponse:
+        from .resources.entities import AsyncEntitiesResourceWithRawResponse
+
+        return AsyncEntitiesResourceWithRawResponse(self._client.entities)
+
+    @cached_property
+    def engrams(self) -> engrams.AsyncEngramsResourceWithRawResponse:
+        from .resources.engrams import AsyncEngramsResourceWithRawResponse
+
+        return AsyncEngramsResourceWithRawResponse(self._client.engrams)
+
+    @cached_property
+    def prompts(self) -> prompts.AsyncPromptsResourceWithRawResponse:
+        from .resources.prompts import AsyncPromptsResourceWithRawResponse
+
+        return AsyncPromptsResourceWithRawResponse(self._client.prompts)
+
+    @cached_property
+    def retrieval(self) -> retrieval.AsyncRetrievalResourceWithRawResponse:
+        from .resources.retrieval import AsyncRetrievalResourceWithRawResponse
+
+        return AsyncRetrievalResourceWithRawResponse(self._client.retrieval)
+
+    @cached_property
+    def marketplace(self) -> marketplace.AsyncMarketplaceResourceWithRawResponse:
+        from .resources.marketplace import AsyncMarketplaceResourceWithRawResponse
+
+        return AsyncMarketplaceResourceWithRawResponse(self._client.marketplace)
+
+    @cached_property
+    def analytics(self) -> analytics.AsyncAnalyticsResourceWithRawResponse:
+        from .resources.analytics import AsyncAnalyticsResourceWithRawResponse
+
+        return AsyncAnalyticsResourceWithRawResponse(self._client.analytics)
+
+    @cached_property
+    def health(self) -> health.AsyncHealthResourceWithRawResponse:
+        from .resources.health import AsyncHealthResourceWithRawResponse
+
+        return AsyncHealthResourceWithRawResponse(self._client.health)
+
+    @cached_property
+    def version(self) -> version.AsyncVersionResourceWithRawResponse:
+        from .resources.version import AsyncVersionResourceWithRawResponse
+
+        return AsyncVersionResourceWithRawResponse(self._client.version)
+
+    @cached_property
+    def management(self) -> management.AsyncManagementResourceWithRawResponse:
+        from .resources.management import AsyncManagementResourceWithRawResponse
+
+        return AsyncManagementResourceWithRawResponse(self._client.management)
+
+    @cached_property
+    def plans(self) -> plans.AsyncPlansResourceWithRawResponse:
+        from .resources.plans import AsyncPlansResourceWithRawResponse
+
+        return AsyncPlansResourceWithRawResponse(self._client.plans)
+
+    @cached_property
+    def usage(self) -> usage.AsyncUsageResourceWithRawResponse:
+        from .resources.usage import AsyncUsageResourceWithRawResponse
+
+        return AsyncUsageResourceWithRawResponse(self._client.usage)
+
+    @cached_property
+    def system(self) -> system.AsyncSystemResourceWithRawResponse:
+        from .resources.system import AsyncSystemResourceWithRawResponse
+
+        return AsyncSystemResourceWithRawResponse(self._client.system)
+
+    @cached_property
+    def secrets(self) -> secrets.AsyncSecretsResourceWithRawResponse:
+        from .resources.secrets import AsyncSecretsResourceWithRawResponse
+
+        return AsyncSecretsResourceWithRawResponse(self._client.secrets)
+
+    @cached_property
+    def webhooks(self) -> webhooks.AsyncWebhooksResourceWithRawResponse:
+        from .resources.webhooks import AsyncWebhooksResourceWithRawResponse
+
+        return AsyncWebhooksResourceWithRawResponse(self._client.webhooks)
+
+    @cached_property
+    def billing(self) -> billing.AsyncBillingResourceWithRawResponse:
+        from .resources.billing import AsyncBillingResourceWithRawResponse
+
+        return AsyncBillingResourceWithRawResponse(self._client.billing)
+
+    @cached_property
+    def contradictions(self) -> contradictions.AsyncContradictionsResourceWithRawResponse:
+        from .resources.contradictions import AsyncContradictionsResourceWithRawResponse
+
+        return AsyncContradictionsResourceWithRawResponse(self._client.contradictions)
+
+    @cached_property
+    def temporal_events(self) -> temporal_events.AsyncTemporalEventsResourceWithRawResponse:
+        from .resources.temporal_events import AsyncTemporalEventsResourceWithRawResponse
+
+        return AsyncTemporalEventsResourceWithRawResponse(self._client.temporal_events)
+
+    @cached_property
+    def users(self) -> users.AsyncUsersResourceWithRawResponse:
+        from .resources.users import AsyncUsersResourceWithRawResponse
+
+        return AsyncUsersResourceWithRawResponse(self._client.users)
+
 
 class NebulaWithStreamedResponse:
+    _client: Nebula
+
     def __init__(self, client: Nebula) -> None:
-        self.chunks = chunks.ChunksResourceWithStreamingResponse(client.chunks)
-        self.collections = collections.CollectionsResourceWithStreamingResponse(client.collections)
-        self.memories = memories.MemoriesResourceWithStreamingResponse(client.memories)
-        self.graphs = graphs.GraphsResourceWithStreamingResponse(client.graphs)
-        self.entities = entities.EntitiesResourceWithStreamingResponse(client.entities)
-        self.engrams = engrams.EngramsResourceWithStreamingResponse(client.engrams)
-        self.prompts = prompts.PromptsResourceWithStreamingResponse(client.prompts)
-        self.retrieval = retrieval.RetrievalResourceWithStreamingResponse(client.retrieval)
-        self.marketplace = marketplace.MarketplaceResourceWithStreamingResponse(client.marketplace)
-        self.analytics = analytics.AnalyticsResourceWithStreamingResponse(client.analytics)
-        self.health = health.HealthResourceWithStreamingResponse(client.health)
-        self.version = version.VersionResourceWithStreamingResponse(client.version)
-        self.management = management.ManagementResourceWithStreamingResponse(client.management)
-        self.plans = plans.PlansResourceWithStreamingResponse(client.plans)
-        self.usage = usage.UsageResourceWithStreamingResponse(client.usage)
-        self.system = system.SystemResourceWithStreamingResponse(client.system)
-        self.secrets = secrets.SecretsResourceWithStreamingResponse(client.secrets)
-        self.webhooks = webhooks.WebhooksResourceWithStreamingResponse(client.webhooks)
-        self.billing = billing.BillingResourceWithStreamingResponse(client.billing)
-        self.contradictions = contradictions.ContradictionsResourceWithStreamingResponse(client.contradictions)
-        self.temporal_events = temporal_events.TemporalEventsResourceWithStreamingResponse(client.temporal_events)
-        self.users = users.UsersResourceWithStreamingResponse(client.users)
+        self._client = client
 
         self.get_status = to_streamed_response_wrapper(
             client.get_status,
         )
 
+    @cached_property
+    def chunks(self) -> chunks.ChunksResourceWithStreamingResponse:
+        from .resources.chunks import ChunksResourceWithStreamingResponse
+
+        return ChunksResourceWithStreamingResponse(self._client.chunks)
+
+    @cached_property
+    def collections(self) -> collections.CollectionsResourceWithStreamingResponse:
+        from .resources.collections import CollectionsResourceWithStreamingResponse
+
+        return CollectionsResourceWithStreamingResponse(self._client.collections)
+
+    @cached_property
+    def memories(self) -> memories.MemoriesResourceWithStreamingResponse:
+        from .resources.memories import MemoriesResourceWithStreamingResponse
+
+        return MemoriesResourceWithStreamingResponse(self._client.memories)
+
+    @cached_property
+    def graphs(self) -> graphs.GraphsResourceWithStreamingResponse:
+        from .resources.graphs import GraphsResourceWithStreamingResponse
+
+        return GraphsResourceWithStreamingResponse(self._client.graphs)
+
+    @cached_property
+    def entities(self) -> entities.EntitiesResourceWithStreamingResponse:
+        from .resources.entities import EntitiesResourceWithStreamingResponse
+
+        return EntitiesResourceWithStreamingResponse(self._client.entities)
+
+    @cached_property
+    def engrams(self) -> engrams.EngramsResourceWithStreamingResponse:
+        from .resources.engrams import EngramsResourceWithStreamingResponse
+
+        return EngramsResourceWithStreamingResponse(self._client.engrams)
+
+    @cached_property
+    def prompts(self) -> prompts.PromptsResourceWithStreamingResponse:
+        from .resources.prompts import PromptsResourceWithStreamingResponse
+
+        return PromptsResourceWithStreamingResponse(self._client.prompts)
+
+    @cached_property
+    def retrieval(self) -> retrieval.RetrievalResourceWithStreamingResponse:
+        from .resources.retrieval import RetrievalResourceWithStreamingResponse
+
+        return RetrievalResourceWithStreamingResponse(self._client.retrieval)
+
+    @cached_property
+    def marketplace(self) -> marketplace.MarketplaceResourceWithStreamingResponse:
+        from .resources.marketplace import MarketplaceResourceWithStreamingResponse
+
+        return MarketplaceResourceWithStreamingResponse(self._client.marketplace)
+
+    @cached_property
+    def analytics(self) -> analytics.AnalyticsResourceWithStreamingResponse:
+        from .resources.analytics import AnalyticsResourceWithStreamingResponse
+
+        return AnalyticsResourceWithStreamingResponse(self._client.analytics)
+
+    @cached_property
+    def health(self) -> health.HealthResourceWithStreamingResponse:
+        from .resources.health import HealthResourceWithStreamingResponse
+
+        return HealthResourceWithStreamingResponse(self._client.health)
+
+    @cached_property
+    def version(self) -> version.VersionResourceWithStreamingResponse:
+        from .resources.version import VersionResourceWithStreamingResponse
+
+        return VersionResourceWithStreamingResponse(self._client.version)
+
+    @cached_property
+    def management(self) -> management.ManagementResourceWithStreamingResponse:
+        from .resources.management import ManagementResourceWithStreamingResponse
+
+        return ManagementResourceWithStreamingResponse(self._client.management)
+
+    @cached_property
+    def plans(self) -> plans.PlansResourceWithStreamingResponse:
+        from .resources.plans import PlansResourceWithStreamingResponse
+
+        return PlansResourceWithStreamingResponse(self._client.plans)
+
+    @cached_property
+    def usage(self) -> usage.UsageResourceWithStreamingResponse:
+        from .resources.usage import UsageResourceWithStreamingResponse
+
+        return UsageResourceWithStreamingResponse(self._client.usage)
+
+    @cached_property
+    def system(self) -> system.SystemResourceWithStreamingResponse:
+        from .resources.system import SystemResourceWithStreamingResponse
+
+        return SystemResourceWithStreamingResponse(self._client.system)
+
+    @cached_property
+    def secrets(self) -> secrets.SecretsResourceWithStreamingResponse:
+        from .resources.secrets import SecretsResourceWithStreamingResponse
+
+        return SecretsResourceWithStreamingResponse(self._client.secrets)
+
+    @cached_property
+    def webhooks(self) -> webhooks.WebhooksResourceWithStreamingResponse:
+        from .resources.webhooks import WebhooksResourceWithStreamingResponse
+
+        return WebhooksResourceWithStreamingResponse(self._client.webhooks)
+
+    @cached_property
+    def billing(self) -> billing.BillingResourceWithStreamingResponse:
+        from .resources.billing import BillingResourceWithStreamingResponse
+
+        return BillingResourceWithStreamingResponse(self._client.billing)
+
+    @cached_property
+    def contradictions(self) -> contradictions.ContradictionsResourceWithStreamingResponse:
+        from .resources.contradictions import ContradictionsResourceWithStreamingResponse
+
+        return ContradictionsResourceWithStreamingResponse(self._client.contradictions)
+
+    @cached_property
+    def temporal_events(self) -> temporal_events.TemporalEventsResourceWithStreamingResponse:
+        from .resources.temporal_events import TemporalEventsResourceWithStreamingResponse
+
+        return TemporalEventsResourceWithStreamingResponse(self._client.temporal_events)
+
+    @cached_property
+    def users(self) -> users.UsersResourceWithStreamingResponse:
+        from .resources.users import UsersResourceWithStreamingResponse
+
+        return UsersResourceWithStreamingResponse(self._client.users)
+
 
 class AsyncNebulaWithStreamedResponse:
+    _client: AsyncNebula
+
     def __init__(self, client: AsyncNebula) -> None:
-        self.chunks = chunks.AsyncChunksResourceWithStreamingResponse(client.chunks)
-        self.collections = collections.AsyncCollectionsResourceWithStreamingResponse(client.collections)
-        self.memories = memories.AsyncMemoriesResourceWithStreamingResponse(client.memories)
-        self.graphs = graphs.AsyncGraphsResourceWithStreamingResponse(client.graphs)
-        self.entities = entities.AsyncEntitiesResourceWithStreamingResponse(client.entities)
-        self.engrams = engrams.AsyncEngramsResourceWithStreamingResponse(client.engrams)
-        self.prompts = prompts.AsyncPromptsResourceWithStreamingResponse(client.prompts)
-        self.retrieval = retrieval.AsyncRetrievalResourceWithStreamingResponse(client.retrieval)
-        self.marketplace = marketplace.AsyncMarketplaceResourceWithStreamingResponse(client.marketplace)
-        self.analytics = analytics.AsyncAnalyticsResourceWithStreamingResponse(client.analytics)
-        self.health = health.AsyncHealthResourceWithStreamingResponse(client.health)
-        self.version = version.AsyncVersionResourceWithStreamingResponse(client.version)
-        self.management = management.AsyncManagementResourceWithStreamingResponse(client.management)
-        self.plans = plans.AsyncPlansResourceWithStreamingResponse(client.plans)
-        self.usage = usage.AsyncUsageResourceWithStreamingResponse(client.usage)
-        self.system = system.AsyncSystemResourceWithStreamingResponse(client.system)
-        self.secrets = secrets.AsyncSecretsResourceWithStreamingResponse(client.secrets)
-        self.webhooks = webhooks.AsyncWebhooksResourceWithStreamingResponse(client.webhooks)
-        self.billing = billing.AsyncBillingResourceWithStreamingResponse(client.billing)
-        self.contradictions = contradictions.AsyncContradictionsResourceWithStreamingResponse(client.contradictions)
-        self.temporal_events = temporal_events.AsyncTemporalEventsResourceWithStreamingResponse(client.temporal_events)
-        self.users = users.AsyncUsersResourceWithStreamingResponse(client.users)
+        self._client = client
 
         self.get_status = async_to_streamed_response_wrapper(
             client.get_status,
         )
+
+    @cached_property
+    def chunks(self) -> chunks.AsyncChunksResourceWithStreamingResponse:
+        from .resources.chunks import AsyncChunksResourceWithStreamingResponse
+
+        return AsyncChunksResourceWithStreamingResponse(self._client.chunks)
+
+    @cached_property
+    def collections(self) -> collections.AsyncCollectionsResourceWithStreamingResponse:
+        from .resources.collections import AsyncCollectionsResourceWithStreamingResponse
+
+        return AsyncCollectionsResourceWithStreamingResponse(self._client.collections)
+
+    @cached_property
+    def memories(self) -> memories.AsyncMemoriesResourceWithStreamingResponse:
+        from .resources.memories import AsyncMemoriesResourceWithStreamingResponse
+
+        return AsyncMemoriesResourceWithStreamingResponse(self._client.memories)
+
+    @cached_property
+    def graphs(self) -> graphs.AsyncGraphsResourceWithStreamingResponse:
+        from .resources.graphs import AsyncGraphsResourceWithStreamingResponse
+
+        return AsyncGraphsResourceWithStreamingResponse(self._client.graphs)
+
+    @cached_property
+    def entities(self) -> entities.AsyncEntitiesResourceWithStreamingResponse:
+        from .resources.entities import AsyncEntitiesResourceWithStreamingResponse
+
+        return AsyncEntitiesResourceWithStreamingResponse(self._client.entities)
+
+    @cached_property
+    def engrams(self) -> engrams.AsyncEngramsResourceWithStreamingResponse:
+        from .resources.engrams import AsyncEngramsResourceWithStreamingResponse
+
+        return AsyncEngramsResourceWithStreamingResponse(self._client.engrams)
+
+    @cached_property
+    def prompts(self) -> prompts.AsyncPromptsResourceWithStreamingResponse:
+        from .resources.prompts import AsyncPromptsResourceWithStreamingResponse
+
+        return AsyncPromptsResourceWithStreamingResponse(self._client.prompts)
+
+    @cached_property
+    def retrieval(self) -> retrieval.AsyncRetrievalResourceWithStreamingResponse:
+        from .resources.retrieval import AsyncRetrievalResourceWithStreamingResponse
+
+        return AsyncRetrievalResourceWithStreamingResponse(self._client.retrieval)
+
+    @cached_property
+    def marketplace(self) -> marketplace.AsyncMarketplaceResourceWithStreamingResponse:
+        from .resources.marketplace import AsyncMarketplaceResourceWithStreamingResponse
+
+        return AsyncMarketplaceResourceWithStreamingResponse(self._client.marketplace)
+
+    @cached_property
+    def analytics(self) -> analytics.AsyncAnalyticsResourceWithStreamingResponse:
+        from .resources.analytics import AsyncAnalyticsResourceWithStreamingResponse
+
+        return AsyncAnalyticsResourceWithStreamingResponse(self._client.analytics)
+
+    @cached_property
+    def health(self) -> health.AsyncHealthResourceWithStreamingResponse:
+        from .resources.health import AsyncHealthResourceWithStreamingResponse
+
+        return AsyncHealthResourceWithStreamingResponse(self._client.health)
+
+    @cached_property
+    def version(self) -> version.AsyncVersionResourceWithStreamingResponse:
+        from .resources.version import AsyncVersionResourceWithStreamingResponse
+
+        return AsyncVersionResourceWithStreamingResponse(self._client.version)
+
+    @cached_property
+    def management(self) -> management.AsyncManagementResourceWithStreamingResponse:
+        from .resources.management import AsyncManagementResourceWithStreamingResponse
+
+        return AsyncManagementResourceWithStreamingResponse(self._client.management)
+
+    @cached_property
+    def plans(self) -> plans.AsyncPlansResourceWithStreamingResponse:
+        from .resources.plans import AsyncPlansResourceWithStreamingResponse
+
+        return AsyncPlansResourceWithStreamingResponse(self._client.plans)
+
+    @cached_property
+    def usage(self) -> usage.AsyncUsageResourceWithStreamingResponse:
+        from .resources.usage import AsyncUsageResourceWithStreamingResponse
+
+        return AsyncUsageResourceWithStreamingResponse(self._client.usage)
+
+    @cached_property
+    def system(self) -> system.AsyncSystemResourceWithStreamingResponse:
+        from .resources.system import AsyncSystemResourceWithStreamingResponse
+
+        return AsyncSystemResourceWithStreamingResponse(self._client.system)
+
+    @cached_property
+    def secrets(self) -> secrets.AsyncSecretsResourceWithStreamingResponse:
+        from .resources.secrets import AsyncSecretsResourceWithStreamingResponse
+
+        return AsyncSecretsResourceWithStreamingResponse(self._client.secrets)
+
+    @cached_property
+    def webhooks(self) -> webhooks.AsyncWebhooksResourceWithStreamingResponse:
+        from .resources.webhooks import AsyncWebhooksResourceWithStreamingResponse
+
+        return AsyncWebhooksResourceWithStreamingResponse(self._client.webhooks)
+
+    @cached_property
+    def billing(self) -> billing.AsyncBillingResourceWithStreamingResponse:
+        from .resources.billing import AsyncBillingResourceWithStreamingResponse
+
+        return AsyncBillingResourceWithStreamingResponse(self._client.billing)
+
+    @cached_property
+    def contradictions(self) -> contradictions.AsyncContradictionsResourceWithStreamingResponse:
+        from .resources.contradictions import AsyncContradictionsResourceWithStreamingResponse
+
+        return AsyncContradictionsResourceWithStreamingResponse(self._client.contradictions)
+
+    @cached_property
+    def temporal_events(self) -> temporal_events.AsyncTemporalEventsResourceWithStreamingResponse:
+        from .resources.temporal_events import AsyncTemporalEventsResourceWithStreamingResponse
+
+        return AsyncTemporalEventsResourceWithStreamingResponse(self._client.temporal_events)
+
+    @cached_property
+    def users(self) -> users.AsyncUsersResourceWithStreamingResponse:
+        from .resources.users import AsyncUsersResourceWithStreamingResponse
+
+        return AsyncUsersResourceWithStreamingResponse(self._client.users)
 
 
 Client = Nebula
