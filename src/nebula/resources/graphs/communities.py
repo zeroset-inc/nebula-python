@@ -7,7 +7,7 @@ from typing import Dict, Optional
 import httpx
 
 from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
+from ..._utils import path_template, maybe_transform, async_maybe_transform
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -39,7 +39,7 @@ class CommunitiesResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return CommunitiesResourceWithRawResponse(self)
 
@@ -48,7 +48,7 @@ class CommunitiesResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return CommunitiesResourceWithStreamingResponse(self)
 
@@ -109,7 +109,7 @@ class CommunitiesResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}/communities",
+            path_template("/v1/graphs/{collection_id}/communities", collection_id=collection_id),
             body=maybe_transform(
                 {
                     "name": name,
@@ -159,7 +159,11 @@ class CommunitiesResource(SyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return self._get(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -200,7 +204,11 @@ class CommunitiesResource(SyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             body=maybe_transform(
                 {
                     "findings": findings,
@@ -252,7 +260,7 @@ class CommunitiesResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._get(
-            f"/v1/graphs/{collection_id}/communities",
+            path_template("/v1/graphs/{collection_id}/communities", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -302,7 +310,11 @@ class CommunitiesResource(SyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return self._delete(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -360,7 +372,7 @@ class CommunitiesResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}/communities/build",
+            path_template("/v1/graphs/{collection_id}/communities/build", collection_id=collection_id),
             body=maybe_transform(body, community_build_params.CommunityBuildParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -405,7 +417,7 @@ class CommunitiesResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}/communities/export",
+            path_template("/v1/graphs/{collection_id}/communities/export", collection_id=collection_id),
             body=maybe_transform(
                 {
                     "columns": columns,
@@ -428,7 +440,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncCommunitiesResourceWithRawResponse(self)
 
@@ -437,7 +449,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncCommunitiesResourceWithStreamingResponse(self)
 
@@ -498,7 +510,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}/communities",
+            path_template("/v1/graphs/{collection_id}/communities", collection_id=collection_id),
             body=await async_maybe_transform(
                 {
                     "name": name,
@@ -548,7 +560,11 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return await self._get(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -589,7 +605,11 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             body=await async_maybe_transform(
                 {
                     "findings": findings,
@@ -641,7 +661,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._get(
-            f"/v1/graphs/{collection_id}/communities",
+            path_template("/v1/graphs/{collection_id}/communities", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -691,7 +711,11 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not community_id:
             raise ValueError(f"Expected a non-empty value for `community_id` but received {community_id!r}")
         return await self._delete(
-            f"/v1/graphs/{collection_id}/communities/{community_id}",
+            path_template(
+                "/v1/graphs/{collection_id}/communities/{community_id}",
+                collection_id=collection_id,
+                community_id=community_id,
+            ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -749,7 +773,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}/communities/build",
+            path_template("/v1/graphs/{collection_id}/communities/build", collection_id=collection_id),
             body=await async_maybe_transform(body, community_build_params.CommunityBuildParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -794,7 +818,7 @@ class AsyncCommunitiesResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}/communities/export",
+            path_template("/v1/graphs/{collection_id}/communities/export", collection_id=collection_id),
             body=await async_maybe_transform(
                 {
                     "columns": columns,

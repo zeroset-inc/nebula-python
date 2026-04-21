@@ -22,7 +22,7 @@ from ...types import (
     user_send_verification_email_params,
 )
 from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
+from ..._utils import path_template, maybe_transform, async_maybe_transform
 from .api_keys import (
     APIKeysResource,
     AsyncAPIKeysResource,
@@ -85,7 +85,7 @@ class UsersResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return UsersResourceWithRawResponse(self)
 
@@ -94,7 +94,7 @@ class UsersResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return UsersResourceWithStreamingResponse(self)
 
@@ -126,7 +126,7 @@ class UsersResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -183,7 +183,7 @@ class UsersResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             body=maybe_transform(
                 {
                     "bio": bio,
@@ -289,7 +289,7 @@ class UsersResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._delete(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             body=maybe_transform(
                 {
                     "delete_vector_data": delete_vector_data,
@@ -424,7 +424,7 @@ class UsersResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/users/{id}/limits",
+            path_template("/v1/users/{id}/limits", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -818,7 +818,7 @@ class AsyncUsersResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncUsersResourceWithRawResponse(self)
 
@@ -827,7 +827,7 @@ class AsyncUsersResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncUsersResourceWithStreamingResponse(self)
 
@@ -859,7 +859,7 @@ class AsyncUsersResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -916,7 +916,7 @@ class AsyncUsersResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             body=await async_maybe_transform(
                 {
                     "bio": bio,
@@ -1022,7 +1022,7 @@ class AsyncUsersResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._delete(
-            f"/v1/users/{id}",
+            path_template("/v1/users/{id}", id=id),
             body=await async_maybe_transform(
                 {
                     "delete_vector_data": delete_vector_data,
@@ -1157,7 +1157,7 @@ class AsyncUsersResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/users/{id}/limits",
+            path_template("/v1/users/{id}/limits", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

@@ -18,13 +18,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestGoogle:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_authorize(self, client: Nebula) -> None:
         google = client.users.oauth.google.authorize()
         assert_matches_type(NebulaResultsGenericMessageResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_authorize(self, client: Nebula) -> None:
         response = client.users.oauth.google.with_raw_response.authorize()
@@ -34,7 +34,7 @@ class TestGoogle:
         google = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_authorize(self, client: Nebula) -> None:
         with client.users.oauth.google.with_streaming_response.authorize() as response:
@@ -46,7 +46,7 @@ class TestGoogle:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_callback(self, client: Nebula) -> None:
         google = client.users.oauth.google.callback(
@@ -55,7 +55,7 @@ class TestGoogle:
         )
         assert_matches_type(LoginResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_callback(self, client: Nebula) -> None:
         response = client.users.oauth.google.with_raw_response.callback(
@@ -68,7 +68,7 @@ class TestGoogle:
         google = response.parse()
         assert_matches_type(LoginResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_callback(self, client: Nebula) -> None:
         with client.users.oauth.google.with_streaming_response.callback(
@@ -89,13 +89,13 @@ class TestAsyncGoogle:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_authorize(self, async_client: AsyncNebula) -> None:
         google = await async_client.users.oauth.google.authorize()
         assert_matches_type(NebulaResultsGenericMessageResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_authorize(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.oauth.google.with_raw_response.authorize()
@@ -105,7 +105,7 @@ class TestAsyncGoogle:
         google = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_authorize(self, async_client: AsyncNebula) -> None:
         async with async_client.users.oauth.google.with_streaming_response.authorize() as response:
@@ -117,7 +117,7 @@ class TestAsyncGoogle:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_callback(self, async_client: AsyncNebula) -> None:
         google = await async_client.users.oauth.google.callback(
@@ -126,7 +126,7 @@ class TestAsyncGoogle:
         )
         assert_matches_type(LoginResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_callback(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.oauth.google.with_raw_response.callback(
@@ -139,7 +139,7 @@ class TestAsyncGoogle:
         google = await response.parse()
         assert_matches_type(LoginResponse, google, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_callback(self, async_client: AsyncNebula) -> None:
         async with async_client.users.oauth.google.with_streaming_response.callback(

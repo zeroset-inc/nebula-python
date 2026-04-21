@@ -325,14 +325,10 @@ class Nebula(SyncAPIClient):
 
     @override
     def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
-        if self.bearer_token and headers.get("Authorization"):
-            return
-        if isinstance(custom_headers.get("Authorization"), Omit):
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
             return
 
-        if self.api_key and headers.get("X-API-Key"):
-            return
-        if isinstance(custom_headers.get("X-API-Key"), Omit):
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
             return
 
         raise TypeError(
@@ -679,14 +675,10 @@ class AsyncNebula(AsyncAPIClient):
 
     @override
     def _validate_headers(self, headers: Headers, custom_headers: Headers) -> None:
-        if self.bearer_token and headers.get("Authorization"):
-            return
-        if isinstance(custom_headers.get("Authorization"), Omit):
+        if headers.get("Authorization") or isinstance(custom_headers.get("Authorization"), Omit):
             return
 
-        if self.api_key and headers.get("X-API-Key"):
-            return
-        if isinstance(custom_headers.get("X-API-Key"), Omit):
+        if headers.get("X-API-Key") or isinstance(custom_headers.get("X-API-Key"), Omit):
             return
 
         raise TypeError(

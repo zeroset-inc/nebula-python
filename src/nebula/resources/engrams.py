@@ -6,7 +6,7 @@ import httpx
 
 from ..types import engram_retrieve_duplicate_stats_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -27,7 +27,7 @@ class EngramsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return EngramsResourceWithRawResponse(self)
 
@@ -36,7 +36,7 @@ class EngramsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return EngramsResourceWithStreamingResponse(self)
 
@@ -69,7 +69,7 @@ class EngramsResource(SyncAPIResource):
         if not engram_id:
             raise ValueError(f"Expected a non-empty value for `engram_id` but received {engram_id!r}")
         return self._get(
-            f"/v1/engrams/{engram_id}/duplicate-stats",
+            path_template("/v1/engrams/{engram_id}/duplicate-stats", engram_id=engram_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -90,7 +90,7 @@ class AsyncEngramsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncEngramsResourceWithRawResponse(self)
 
@@ -99,7 +99,7 @@ class AsyncEngramsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncEngramsResourceWithStreamingResponse(self)
 
@@ -132,7 +132,7 @@ class AsyncEngramsResource(AsyncAPIResource):
         if not engram_id:
             raise ValueError(f"Expected a non-empty value for `engram_id` but received {engram_id!r}")
         return await self._get(
-            f"/v1/engrams/{engram_id}/duplicate-stats",
+            path_template("/v1/engrams/{engram_id}/duplicate-stats", engram_id=engram_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,

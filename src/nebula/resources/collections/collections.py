@@ -34,7 +34,7 @@ from .engrams import (
     AsyncEngramsResourceWithStreamingResponse,
 )
 from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
+from ..._utils import path_template, maybe_transform, async_maybe_transform
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -68,7 +68,7 @@ class CollectionsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return CollectionsResourceWithRawResponse(self)
 
@@ -77,7 +77,7 @@ class CollectionsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return CollectionsResourceWithStreamingResponse(self)
 
@@ -160,7 +160,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -211,7 +211,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             body=maybe_transform(
                 {
                     "access_tier": access_tier,
@@ -323,7 +323,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._delete(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -492,7 +492,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/collections/{id}/extract",
+            path_template("/v1/collections/{id}/extract", id=id),
             body=maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -572,7 +572,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/collections/{id}/documents-with-memories",
+            path_template("/v1/collections/{id}/documents-with-memories", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -620,7 +620,7 @@ class CollectionsResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._get(
-            f"/v1/collections/{collection_id}/metrics",
+            path_template("/v1/collections/{collection_id}/metrics", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -665,7 +665,7 @@ class CollectionsResource(SyncAPIResource):
         if not collection_name:
             raise ValueError(f"Expected a non-empty value for `collection_name` but received {collection_name!r}")
         return self._get(
-            f"/v1/collections/name/{collection_name}",
+            path_template("/v1/collections/name/{collection_name}", collection_name=collection_name),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -721,7 +721,7 @@ class CollectionsResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/collections/{id}/validate-status",
+            path_template("/v1/collections/{id}/validate-status", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -750,7 +750,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncCollectionsResourceWithRawResponse(self)
 
@@ -759,7 +759,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncCollectionsResourceWithStreamingResponse(self)
 
@@ -842,7 +842,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -893,7 +893,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             body=await async_maybe_transform(
                 {
                     "access_tier": access_tier,
@@ -1005,7 +1005,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._delete(
-            f"/v1/collections/{id}",
+            path_template("/v1/collections/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1174,7 +1174,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/collections/{id}/extract",
+            path_template("/v1/collections/{id}/extract", id=id),
             body=await async_maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -1254,7 +1254,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/collections/{id}/documents-with-memories",
+            path_template("/v1/collections/{id}/documents-with-memories", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -1302,7 +1302,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._get(
-            f"/v1/collections/{collection_id}/metrics",
+            path_template("/v1/collections/{collection_id}/metrics", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -1349,7 +1349,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not collection_name:
             raise ValueError(f"Expected a non-empty value for `collection_name` but received {collection_name!r}")
         return await self._get(
-            f"/v1/collections/name/{collection_name}",
+            path_template("/v1/collections/name/{collection_name}", collection_name=collection_name),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -1405,7 +1405,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/collections/{id}/validate-status",
+            path_template("/v1/collections/{id}/validate-status", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,

@@ -22,7 +22,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestCollections:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create(self, client: Nebula) -> None:
         collection = client.collections.create(
@@ -30,7 +30,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.create(
@@ -39,7 +39,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.create(
@@ -51,7 +51,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.create(
@@ -65,7 +65,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Nebula) -> None:
         collection = client.collections.retrieve(
@@ -73,7 +73,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.retrieve(
@@ -85,7 +85,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.retrieve(
@@ -99,7 +99,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -107,7 +107,7 @@ class TestCollections:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_update(self, client: Nebula) -> None:
         collection = client.collections.update(
@@ -115,7 +115,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_update_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.update(
@@ -127,7 +127,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_update(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.update(
@@ -139,7 +139,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_update(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.update(
@@ -153,7 +153,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_update(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -161,13 +161,13 @@ class TestCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Nebula) -> None:
         collection = client.collections.list()
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.list(
@@ -178,7 +178,7 @@ class TestCollections:
         )
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.list()
@@ -188,7 +188,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.list() as response:
@@ -200,7 +200,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_delete(self, client: Nebula) -> None:
         collection = client.collections.delete(
@@ -208,7 +208,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_delete(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.delete(
@@ -220,7 +220,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsGenericBooleanResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_delete(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.delete(
@@ -234,7 +234,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_delete(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -242,13 +242,13 @@ class TestCollections:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export(self, client: Nebula) -> None:
         collection = client.collections.export()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.export(
@@ -258,7 +258,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_export(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.export()
@@ -268,7 +268,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_export(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.export() as response:
@@ -280,7 +280,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_extract(self, client: Nebula) -> None:
         collection = client.collections.extract(
@@ -288,7 +288,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_extract_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.extract(
@@ -363,7 +363,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_extract(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.extract(
@@ -375,7 +375,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_extract(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.extract(
@@ -389,7 +389,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_extract(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -397,7 +397,7 @@ class TestCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_documents_with_memories(self, client: Nebula) -> None:
         collection = client.collections.get_documents_with_memories(
@@ -405,7 +405,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_documents_with_memories_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.get_documents_with_memories(
@@ -416,7 +416,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_documents_with_memories(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.get_documents_with_memories(
@@ -428,7 +428,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_documents_with_memories(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.get_documents_with_memories(
@@ -442,7 +442,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_get_documents_with_memories(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -450,7 +450,7 @@ class TestCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_metrics(self, client: Nebula) -> None:
         collection = client.collections.get_metrics(
@@ -458,7 +458,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_metrics_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.get_metrics(
@@ -467,7 +467,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_metrics(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.get_metrics(
@@ -479,7 +479,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_metrics(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.get_metrics(
@@ -493,7 +493,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_get_metrics(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `collection_id` but received ''"):
@@ -501,7 +501,7 @@ class TestCollections:
                 collection_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_by_name(self, client: Nebula) -> None:
         collection = client.collections.retrieve_by_name(
@@ -509,7 +509,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_by_name_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.retrieve_by_name(
@@ -518,7 +518,7 @@ class TestCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve_by_name(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.retrieve_by_name(
@@ -530,7 +530,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve_by_name(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.retrieve_by_name(
@@ -544,7 +544,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve_by_name(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `collection_name` but received ''"):
@@ -552,7 +552,7 @@ class TestCollections:
                 collection_name="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_validate_status(self, client: Nebula) -> None:
         collection = client.collections.validate_status(
@@ -560,7 +560,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_validate_status_with_all_params(self, client: Nebula) -> None:
         collection = client.collections.validate_status(
@@ -569,7 +569,7 @@ class TestCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_validate_status(self, client: Nebula) -> None:
         response = client.collections.with_raw_response.validate_status(
@@ -581,7 +581,7 @@ class TestCollections:
         collection = response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_validate_status(self, client: Nebula) -> None:
         with client.collections.with_streaming_response.validate_status(
@@ -595,7 +595,7 @@ class TestCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_validate_status(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -609,7 +609,7 @@ class TestAsyncCollections:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.create(
@@ -617,7 +617,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.create(
@@ -626,7 +626,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.create(
@@ -638,7 +638,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.create(
@@ -652,7 +652,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.retrieve(
@@ -660,7 +660,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.retrieve(
@@ -672,7 +672,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.retrieve(
@@ -686,7 +686,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -694,7 +694,7 @@ class TestAsyncCollections:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_update(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.update(
@@ -702,7 +702,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.update(
@@ -714,7 +714,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.update(
@@ -726,7 +726,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.update(
@@ -740,7 +740,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_update(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -748,13 +748,13 @@ class TestAsyncCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.list()
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.list(
@@ -765,7 +765,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.list()
@@ -775,7 +775,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(PaginatedNebulaResultListCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.list() as response:
@@ -787,7 +787,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_delete(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.delete(
@@ -795,7 +795,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_delete(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.delete(
@@ -807,7 +807,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsGenericBooleanResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_delete(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.delete(
@@ -821,7 +821,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_delete(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -829,13 +829,13 @@ class TestAsyncCollections:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.export()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.export(
@@ -845,7 +845,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_export(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.export()
@@ -855,7 +855,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_export(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.export() as response:
@@ -867,7 +867,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_extract(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.extract(
@@ -875,7 +875,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_extract_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.extract(
@@ -950,7 +950,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_extract(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.extract(
@@ -962,7 +962,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_extract(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.extract(
@@ -976,7 +976,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_extract(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -984,7 +984,7 @@ class TestAsyncCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_documents_with_memories(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.get_documents_with_memories(
@@ -992,7 +992,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_documents_with_memories_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.get_documents_with_memories(
@@ -1003,7 +1003,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_documents_with_memories(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.get_documents_with_memories(
@@ -1015,7 +1015,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_documents_with_memories(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.get_documents_with_memories(
@@ -1029,7 +1029,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_get_documents_with_memories(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -1037,7 +1037,7 @@ class TestAsyncCollections:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_metrics(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.get_metrics(
@@ -1045,7 +1045,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_metrics_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.get_metrics(
@@ -1054,7 +1054,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_metrics(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.get_metrics(
@@ -1066,7 +1066,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_metrics(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.get_metrics(
@@ -1080,7 +1080,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_get_metrics(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `collection_id` but received ''"):
@@ -1088,7 +1088,7 @@ class TestAsyncCollections:
                 collection_id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_by_name(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.retrieve_by_name(
@@ -1096,7 +1096,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_by_name_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.retrieve_by_name(
@@ -1105,7 +1105,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve_by_name(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.retrieve_by_name(
@@ -1117,7 +1117,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(NebulaResultsCollectionResponse, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve_by_name(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.retrieve_by_name(
@@ -1131,7 +1131,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve_by_name(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `collection_name` but received ''"):
@@ -1139,7 +1139,7 @@ class TestAsyncCollections:
                 collection_name="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_validate_status(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.validate_status(
@@ -1147,7 +1147,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_validate_status_with_all_params(self, async_client: AsyncNebula) -> None:
         collection = await async_client.collections.validate_status(
@@ -1156,7 +1156,7 @@ class TestAsyncCollections:
         )
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_validate_status(self, async_client: AsyncNebula) -> None:
         response = await async_client.collections.with_raw_response.validate_status(
@@ -1168,7 +1168,7 @@ class TestAsyncCollections:
         collection = await response.parse()
         assert_matches_type(object, collection, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_validate_status(self, async_client: AsyncNebula) -> None:
         async with async_client.collections.with_streaming_response.validate_status(
@@ -1182,7 +1182,7 @@ class TestAsyncCollections:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_validate_status(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):

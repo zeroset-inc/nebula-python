@@ -9,7 +9,7 @@ import httpx
 
 from ..types import temporal_event_list_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -30,7 +30,7 @@ class TemporalEventsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return TemporalEventsResourceWithRawResponse(self)
 
@@ -39,7 +39,7 @@ class TemporalEventsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return TemporalEventsResourceWithStreamingResponse(self)
 
@@ -69,7 +69,7 @@ class TemporalEventsResource(SyncAPIResource):
         if not event_id:
             raise ValueError(f"Expected a non-empty value for `event_id` but received {event_id!r}")
         return self._get(
-            f"/v1/temporal-events/{event_id}",
+            path_template("/v1/temporal-events/{event_id}", event_id=event_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -142,7 +142,7 @@ class AsyncTemporalEventsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncTemporalEventsResourceWithRawResponse(self)
 
@@ -151,7 +151,7 @@ class AsyncTemporalEventsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncTemporalEventsResourceWithStreamingResponse(self)
 
@@ -181,7 +181,7 @@ class AsyncTemporalEventsResource(AsyncAPIResource):
         if not event_id:
             raise ValueError(f"Expected a non-empty value for `event_id` but received {event_id!r}")
         return await self._get(
-            f"/v1/temporal-events/{event_id}",
+            path_template("/v1/temporal-events/{event_id}", event_id=event_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

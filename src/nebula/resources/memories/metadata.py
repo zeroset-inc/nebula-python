@@ -7,7 +7,7 @@ from typing import Dict, Iterable
 import httpx
 
 from ..._types import Body, Query, Headers, NotGiven, not_given
-from ..._utils import maybe_transform, async_maybe_transform
+from ..._utils import path_template, maybe_transform, async_maybe_transform
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -29,7 +29,7 @@ class MetadataResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return MetadataResourceWithRawResponse(self)
 
@@ -38,7 +38,7 @@ class MetadataResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return MetadataResourceWithStreamingResponse(self)
 
@@ -75,7 +75,7 @@ class MetadataResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._patch(
-            f"/v1/memories/{id}/metadata",
+            path_template("/v1/memories/{id}/metadata", id=id),
             body=maybe_transform(body, Iterable[Dict[str, object]]),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -116,7 +116,7 @@ class MetadataResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._put(
-            f"/v1/memories/{id}/metadata",
+            path_template("/v1/memories/{id}/metadata", id=id),
             body=maybe_transform(body, Iterable[Dict[str, object]]),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -132,7 +132,7 @@ class AsyncMetadataResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncMetadataResourceWithRawResponse(self)
 
@@ -141,7 +141,7 @@ class AsyncMetadataResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncMetadataResourceWithStreamingResponse(self)
 
@@ -178,7 +178,7 @@ class AsyncMetadataResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._patch(
-            f"/v1/memories/{id}/metadata",
+            path_template("/v1/memories/{id}/metadata", id=id),
             body=await async_maybe_transform(body, Iterable[Dict[str, object]]),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -219,7 +219,7 @@ class AsyncMetadataResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._put(
-            f"/v1/memories/{id}/metadata",
+            path_template("/v1/memories/{id}/metadata", id=id),
             body=await async_maybe_transform(body, Iterable[Dict[str, object]]),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
