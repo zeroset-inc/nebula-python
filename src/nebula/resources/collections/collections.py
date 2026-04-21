@@ -68,7 +68,7 @@ class CollectionsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-python#accessing-raw-response-data-eg-headers
         """
         return CollectionsResourceWithRawResponse(self)
 
@@ -77,7 +77,7 @@ class CollectionsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-python#with_streaming_response
         """
         return CollectionsResourceWithStreamingResponse(self)
 
@@ -750,7 +750,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-python#accessing-raw-response-data-eg-headers
         """
         return AsyncCollectionsResourceWithRawResponse(self)
 
@@ -759,7 +759,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-python#with_streaming_response
         """
         return AsyncCollectionsResourceWithStreamingResponse(self)
 
