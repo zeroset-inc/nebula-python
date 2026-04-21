@@ -16,13 +16,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestBilling:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_billing_portal_session(self, client: Nebula) -> None:
         billing = client.billing.create_billing_portal_session()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_billing_portal_session_with_all_params(self, client: Nebula) -> None:
         billing = client.billing.create_billing_portal_session(
@@ -30,7 +30,7 @@ class TestBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create_billing_portal_session(self, client: Nebula) -> None:
         response = client.billing.with_raw_response.create_billing_portal_session()
@@ -40,7 +40,7 @@ class TestBilling:
         billing = response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create_billing_portal_session(self, client: Nebula) -> None:
         with client.billing.with_streaming_response.create_billing_portal_session() as response:
@@ -52,7 +52,7 @@ class TestBilling:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_checkout_session(self, client: Nebula) -> None:
         billing = client.billing.create_checkout_session(
@@ -60,7 +60,7 @@ class TestBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_create_checkout_session_with_all_params(self, client: Nebula) -> None:
         billing = client.billing.create_checkout_session(
@@ -71,7 +71,7 @@ class TestBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_create_checkout_session(self, client: Nebula) -> None:
         response = client.billing.with_raw_response.create_checkout_session(
@@ -83,7 +83,7 @@ class TestBilling:
         billing = response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_create_checkout_session(self, client: Nebula) -> None:
         with client.billing.with_streaming_response.create_checkout_session(
@@ -97,13 +97,13 @@ class TestBilling:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_handle_webhook(self, client: Nebula) -> None:
         billing = client.billing.handle_webhook()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_handle_webhook(self, client: Nebula) -> None:
         response = client.billing.with_raw_response.handle_webhook()
@@ -113,7 +113,7 @@ class TestBilling:
         billing = response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_handle_webhook(self, client: Nebula) -> None:
         with client.billing.with_streaming_response.handle_webhook() as response:
@@ -131,13 +131,13 @@ class TestAsyncBilling:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_billing_portal_session(self, async_client: AsyncNebula) -> None:
         billing = await async_client.billing.create_billing_portal_session()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_billing_portal_session_with_all_params(self, async_client: AsyncNebula) -> None:
         billing = await async_client.billing.create_billing_portal_session(
@@ -145,7 +145,7 @@ class TestAsyncBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create_billing_portal_session(self, async_client: AsyncNebula) -> None:
         response = await async_client.billing.with_raw_response.create_billing_portal_session()
@@ -155,7 +155,7 @@ class TestAsyncBilling:
         billing = await response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create_billing_portal_session(self, async_client: AsyncNebula) -> None:
         async with async_client.billing.with_streaming_response.create_billing_portal_session() as response:
@@ -167,7 +167,7 @@ class TestAsyncBilling:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_checkout_session(self, async_client: AsyncNebula) -> None:
         billing = await async_client.billing.create_checkout_session(
@@ -175,7 +175,7 @@ class TestAsyncBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_create_checkout_session_with_all_params(self, async_client: AsyncNebula) -> None:
         billing = await async_client.billing.create_checkout_session(
@@ -186,7 +186,7 @@ class TestAsyncBilling:
         )
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_create_checkout_session(self, async_client: AsyncNebula) -> None:
         response = await async_client.billing.with_raw_response.create_checkout_session(
@@ -198,7 +198,7 @@ class TestAsyncBilling:
         billing = await response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_create_checkout_session(self, async_client: AsyncNebula) -> None:
         async with async_client.billing.with_streaming_response.create_checkout_session(
@@ -212,13 +212,13 @@ class TestAsyncBilling:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_handle_webhook(self, async_client: AsyncNebula) -> None:
         billing = await async_client.billing.handle_webhook()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_handle_webhook(self, async_client: AsyncNebula) -> None:
         response = await async_client.billing.with_raw_response.handle_webhook()
@@ -228,7 +228,7 @@ class TestAsyncBilling:
         billing = await response.parse()
         assert_matches_type(object, billing, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_handle_webhook(self, async_client: AsyncNebula) -> None:
         async with async_client.billing.with_streaming_response.handle_webhook() as response:

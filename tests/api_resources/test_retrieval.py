@@ -22,13 +22,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestRetrieval:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_engage_agent(self, client: Nebula) -> None:
         retrieval = client.retrieval.engage_agent()
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_engage_agent_with_all_params(self, client: Nebula) -> None:
         retrieval = client.retrieval.engage_agent(
@@ -113,7 +113,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_engage_agent(self, client: Nebula) -> None:
         response = client.retrieval.with_raw_response.engage_agent()
@@ -123,7 +123,7 @@ class TestRetrieval:
         retrieval = response.parse()
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_engage_agent(self, client: Nebula) -> None:
         with client.retrieval.with_streaming_response.engage_agent() as response:
@@ -135,7 +135,7 @@ class TestRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_execute_rag_query(self, client: Nebula) -> None:
         retrieval = client.retrieval.execute_rag_query(
@@ -143,7 +143,7 @@ class TestRetrieval:
         )
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_execute_rag_query_with_all_params(self, client: Nebula) -> None:
         retrieval = client.retrieval.execute_rag_query(
@@ -181,7 +181,7 @@ class TestRetrieval:
         )
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_execute_rag_query(self, client: Nebula) -> None:
         response = client.retrieval.with_raw_response.execute_rag_query(
@@ -193,7 +193,7 @@ class TestRetrieval:
         retrieval = response.parse()
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_execute_rag_query(self, client: Nebula) -> None:
         with client.retrieval.with_streaming_response.execute_rag_query(
@@ -207,7 +207,7 @@ class TestRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_generate_completions(self, client: Nebula) -> None:
         retrieval = client.retrieval.generate_completions(
@@ -215,7 +215,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_generate_completions_with_all_params(self, client: Nebula) -> None:
         retrieval = client.retrieval.generate_completions(
@@ -253,7 +253,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_generate_completions(self, client: Nebula) -> None:
         response = client.retrieval.with_raw_response.generate_completions(
@@ -265,7 +265,7 @@ class TestRetrieval:
         retrieval = response.parse()
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_generate_completions(self, client: Nebula) -> None:
         with client.retrieval.with_streaming_response.generate_completions(
@@ -279,7 +279,7 @@ class TestRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_generate_embeddings(self, client: Nebula) -> None:
         retrieval = client.retrieval.generate_embeddings(
@@ -287,7 +287,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalGenerateEmbeddingsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_generate_embeddings(self, client: Nebula) -> None:
         response = client.retrieval.with_raw_response.generate_embeddings(
@@ -299,7 +299,7 @@ class TestRetrieval:
         retrieval = response.parse()
         assert_matches_type(RetrievalGenerateEmbeddingsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_generate_embeddings(self, client: Nebula) -> None:
         with client.retrieval.with_streaming_response.generate_embeddings(
@@ -313,7 +313,7 @@ class TestRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search(self, client: Nebula) -> None:
         retrieval = client.retrieval.search(
@@ -321,7 +321,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_search_with_all_params(self, client: Nebula) -> None:
         retrieval = client.retrieval.search(
@@ -340,7 +340,7 @@ class TestRetrieval:
         )
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_search(self, client: Nebula) -> None:
         response = client.retrieval.with_raw_response.search(
@@ -352,7 +352,7 @@ class TestRetrieval:
         retrieval = response.parse()
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_search(self, client: Nebula) -> None:
         with client.retrieval.with_streaming_response.search(
@@ -372,13 +372,13 @@ class TestAsyncRetrieval:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_engage_agent(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.engage_agent()
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_engage_agent_with_all_params(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.engage_agent(
@@ -463,7 +463,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_engage_agent(self, async_client: AsyncNebula) -> None:
         response = await async_client.retrieval.with_raw_response.engage_agent()
@@ -473,7 +473,7 @@ class TestAsyncRetrieval:
         retrieval = await response.parse()
         assert_matches_type(RetrievalEngageAgentResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_engage_agent(self, async_client: AsyncNebula) -> None:
         async with async_client.retrieval.with_streaming_response.engage_agent() as response:
@@ -485,7 +485,7 @@ class TestAsyncRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_execute_rag_query(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.execute_rag_query(
@@ -493,7 +493,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_execute_rag_query_with_all_params(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.execute_rag_query(
@@ -531,7 +531,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_execute_rag_query(self, async_client: AsyncNebula) -> None:
         response = await async_client.retrieval.with_raw_response.execute_rag_query(
@@ -543,7 +543,7 @@ class TestAsyncRetrieval:
         retrieval = await response.parse()
         assert_matches_type(object, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_execute_rag_query(self, async_client: AsyncNebula) -> None:
         async with async_client.retrieval.with_streaming_response.execute_rag_query(
@@ -557,7 +557,7 @@ class TestAsyncRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_generate_completions(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.generate_completions(
@@ -565,7 +565,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_generate_completions_with_all_params(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.generate_completions(
@@ -603,7 +603,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_generate_completions(self, async_client: AsyncNebula) -> None:
         response = await async_client.retrieval.with_raw_response.generate_completions(
@@ -615,7 +615,7 @@ class TestAsyncRetrieval:
         retrieval = await response.parse()
         assert_matches_type(RetrievalGenerateCompletionsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_generate_completions(self, async_client: AsyncNebula) -> None:
         async with async_client.retrieval.with_streaming_response.generate_completions(
@@ -629,7 +629,7 @@ class TestAsyncRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_generate_embeddings(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.generate_embeddings(
@@ -637,7 +637,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalGenerateEmbeddingsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_generate_embeddings(self, async_client: AsyncNebula) -> None:
         response = await async_client.retrieval.with_raw_response.generate_embeddings(
@@ -649,7 +649,7 @@ class TestAsyncRetrieval:
         retrieval = await response.parse()
         assert_matches_type(RetrievalGenerateEmbeddingsResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_generate_embeddings(self, async_client: AsyncNebula) -> None:
         async with async_client.retrieval.with_streaming_response.generate_embeddings(
@@ -663,7 +663,7 @@ class TestAsyncRetrieval:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.search(
@@ -671,7 +671,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_search_with_all_params(self, async_client: AsyncNebula) -> None:
         retrieval = await async_client.retrieval.search(
@@ -690,7 +690,7 @@ class TestAsyncRetrieval:
         )
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_search(self, async_client: AsyncNebula) -> None:
         response = await async_client.retrieval.with_raw_response.search(
@@ -702,7 +702,7 @@ class TestAsyncRetrieval:
         retrieval = await response.parse()
         assert_matches_type(RetrievalSearchResponse, retrieval, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_search(self, async_client: AsyncNebula) -> None:
         async with async_client.retrieval.with_streaming_response.search(

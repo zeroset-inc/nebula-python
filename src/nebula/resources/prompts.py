@@ -8,7 +8,7 @@ import httpx
 
 from ..types import prompt_create_params, prompt_update_params, prompt_retrieve_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from .._utils import maybe_transform, async_maybe_transform
+from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
 from .._resource import SyncAPIResource, AsyncAPIResource
 from .._response import (
@@ -33,7 +33,7 @@ class PromptsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return PromptsResourceWithRawResponse(self)
 
@@ -42,7 +42,7 @@ class PromptsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return PromptsResourceWithStreamingResponse(self)
 
@@ -133,7 +133,7 @@ class PromptsResource(SyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return self._post(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             body=maybe_transform(body, prompt_retrieve_params.PromptRetrieveParams),
             options=make_request_options(
                 extra_headers=extra_headers,
@@ -184,7 +184,7 @@ class PromptsResource(SyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return self._put(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             body=maybe_transform(
                 {
                     "input_types": input_types,
@@ -252,7 +252,7 @@ class PromptsResource(SyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return self._delete(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -267,7 +267,7 @@ class AsyncPromptsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncPromptsResourceWithRawResponse(self)
 
@@ -276,7 +276,7 @@ class AsyncPromptsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncPromptsResourceWithStreamingResponse(self)
 
@@ -367,7 +367,7 @@ class AsyncPromptsResource(AsyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return await self._post(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             body=await async_maybe_transform(body, prompt_retrieve_params.PromptRetrieveParams),
             options=make_request_options(
                 extra_headers=extra_headers,
@@ -418,7 +418,7 @@ class AsyncPromptsResource(AsyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return await self._put(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             body=await async_maybe_transform(
                 {
                     "input_types": input_types,
@@ -486,7 +486,7 @@ class AsyncPromptsResource(AsyncAPIResource):
         if not name:
             raise ValueError(f"Expected a non-empty value for `name` but received {name!r}")
         return await self._delete(
-            f"/v1/prompts/{name}",
+            path_template("/v1/prompts/{name}", name=name),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

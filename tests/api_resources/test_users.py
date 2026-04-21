@@ -23,7 +23,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestUsers:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve(self, client: Nebula) -> None:
         user = client.users.retrieve(
@@ -31,7 +31,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve(self, client: Nebula) -> None:
         response = client.users.with_raw_response.retrieve(
@@ -43,7 +43,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve(self, client: Nebula) -> None:
         with client.users.with_streaming_response.retrieve(
@@ -57,7 +57,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_retrieve(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -65,7 +65,7 @@ class TestUsers:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_update(self, client: Nebula) -> None:
         user = client.users.update(
@@ -73,7 +73,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_update_with_all_params(self, client: Nebula) -> None:
         user = client.users.update(
@@ -88,7 +88,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_update(self, client: Nebula) -> None:
         response = client.users.with_raw_response.update(
@@ -100,7 +100,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_update(self, client: Nebula) -> None:
         with client.users.with_streaming_response.update(
@@ -114,7 +114,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_update(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -122,13 +122,13 @@ class TestUsers:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Nebula) -> None:
         user = client.users.list()
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Nebula) -> None:
         user = client.users.list(
@@ -138,7 +138,7 @@ class TestUsers:
         )
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Nebula) -> None:
         response = client.users.with_raw_response.list()
@@ -148,7 +148,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Nebula) -> None:
         with client.users.with_streaming_response.list() as response:
@@ -160,7 +160,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_delete(self, client: Nebula) -> None:
         user = client.users.delete(
@@ -168,7 +168,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_delete_with_all_params(self, client: Nebula) -> None:
         user = client.users.delete(
@@ -178,7 +178,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_delete(self, client: Nebula) -> None:
         response = client.users.with_raw_response.delete(
@@ -190,7 +190,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_delete(self, client: Nebula) -> None:
         with client.users.with_streaming_response.delete(
@@ -204,7 +204,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_delete(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -212,7 +212,7 @@ class TestUsers:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_change_password(self, client: Nebula) -> None:
         user = client.users.change_password(
@@ -221,7 +221,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_change_password(self, client: Nebula) -> None:
         response = client.users.with_raw_response.change_password(
@@ -234,7 +234,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_change_password(self, client: Nebula) -> None:
         with client.users.with_streaming_response.change_password(
@@ -249,13 +249,13 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export(self, client: Nebula) -> None:
         user = client.users.export()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export_with_all_params(self, client: Nebula) -> None:
         user = client.users.export(
@@ -265,7 +265,7 @@ class TestUsers:
         )
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_export(self, client: Nebula) -> None:
         response = client.users.with_raw_response.export()
@@ -275,7 +275,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_export(self, client: Nebula) -> None:
         with client.users.with_streaming_response.export() as response:
@@ -287,7 +287,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_fetch_limits(self, client: Nebula) -> None:
         user = client.users.fetch_limits(
@@ -295,7 +295,7 @@ class TestUsers:
         )
         assert_matches_type(UserFetchLimitsResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_fetch_limits(self, client: Nebula) -> None:
         response = client.users.with_raw_response.fetch_limits(
@@ -307,7 +307,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(UserFetchLimitsResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_fetch_limits(self, client: Nebula) -> None:
         with client.users.with_streaming_response.fetch_limits(
@@ -321,7 +321,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_fetch_limits(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -329,13 +329,13 @@ class TestUsers:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_get_current_user(self, client: Nebula) -> None:
         user = client.users.get_current_user()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_get_current_user(self, client: Nebula) -> None:
         response = client.users.with_raw_response.get_current_user()
@@ -345,7 +345,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_get_current_user(self, client: Nebula) -> None:
         with client.users.with_streaming_response.get_current_user() as response:
@@ -357,7 +357,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_login(self, client: Nebula) -> None:
         user = client.users.login(
@@ -366,7 +366,7 @@ class TestUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_login_with_all_params(self, client: Nebula) -> None:
         user = client.users.login(
@@ -379,7 +379,7 @@ class TestUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_login(self, client: Nebula) -> None:
         response = client.users.with_raw_response.login(
@@ -392,7 +392,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_login(self, client: Nebula) -> None:
         with client.users.with_streaming_response.login(
@@ -407,13 +407,13 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_logout(self, client: Nebula) -> None:
         user = client.users.logout()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_logout(self, client: Nebula) -> None:
         response = client.users.with_raw_response.logout()
@@ -423,7 +423,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_logout(self, client: Nebula) -> None:
         with client.users.with_streaming_response.logout() as response:
@@ -435,7 +435,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_refresh_token(self, client: Nebula) -> None:
         user = client.users.refresh_token(
@@ -443,7 +443,7 @@ class TestUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_refresh_token(self, client: Nebula) -> None:
         response = client.users.with_raw_response.refresh_token(
@@ -455,7 +455,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_refresh_token(self, client: Nebula) -> None:
         with client.users.with_streaming_response.refresh_token(
@@ -469,7 +469,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_register(self, client: Nebula) -> None:
         user = client.users.register(
@@ -478,7 +478,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_register_with_all_params(self, client: Nebula) -> None:
         user = client.users.register(
@@ -491,7 +491,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_register(self, client: Nebula) -> None:
         response = client.users.with_raw_response.register(
@@ -504,7 +504,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_register(self, client: Nebula) -> None:
         with client.users.with_streaming_response.register(
@@ -519,7 +519,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_request_password_reset(self, client: Nebula) -> None:
         user = client.users.request_password_reset(
@@ -527,7 +527,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_request_password_reset(self, client: Nebula) -> None:
         response = client.users.with_raw_response.request_password_reset(
@@ -539,7 +539,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_request_password_reset(self, client: Nebula) -> None:
         with client.users.with_streaming_response.request_password_reset(
@@ -553,7 +553,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_reset_password(self, client: Nebula) -> None:
         user = client.users.reset_password(
@@ -562,7 +562,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_reset_password(self, client: Nebula) -> None:
         response = client.users.with_raw_response.reset_password(
@@ -575,7 +575,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_reset_password(self, client: Nebula) -> None:
         with client.users.with_streaming_response.reset_password(
@@ -590,13 +590,13 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_metrics(self, client: Nebula) -> None:
         user = client.users.retrieve_metrics()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_metrics_with_all_params(self, client: Nebula) -> None:
         user = client.users.retrieve_metrics(
@@ -604,7 +604,7 @@ class TestUsers:
         )
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve_metrics(self, client: Nebula) -> None:
         response = client.users.with_raw_response.retrieve_metrics()
@@ -614,7 +614,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve_metrics(self, client: Nebula) -> None:
         with client.users.with_streaming_response.retrieve_metrics() as response:
@@ -626,7 +626,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_send_verification_email(self, client: Nebula) -> None:
         user = client.users.send_verification_email(
@@ -634,7 +634,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_send_verification_email(self, client: Nebula) -> None:
         response = client.users.with_raw_response.send_verification_email(
@@ -646,7 +646,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_send_verification_email(self, client: Nebula) -> None:
         with client.users.with_streaming_response.send_verification_email(
@@ -660,7 +660,7 @@ class TestUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_verify_email(self, client: Nebula) -> None:
         user = client.users.verify_email(
@@ -669,7 +669,7 @@ class TestUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_verify_email(self, client: Nebula) -> None:
         response = client.users.with_raw_response.verify_email(
@@ -682,7 +682,7 @@ class TestUsers:
         user = response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_verify_email(self, client: Nebula) -> None:
         with client.users.with_streaming_response.verify_email(
@@ -703,7 +703,7 @@ class TestAsyncUsers:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.retrieve(
@@ -711,7 +711,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.retrieve(
@@ -723,7 +723,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.retrieve(
@@ -737,7 +737,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_retrieve(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -745,7 +745,7 @@ class TestAsyncUsers:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_update(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.update(
@@ -753,7 +753,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.update(
@@ -768,7 +768,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.update(
@@ -780,7 +780,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.update(
@@ -794,7 +794,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_update(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -802,13 +802,13 @@ class TestAsyncUsers:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.list()
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.list(
@@ -818,7 +818,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.list()
@@ -828,7 +828,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(PaginatedNebulaResultListUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.list() as response:
@@ -840,7 +840,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_delete(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.delete(
@@ -848,7 +848,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_delete_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.delete(
@@ -858,7 +858,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_delete(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.delete(
@@ -870,7 +870,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericBooleanResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_delete(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.delete(
@@ -884,7 +884,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_delete(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -892,7 +892,7 @@ class TestAsyncUsers:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_change_password(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.change_password(
@@ -901,7 +901,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_change_password(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.change_password(
@@ -914,7 +914,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_change_password(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.change_password(
@@ -929,13 +929,13 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.export()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.export(
@@ -945,7 +945,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_export(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.export()
@@ -955,7 +955,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_export(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.export() as response:
@@ -967,7 +967,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_fetch_limits(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.fetch_limits(
@@ -975,7 +975,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(UserFetchLimitsResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_fetch_limits(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.fetch_limits(
@@ -987,7 +987,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(UserFetchLimitsResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_fetch_limits(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.fetch_limits(
@@ -1001,7 +1001,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_fetch_limits(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -1009,13 +1009,13 @@ class TestAsyncUsers:
                 "",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_get_current_user(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.get_current_user()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_get_current_user(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.get_current_user()
@@ -1025,7 +1025,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_get_current_user(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.get_current_user() as response:
@@ -1037,7 +1037,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_login(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.login(
@@ -1046,7 +1046,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_login_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.login(
@@ -1059,7 +1059,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_login(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.login(
@@ -1072,7 +1072,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_login(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.login(
@@ -1087,13 +1087,13 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_logout(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.logout()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_logout(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.logout()
@@ -1103,7 +1103,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_logout(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.logout() as response:
@@ -1115,7 +1115,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_refresh_token(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.refresh_token(
@@ -1123,7 +1123,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_refresh_token(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.refresh_token(
@@ -1135,7 +1135,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(TokenResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_refresh_token(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.refresh_token(
@@ -1149,7 +1149,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_register(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.register(
@@ -1158,7 +1158,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_register_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.register(
@@ -1171,7 +1171,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_register(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.register(
@@ -1184,7 +1184,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsUser, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_register(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.register(
@@ -1199,7 +1199,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_request_password_reset(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.request_password_reset(
@@ -1207,7 +1207,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_request_password_reset(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.request_password_reset(
@@ -1219,7 +1219,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_request_password_reset(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.request_password_reset(
@@ -1233,7 +1233,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_reset_password(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.reset_password(
@@ -1242,7 +1242,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_reset_password(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.reset_password(
@@ -1255,7 +1255,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_reset_password(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.reset_password(
@@ -1270,13 +1270,13 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_metrics(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.retrieve_metrics()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_metrics_with_all_params(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.retrieve_metrics(
@@ -1284,7 +1284,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve_metrics(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.retrieve_metrics()
@@ -1294,7 +1294,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(object, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve_metrics(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.retrieve_metrics() as response:
@@ -1306,7 +1306,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_send_verification_email(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.send_verification_email(
@@ -1314,7 +1314,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_send_verification_email(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.send_verification_email(
@@ -1326,7 +1326,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_send_verification_email(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.send_verification_email(
@@ -1340,7 +1340,7 @@ class TestAsyncUsers:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_verify_email(self, async_client: AsyncNebula) -> None:
         user = await async_client.users.verify_email(
@@ -1349,7 +1349,7 @@ class TestAsyncUsers:
         )
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_verify_email(self, async_client: AsyncNebula) -> None:
         response = await async_client.users.with_raw_response.verify_email(
@@ -1362,7 +1362,7 @@ class TestAsyncUsers:
         user = await response.parse()
         assert_matches_type(NebulaResultsGenericMessageResponse, user, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_verify_email(self, async_client: AsyncNebula) -> None:
         async with async_client.users.with_streaming_response.verify_email(

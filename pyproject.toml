@@ -11,7 +11,7 @@ authors = [
 dependencies = [
   "httpx>=0.23.0, <1",
   "pydantic>=1.9.0, <3",
-  "typing-extensions>=4.10, <5",
+  "typing-extensions>=4.14, <5",
   "anyio>=3.5.0, <5",
   "distro>=1.7.0, <2",
   "sniffio",
@@ -37,8 +37,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/stainless-sdks/nebula-python"
-Repository = "https://github.com/stainless-sdks/nebula-python"
+Homepage = "https://github.com/nebula-agi/nebula-py"
+Repository = "https://github.com/nebula-agi/nebula-py"
 
 [project.optional-dependencies]
 aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.9"]
@@ -112,7 +112,7 @@ path = "README.md"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
 # replace relative links with absolute links
 pattern = '\[(.+?)\]\(((?!https?://)\S+?)\)'
-replacement = '[\1](https://github.com/stainless-sdks/nebula-python/tree/main/\g<2>)'
+replacement = '[\1](https://github.com/nebula-agi/nebula-py/tree/main/\g<2>)'
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

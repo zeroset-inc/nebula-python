@@ -17,13 +17,13 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestSystem:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_settings(self, client: Nebula) -> None:
         system = client.system.retrieve_settings()
         assert_matches_type(SystemRetrieveSettingsResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve_settings(self, client: Nebula) -> None:
         response = client.system.with_raw_response.retrieve_settings()
@@ -33,7 +33,7 @@ class TestSystem:
         system = response.parse()
         assert_matches_type(SystemRetrieveSettingsResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve_settings(self, client: Nebula) -> None:
         with client.system.with_streaming_response.retrieve_settings() as response:
@@ -45,13 +45,13 @@ class TestSystem:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_retrieve_status(self, client: Nebula) -> None:
         system = client.system.retrieve_status()
         assert_matches_type(SystemRetrieveStatusResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_retrieve_status(self, client: Nebula) -> None:
         response = client.system.with_raw_response.retrieve_status()
@@ -61,7 +61,7 @@ class TestSystem:
         system = response.parse()
         assert_matches_type(SystemRetrieveStatusResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_retrieve_status(self, client: Nebula) -> None:
         with client.system.with_streaming_response.retrieve_status() as response:
@@ -79,13 +79,13 @@ class TestAsyncSystem:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_settings(self, async_client: AsyncNebula) -> None:
         system = await async_client.system.retrieve_settings()
         assert_matches_type(SystemRetrieveSettingsResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve_settings(self, async_client: AsyncNebula) -> None:
         response = await async_client.system.with_raw_response.retrieve_settings()
@@ -95,7 +95,7 @@ class TestAsyncSystem:
         system = await response.parse()
         assert_matches_type(SystemRetrieveSettingsResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve_settings(self, async_client: AsyncNebula) -> None:
         async with async_client.system.with_streaming_response.retrieve_settings() as response:
@@ -107,13 +107,13 @@ class TestAsyncSystem:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_retrieve_status(self, async_client: AsyncNebula) -> None:
         system = await async_client.system.retrieve_status()
         assert_matches_type(SystemRetrieveStatusResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_retrieve_status(self, async_client: AsyncNebula) -> None:
         response = await async_client.system.with_raw_response.retrieve_status()
@@ -123,7 +123,7 @@ class TestAsyncSystem:
         system = await response.parse()
         assert_matches_type(SystemRetrieveStatusResponse, system, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_retrieve_status(self, async_client: AsyncNebula) -> None:
         async with async_client.system.with_streaming_response.retrieve_status() as response:

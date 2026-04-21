@@ -19,7 +19,7 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestRelationships:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list(self, client: Nebula) -> None:
         relationship = client.memories.relationships.list(
@@ -27,7 +27,7 @@ class TestRelationships:
         )
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_list_with_all_params(self, client: Nebula) -> None:
         relationship = client.memories.relationships.list(
@@ -39,7 +39,7 @@ class TestRelationships:
         )
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_list(self, client: Nebula) -> None:
         response = client.memories.relationships.with_raw_response.list(
@@ -51,7 +51,7 @@ class TestRelationships:
         relationship = response.parse()
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_list(self, client: Nebula) -> None:
         with client.memories.relationships.with_streaming_response.list(
@@ -65,7 +65,7 @@ class TestRelationships:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_list(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -73,7 +73,7 @@ class TestRelationships:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export(self, client: Nebula) -> None:
         relationship = client.memories.relationships.export(
@@ -81,7 +81,7 @@ class TestRelationships:
         )
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_method_export_with_all_params(self, client: Nebula) -> None:
         relationship = client.memories.relationships.export(
@@ -92,7 +92,7 @@ class TestRelationships:
         )
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_raw_response_export(self, client: Nebula) -> None:
         response = client.memories.relationships.with_raw_response.export(
@@ -104,7 +104,7 @@ class TestRelationships:
         relationship = response.parse()
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_streaming_response_export(self, client: Nebula) -> None:
         with client.memories.relationships.with_streaming_response.export(
@@ -118,7 +118,7 @@ class TestRelationships:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     def test_path_params_export(self, client: Nebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -132,7 +132,7 @@ class TestAsyncRelationships:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list(self, async_client: AsyncNebula) -> None:
         relationship = await async_client.memories.relationships.list(
@@ -140,7 +140,7 @@ class TestAsyncRelationships:
         )
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncNebula) -> None:
         relationship = await async_client.memories.relationships.list(
@@ -152,7 +152,7 @@ class TestAsyncRelationships:
         )
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncNebula) -> None:
         response = await async_client.memories.relationships.with_raw_response.list(
@@ -164,7 +164,7 @@ class TestAsyncRelationships:
         relationship = await response.parse()
         assert_matches_type(PaginatedNebulaResultRelationship, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncNebula) -> None:
         async with async_client.memories.relationships.with_streaming_response.list(
@@ -178,7 +178,7 @@ class TestAsyncRelationships:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_list(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
@@ -186,7 +186,7 @@ class TestAsyncRelationships:
                 id="",
             )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export(self, async_client: AsyncNebula) -> None:
         relationship = await async_client.memories.relationships.export(
@@ -194,7 +194,7 @@ class TestAsyncRelationships:
         )
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_method_export_with_all_params(self, async_client: AsyncNebula) -> None:
         relationship = await async_client.memories.relationships.export(
@@ -205,7 +205,7 @@ class TestAsyncRelationships:
         )
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_raw_response_export(self, async_client: AsyncNebula) -> None:
         response = await async_client.memories.relationships.with_raw_response.export(
@@ -217,7 +217,7 @@ class TestAsyncRelationships:
         relationship = await response.parse()
         assert_matches_type(object, relationship, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_streaming_response_export(self, async_client: AsyncNebula) -> None:
         async with async_client.memories.relationships.with_streaming_response.export(
@@ -231,7 +231,7 @@ class TestAsyncRelationships:
 
         assert cast(Any, response.is_closed) is True
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
+    @pytest.mark.skip(reason="Mock server tests are disabled")
     @parametrize
     async def test_path_params_export(self, async_client: AsyncNebula) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):

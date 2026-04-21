@@ -8,7 +8,7 @@ import httpx
 
 from ...types import graph_list_params, graph_update_params
 from ..._types import Body, Omit, Query, Headers, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import maybe_transform, async_maybe_transform
+from ..._utils import path_template, maybe_transform, async_maybe_transform
 from .entities import (
     EntitiesResource,
     AsyncEntitiesResource,
@@ -68,7 +68,7 @@ class GraphsResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return GraphsResourceWithRawResponse(self)
 
@@ -77,7 +77,7 @@ class GraphsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return GraphsResourceWithStreamingResponse(self)
 
@@ -107,7 +107,7 @@ class GraphsResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._get(
-            f"/v1/graphs/{collection_id}",
+            path_template("/v1/graphs/{collection_id}", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -151,7 +151,7 @@ class GraphsResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}",
+            path_template("/v1/graphs/{collection_id}", collection_id=collection_id),
             body=maybe_transform(
                 {
                     "description": description,
@@ -252,7 +252,7 @@ class GraphsResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/graphs/{collection_id}/reset",
+            path_template("/v1/graphs/{collection_id}/reset", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -279,7 +279,7 @@ class AsyncGraphsResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncGraphsResourceWithRawResponse(self)
 
@@ -288,7 +288,7 @@ class AsyncGraphsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncGraphsResourceWithStreamingResponse(self)
 
@@ -318,7 +318,7 @@ class AsyncGraphsResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._get(
-            f"/v1/graphs/{collection_id}",
+            path_template("/v1/graphs/{collection_id}", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -362,7 +362,7 @@ class AsyncGraphsResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}",
+            path_template("/v1/graphs/{collection_id}", collection_id=collection_id),
             body=await async_maybe_transform(
                 {
                     "description": description,
@@ -463,7 +463,7 @@ class AsyncGraphsResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/graphs/{collection_id}/reset",
+            path_template("/v1/graphs/{collection_id}/reset", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

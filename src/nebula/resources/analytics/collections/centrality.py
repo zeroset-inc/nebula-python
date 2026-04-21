@@ -7,7 +7,7 @@ from typing import Optional
 import httpx
 
 from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
-from ...._utils import maybe_transform, async_maybe_transform
+from ...._utils import path_template, maybe_transform, async_maybe_transform
 from ...._compat import cached_property
 from ...._resource import SyncAPIResource, AsyncAPIResource
 from ...._response import (
@@ -31,7 +31,7 @@ class CentralityResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return CentralityResourceWithRawResponse(self)
 
@@ -40,7 +40,7 @@ class CentralityResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return CentralityResourceWithStreamingResponse(self)
 
@@ -76,7 +76,7 @@ class CentralityResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._post(
-            f"/v1/analytics/collections/{collection_id}/centrality/compute",
+            path_template("/v1/analytics/collections/{collection_id}/centrality/compute", collection_id=collection_id),
             body=maybe_transform(body, centrality_compute_params.CentralityComputeParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -112,7 +112,7 @@ class CentralityResource(SyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return self._get(
-            f"/v1/analytics/collections/{collection_id}/centrality/status",
+            path_template("/v1/analytics/collections/{collection_id}/centrality/status", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -127,7 +127,7 @@ class AsyncCentralityResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncCentralityResourceWithRawResponse(self)
 
@@ -136,7 +136,7 @@ class AsyncCentralityResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncCentralityResourceWithStreamingResponse(self)
 
@@ -172,7 +172,7 @@ class AsyncCentralityResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._post(
-            f"/v1/analytics/collections/{collection_id}/centrality/compute",
+            path_template("/v1/analytics/collections/{collection_id}/centrality/compute", collection_id=collection_id),
             body=await async_maybe_transform(body, centrality_compute_params.CentralityComputeParams),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
@@ -208,7 +208,7 @@ class AsyncCentralityResource(AsyncAPIResource):
         if not collection_id:
             raise ValueError(f"Expected a non-empty value for `collection_id` but received {collection_id!r}")
         return await self._get(
-            f"/v1/analytics/collections/{collection_id}/centrality/status",
+            path_template("/v1/analytics/collections/{collection_id}/centrality/status", collection_id=collection_id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),

@@ -26,7 +26,7 @@ from ...types import (
     memory_deduplicate_entities_params,
 )
 from ..._types import Body, Omit, Query, Headers, NoneType, NotGiven, SequenceNotStr, omit, not_given
-from ..._utils import required_args, maybe_transform, async_maybe_transform
+from ..._utils import path_template, required_args, maybe_transform, async_maybe_transform
 from .entities import (
     EntitiesResource,
     AsyncEntitiesResource,
@@ -97,7 +97,7 @@ class MemoriesResource(SyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return MemoriesResourceWithRawResponse(self)
 
@@ -106,7 +106,7 @@ class MemoriesResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return MemoriesResourceWithStreamingResponse(self)
 
@@ -221,7 +221,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -279,7 +279,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._patch(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             body=maybe_transform(
                 {
                     "collection_ids": collection_ids,
@@ -406,7 +406,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._delete(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -475,7 +475,7 @@ class MemoriesResource(SyncAPIResource):
         return cast(
             MemoryAppendResponse,
             self._post(
-                f"/v1/memories/{id}/append",
+                path_template("/v1/memories/{id}/append", id=id),
                 body=maybe_transform(
                     {
                         "collection_id": collection_id,
@@ -607,7 +607,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/memories/{id}/deduplicate",
+            path_template("/v1/memories/{id}/deduplicate", id=id),
             body=maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -808,7 +808,7 @@ class MemoriesResource(SyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return self._get(
-            f"/v1/memories/{id}/download",
+            path_template("/v1/memories/{id}/download", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1045,7 +1045,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._post(
-            f"/v1/memories/{id}/extract",
+            path_template("/v1/memories/{id}/extract", id=id),
             body=maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -1127,7 +1127,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/memories/{id}/chunks",
+            path_template("/v1/memories/{id}/chunks", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -1193,7 +1193,7 @@ class MemoriesResource(SyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return self._get(
-            f"/v1/memories/{id}/collections",
+            path_template("/v1/memories/{id}/collections", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -1292,7 +1292,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/nebula-agi/nebula-py#accessing-raw-response-data-eg-headers
         """
         return AsyncMemoriesResourceWithRawResponse(self)
 
@@ -1301,7 +1301,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/nebula-python#with_streaming_response
+        For more information, see https://www.github.com/nebula-agi/nebula-py#with_streaming_response
         """
         return AsyncMemoriesResourceWithStreamingResponse(self)
 
@@ -1416,7 +1416,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1474,7 +1474,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._patch(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             body=await async_maybe_transform(
                 {
                     "collection_ids": collection_ids,
@@ -1601,7 +1601,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._delete(
-            f"/v1/memories/{id}",
+            path_template("/v1/memories/{id}", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -1670,7 +1670,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         return cast(
             MemoryAppendResponse,
             await self._post(
-                f"/v1/memories/{id}/append",
+                path_template("/v1/memories/{id}/append", id=id),
                 body=await async_maybe_transform(
                     {
                         "collection_id": collection_id,
@@ -1802,7 +1802,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/memories/{id}/deduplicate",
+            path_template("/v1/memories/{id}/deduplicate", id=id),
             body=await async_maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -2003,7 +2003,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         extra_headers = {"Accept": "*/*", **(extra_headers or {})}
         return await self._get(
-            f"/v1/memories/{id}/download",
+            path_template("/v1/memories/{id}/download", id=id),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
@@ -2240,7 +2240,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._post(
-            f"/v1/memories/{id}/extract",
+            path_template("/v1/memories/{id}/extract", id=id),
             body=await async_maybe_transform(
                 {
                     "automatic_clustering": automatic_clustering,
@@ -2322,7 +2322,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/memories/{id}/chunks",
+            path_template("/v1/memories/{id}/chunks", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -2388,7 +2388,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         if not id:
             raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
         return await self._get(
-            f"/v1/memories/{id}/collections",
+            path_template("/v1/memories/{id}/collections", id=id),
             options=make_request_options(
                 extra_headers=extra_headers,
                 extra_query=extra_query,
