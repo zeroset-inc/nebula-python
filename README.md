@@ -1,7 +1,7 @@
 # Nebula Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/nebula.svg?label=pypi%20(stable))](https://pypi.org/project/nebula/)
+[![PyPI version](https://img.shields.io/pypi/v/nebula-client.svg?label=pypi%20(stable))](https://pypi.org/project/nebula-client/)
 
 The Nebula Python library provides convenient access to the Nebula REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
@@ -17,7 +17,7 @@ The full API of this library can be found in [api.md](api.md).
 
 ```sh
 # install from PyPI
-pip install nebula
+pip install nebula-client
 ```
 
 ## Usage
@@ -77,7 +77,7 @@ You can enable this by installing `aiohttp`:
 
 ```sh
 # install from PyPI
-pip install nebula[aiohttp]
+pip install nebula-client[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
