@@ -10,13 +10,9 @@ __all__ = ["CollectionUpdateParams"]
 
 class CollectionUpdateParams(TypedDict, total=False):
     access_tier: Optional[str]
-    """Access tier for the collection: 'private', 'public_preview', or 'marketplace'"""
 
     description: Optional[str]
-    """An optional description of the collection"""
 
-    generate_description: Optional[bool]
-    """Whether to generate a new synthetic description for the collection"""
+    generate_description: bool
 
     name: Optional[str]
-    """The name of the collection"""

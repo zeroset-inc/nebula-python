@@ -40,6 +40,7 @@ from .utils import update_env
 T = TypeVar("T")
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 api_key = "My API Key"
+access_token = "My Access Token"
 
 
 def _get_params(client: BaseClient[Any, Any]) -> dict[str, str]:
@@ -140,6 +141,10 @@ class TestNebula:
         assert copied.api_key == "another My API Key"
         assert client.api_key == "My API Key"
 
+        copied = client.copy(access_token="another My Access Token")
+        assert copied.access_token == "another My Access Token"
+        assert client.access_token == "My Access Token"
+
     def test_copy_default_options(self, client: Nebula) -> None:
         # options that have a default are overridden correctly
         copied = client.copy(max_retries=7)
@@ -158,7 +163,11 @@ class TestNebula:
 
     def test_copy_default_headers(self) -> None:
         client = Nebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_headers={"X-Foo": "bar"},
         )
         assert client.default_headers["X-Foo"] == "bar"
 
@@ -193,7 +202,11 @@ class TestNebula:
 
     def test_copy_default_query(self) -> None:
         client = Nebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_query={"foo": "bar"},
         )
         assert _get_params(client)["foo"] == "bar"
 
@@ -318,7 +331,13 @@ class TestNebula:
         assert timeout == httpx.Timeout(100.0)
 
     def test_client_timeout_option(self) -> None:
-        client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True, timeout=httpx.Timeout(0))
+        client = Nebula(
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            timeout=httpx.Timeout(0),
+        )
 
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         timeout = httpx.Timeout(**request.extensions["timeout"])  # type: ignore
@@ -330,7 +349,11 @@ class TestNebula:
         # custom timeout given to the httpx client should be used
         with httpx.Client(timeout=None) as http_client:
             client = Nebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -342,7 +365,11 @@ class TestNebula:
         # no timeout given to the httpx client should not use the httpx default
         with httpx.Client() as http_client:
             client = Nebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -354,7 +381,11 @@ class TestNebula:
         # explicitly passing the default timeout currently results in it being ignored
         with httpx.Client(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
             client = Nebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -369,13 +400,18 @@ class TestNebula:
                 Nebula(
                     base_url=base_url,
                     api_key=api_key,
+                    access_token=access_token,
                     _strict_response_validation=True,
                     http_client=cast(Any, http_client),
                 )
 
     def test_default_headers_option(self) -> None:
         test_client = Nebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_headers={"X-Foo": "bar"},
         )
         request = test_client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "bar"
@@ -384,6 +420,7 @@ class TestNebula:
         test_client2 = Nebula(
             base_url=base_url,
             api_key=api_key,
+            access_token=access_token,
             _strict_response_validation=True,
             default_headers={
                 "X-Foo": "stainless",
@@ -397,26 +434,13 @@ class TestNebula:
         test_client.close()
         test_client2.close()
 
-    def test_validate_headers(self) -> None:
-        client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("X-API-Key") == api_key
-
-        with update_env(**{"NEBULA_API_KEY": Omit()}):
-            client2 = Nebula(base_url=base_url, api_key=None, _strict_response_validation=True)
-
-        with pytest.raises(
-            TypeError,
-            match="Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted",
-        ):
-            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
-
-        request2 = client2._build_request(FinalRequestOptions(method="get", url="/foo", headers={"X-API-Key": Omit()}))
-        assert request2.headers.get("X-API-Key") is None
-
     def test_default_query_option(self) -> None:
         client = Nebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"query_param": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_query={"query_param": "bar"},
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         url = httpx.URL(request.url)
@@ -613,6 +637,7 @@ class TestNebula:
         with Nebula(
             base_url=base_url,
             api_key=api_key,
+            access_token=access_token,
             _strict_response_validation=True,
             http_client=httpx.Client(transport=MockTransport(handler=mock_handler)),
         ) as client:
@@ -706,7 +731,12 @@ class TestNebula:
         assert response.foo == 2
 
     def test_base_url_setter(self) -> None:
-        client = Nebula(base_url="https://example.com/from_init", api_key=api_key, _strict_response_validation=True)
+        client = Nebula(
+            base_url="https://example.com/from_init",
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+        )
         assert client.base_url == "https://example.com/from_init/"
 
         client.base_url = "https://example.com/from_setter"  # type: ignore[assignment]
@@ -717,16 +747,22 @@ class TestNebula:
 
     def test_base_url_env(self) -> None:
         with update_env(NEBULA_BASE_URL="http://localhost:5000/from/env"):
-            client = Nebula(api_key=api_key, _strict_response_validation=True)
+            client = Nebula(api_key=api_key, access_token=access_token, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
-            Nebula(base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True),
             Nebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+            ),
+            Nebula(
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
             ),
@@ -747,10 +783,16 @@ class TestNebula:
     @pytest.mark.parametrize(
         "client",
         [
-            Nebula(base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True),
             Nebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+            ),
+            Nebula(
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
             ),
@@ -771,10 +813,16 @@ class TestNebula:
     @pytest.mark.parametrize(
         "client",
         [
-            Nebula(base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True),
             Nebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+            ),
+            Nebula(
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
             ),
@@ -793,7 +841,9 @@ class TestNebula:
         client.close()
 
     def test_copied_client_does_not_close_http(self) -> None:
-        test_client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        test_client = Nebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
         assert not test_client.is_closed()
 
         copied = test_client.copy()
@@ -804,7 +854,9 @@ class TestNebula:
         assert not test_client.is_closed()
 
     def test_client_context_manager(self) -> None:
-        test_client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        test_client = Nebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
         with test_client as c2:
             assert c2 is test_client
             assert not c2.is_closed()
@@ -825,7 +877,13 @@ class TestNebula:
 
     def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
-            Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True, max_retries=cast(Any, None))
+            Nebula(
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                max_retries=cast(Any, None),
+            )
 
     @pytest.mark.respx(base_url=base_url)
     def test_received_text_for_expected_json(self, respx_mock: MockRouter) -> None:
@@ -834,12 +892,16 @@ class TestNebula:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        strict_client = Nebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
 
         with pytest.raises(APIResponseValidationError):
             strict_client.get("/foo", cast_to=Model)
 
-        non_strict_client = Nebula(base_url=base_url, api_key=api_key, _strict_response_validation=False)
+        non_strict_client = Nebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=False
+        )
 
         response = non_strict_client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -880,20 +942,20 @@ class TestNebula:
     @mock.patch("nebula._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, client: Nebula) -> None:
-        respx_mock.post("/v1/chunks/search").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.post("/v1/collections").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            client.chunks.with_streaming_response.search(query="query").__enter__()
+            client.collections.with_streaming_response.create(name="name").__enter__()
 
         assert _get_open_connections(client) == 0
 
     @mock.patch("nebula._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, client: Nebula) -> None:
-        respx_mock.post("/v1/chunks/search").mock(return_value=httpx.Response(500))
+        respx_mock.post("/v1/collections").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            client.chunks.with_streaming_response.search(query="query").__enter__()
+            client.collections.with_streaming_response.create(name="name").__enter__()
         assert _get_open_connections(client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -920,9 +982,9 @@ class TestNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = client.chunks.with_raw_response.search(query="query")
+        response = client.collections.with_raw_response.create(name="name")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -944,10 +1006,10 @@ class TestNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = client.chunks.with_raw_response.search(
-            query="query", extra_headers={"x-stainless-retry-count": Omit()}
+        response = client.collections.with_raw_response.create(
+            name="name", extra_headers={"x-stainless-retry-count": Omit()}
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -969,10 +1031,10 @@ class TestNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = client.chunks.with_raw_response.search(
-            query="query", extra_headers={"x-stainless-retry-count": "42"}
+        response = client.collections.with_raw_response.create(
+            name="name", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
@@ -1062,6 +1124,10 @@ class TestAsyncNebula:
         assert copied.api_key == "another My API Key"
         assert async_client.api_key == "My API Key"
 
+        copied = async_client.copy(access_token="another My Access Token")
+        assert copied.access_token == "another My Access Token"
+        assert async_client.access_token == "My Access Token"
+
     def test_copy_default_options(self, async_client: AsyncNebula) -> None:
         # options that have a default are overridden correctly
         copied = async_client.copy(max_retries=7)
@@ -1080,7 +1146,11 @@ class TestAsyncNebula:
 
     async def test_copy_default_headers(self) -> None:
         client = AsyncNebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_headers={"X-Foo": "bar"},
         )
         assert client.default_headers["X-Foo"] == "bar"
 
@@ -1115,7 +1185,11 @@ class TestAsyncNebula:
 
     async def test_copy_default_query(self) -> None:
         client = AsyncNebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_query={"foo": "bar"},
         )
         assert _get_params(client)["foo"] == "bar"
 
@@ -1243,7 +1317,11 @@ class TestAsyncNebula:
 
     async def test_client_timeout_option(self) -> None:
         client = AsyncNebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, timeout=httpx.Timeout(0)
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            timeout=httpx.Timeout(0),
         )
 
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -1256,7 +1334,11 @@ class TestAsyncNebula:
         # custom timeout given to the httpx client should be used
         async with httpx.AsyncClient(timeout=None) as http_client:
             client = AsyncNebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -1268,7 +1350,11 @@ class TestAsyncNebula:
         # no timeout given to the httpx client should not use the httpx default
         async with httpx.AsyncClient() as http_client:
             client = AsyncNebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -1280,7 +1366,11 @@ class TestAsyncNebula:
         # explicitly passing the default timeout currently results in it being ignored
         async with httpx.AsyncClient(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
             client = AsyncNebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, http_client=http_client
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                http_client=http_client,
             )
 
             request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
@@ -1295,13 +1385,18 @@ class TestAsyncNebula:
                 AsyncNebula(
                     base_url=base_url,
                     api_key=api_key,
+                    access_token=access_token,
                     _strict_response_validation=True,
                     http_client=cast(Any, http_client),
                 )
 
     async def test_default_headers_option(self) -> None:
         test_client = AsyncNebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_headers={"X-Foo": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_headers={"X-Foo": "bar"},
         )
         request = test_client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "bar"
@@ -1310,6 +1405,7 @@ class TestAsyncNebula:
         test_client2 = AsyncNebula(
             base_url=base_url,
             api_key=api_key,
+            access_token=access_token,
             _strict_response_validation=True,
             default_headers={
                 "X-Foo": "stainless",
@@ -1323,26 +1419,13 @@ class TestAsyncNebula:
         await test_client.close()
         await test_client2.close()
 
-    def test_validate_headers(self) -> None:
-        client = AsyncNebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("X-API-Key") == api_key
-
-        with update_env(**{"NEBULA_API_KEY": Omit()}):
-            client2 = AsyncNebula(base_url=base_url, api_key=None, _strict_response_validation=True)
-
-        with pytest.raises(
-            TypeError,
-            match="Could not resolve authentication method. Expected either bearer_token or api_key to be set. Or for one of the `Authorization` or `X-API-Key` headers to be explicitly omitted",
-        ):
-            client2._build_request(FinalRequestOptions(method="get", url="/foo"))
-
-        request2 = client2._build_request(FinalRequestOptions(method="get", url="/foo", headers={"X-API-Key": Omit()}))
-        assert request2.headers.get("X-API-Key") is None
-
     async def test_default_query_option(self) -> None:
         client = AsyncNebula(
-            base_url=base_url, api_key=api_key, _strict_response_validation=True, default_query={"query_param": "bar"}
+            base_url=base_url,
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
+            default_query={"query_param": "bar"},
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         url = httpx.URL(request.url)
@@ -1539,6 +1622,7 @@ class TestAsyncNebula:
         async with AsyncNebula(
             base_url=base_url,
             api_key=api_key,
+            access_token=access_token,
             _strict_response_validation=True,
             http_client=httpx.AsyncClient(transport=MockTransport(handler=mock_handler)),
         ) as client:
@@ -1637,7 +1721,10 @@ class TestAsyncNebula:
 
     async def test_base_url_setter(self) -> None:
         client = AsyncNebula(
-            base_url="https://example.com/from_init", api_key=api_key, _strict_response_validation=True
+            base_url="https://example.com/from_init",
+            api_key=api_key,
+            access_token=access_token,
+            _strict_response_validation=True,
         )
         assert client.base_url == "https://example.com/from_init/"
 
@@ -1649,18 +1736,22 @@ class TestAsyncNebula:
 
     async def test_base_url_env(self) -> None:
         with update_env(NEBULA_BASE_URL="http://localhost:5000/from/env"):
-            client = AsyncNebula(api_key=api_key, _strict_response_validation=True)
+            client = AsyncNebula(api_key=api_key, access_token=access_token, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
     @pytest.mark.parametrize(
         "client",
         [
             AsyncNebula(
-                base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
             ),
             AsyncNebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
             ),
@@ -1682,11 +1773,15 @@ class TestAsyncNebula:
         "client",
         [
             AsyncNebula(
-                base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
             ),
             AsyncNebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
             ),
@@ -1708,11 +1803,15 @@ class TestAsyncNebula:
         "client",
         [
             AsyncNebula(
-                base_url="http://localhost:5000/custom/path/", api_key=api_key, _strict_response_validation=True
+                base_url="http://localhost:5000/custom/path/",
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
             ),
             AsyncNebula(
                 base_url="http://localhost:5000/custom/path/",
                 api_key=api_key,
+                access_token=access_token,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
             ),
@@ -1731,7 +1830,9 @@ class TestAsyncNebula:
         await client.close()
 
     async def test_copied_client_does_not_close_http(self) -> None:
-        test_client = AsyncNebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        test_client = AsyncNebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
         assert not test_client.is_closed()
 
         copied = test_client.copy()
@@ -1743,7 +1844,9 @@ class TestAsyncNebula:
         assert not test_client.is_closed()
 
     async def test_client_context_manager(self) -> None:
-        test_client = AsyncNebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        test_client = AsyncNebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
         async with test_client as c2:
             assert c2 is test_client
             assert not c2.is_closed()
@@ -1765,7 +1868,11 @@ class TestAsyncNebula:
     async def test_client_max_retries_validation(self) -> None:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
             AsyncNebula(
-                base_url=base_url, api_key=api_key, _strict_response_validation=True, max_retries=cast(Any, None)
+                base_url=base_url,
+                api_key=api_key,
+                access_token=access_token,
+                _strict_response_validation=True,
+                max_retries=cast(Any, None),
             )
 
     @pytest.mark.respx(base_url=base_url)
@@ -1775,12 +1882,16 @@ class TestAsyncNebula:
 
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
-        strict_client = AsyncNebula(base_url=base_url, api_key=api_key, _strict_response_validation=True)
+        strict_client = AsyncNebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=True
+        )
 
         with pytest.raises(APIResponseValidationError):
             await strict_client.get("/foo", cast_to=Model)
 
-        non_strict_client = AsyncNebula(base_url=base_url, api_key=api_key, _strict_response_validation=False)
+        non_strict_client = AsyncNebula(
+            base_url=base_url, api_key=api_key, access_token=access_token, _strict_response_validation=False
+        )
 
         response = await non_strict_client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -1821,20 +1932,20 @@ class TestAsyncNebula:
     @mock.patch("nebula._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter, async_client: AsyncNebula) -> None:
-        respx_mock.post("/v1/chunks/search").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.post("/v1/collections").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            await async_client.chunks.with_streaming_response.search(query="query").__aenter__()
+            await async_client.collections.with_streaming_response.create(name="name").__aenter__()
 
         assert _get_open_connections(async_client) == 0
 
     @mock.patch("nebula._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter, async_client: AsyncNebula) -> None:
-        respx_mock.post("/v1/chunks/search").mock(return_value=httpx.Response(500))
+        respx_mock.post("/v1/collections").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            await async_client.chunks.with_streaming_response.search(query="query").__aenter__()
+            await async_client.collections.with_streaming_response.create(name="name").__aenter__()
         assert _get_open_connections(async_client) == 0
 
     @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
@@ -1861,9 +1972,9 @@ class TestAsyncNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = await client.chunks.with_raw_response.search(query="query")
+        response = await client.collections.with_raw_response.create(name="name")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1885,10 +1996,10 @@ class TestAsyncNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = await client.chunks.with_raw_response.search(
-            query="query", extra_headers={"x-stainless-retry-count": Omit()}
+        response = await client.collections.with_raw_response.create(
+            name="name", extra_headers={"x-stainless-retry-count": Omit()}
         )
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
@@ -1910,10 +2021,10 @@ class TestAsyncNebula:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.post("/v1/chunks/search").mock(side_effect=retry_handler)
+        respx_mock.post("/v1/collections").mock(side_effect=retry_handler)
 
-        response = await client.chunks.with_raw_response.search(
-            query="query", extra_headers={"x-stainless-retry-count": "42"}
+        response = await client.collections.with_raw_response.create(
+            name="name", extra_headers={"x-stainless-retry-count": "42"}
         )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
