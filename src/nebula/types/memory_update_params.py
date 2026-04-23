@@ -11,6 +11,12 @@ __all__ = ["MemoryUpdateParams"]
 
 
 class MemoryUpdateParams(TypedDict, total=False):
+    collection_id: Optional[str]
+    """Collection context for copy-on-write.
+
+    If provided and engram is shared, creates a copy before modification.
+    """
+
     collection_ids: Optional[SequenceNotStr[str]]
     """New collection associations"""
 

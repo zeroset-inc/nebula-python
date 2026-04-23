@@ -10,7 +10,7 @@ __all__ = ["CollectionCreateParams"]
 
 class CollectionCreateParams(TypedDict, total=False):
     name: Required[str]
-    """The name of the collection"""
 
     description: Optional[str]
-    """An optional description of the collection"""
+
+    workspace_id: Optional[str]
