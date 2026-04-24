@@ -37,7 +37,7 @@ class TestMemories:
     @parametrize
     def test_method_create_with_all_params(self, client: Nebula) -> None:
         memory = client.memories.create(
-            chunks=["S0"],
+            chunks=["string"],
             collection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             content_parts=[
                 {
@@ -45,7 +45,7 @@ class TestMemories:
                     "type": "text",
                 }
             ],
-            contents=["S0"],
+            contents=["string"],
             engram_type="document",
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
@@ -77,7 +77,7 @@ class TestMemories:
             ingestion_mode="hi-res",
             messages=[
                 {
-                    "content": "S0",
+                    "content": "string",
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
@@ -354,7 +354,7 @@ class TestMemories:
         memory = client.memories.append(
             id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             collection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            chunks=["S0"],
+            chunks=["string"],
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
                 "automatic_extraction": True,
@@ -385,7 +385,7 @@ class TestMemories:
             ingestion_mode="hi-res",
             messages=[
                 {
-                    "content": "S0",
+                    "content": "string",
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
@@ -694,7 +694,7 @@ class TestAsyncMemories:
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncNebula) -> None:
         memory = await async_client.memories.create(
-            chunks=["S0"],
+            chunks=["string"],
             collection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             content_parts=[
                 {
@@ -702,7 +702,7 @@ class TestAsyncMemories:
                     "type": "text",
                 }
             ],
-            contents=["S0"],
+            contents=["string"],
             engram_type="document",
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
@@ -734,7 +734,7 @@ class TestAsyncMemories:
             ingestion_mode="hi-res",
             messages=[
                 {
-                    "content": "S0",
+                    "content": "string",
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
@@ -1011,7 +1011,7 @@ class TestAsyncMemories:
         memory = await async_client.memories.append(
             id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
             collection_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-            chunks=["S0"],
+            chunks=["string"],
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
                 "automatic_extraction": True,
@@ -1042,7 +1042,7 @@ class TestAsyncMemories:
             ingestion_mode="hi-res",
             messages=[
                 {
-                    "content": "S0",
+                    "content": "string",
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
