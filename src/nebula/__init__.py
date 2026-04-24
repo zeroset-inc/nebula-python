@@ -3,9 +3,10 @@
 import typing as _t
 
 from . import types
+from ._dx import Client, Nebula, AsyncClient, AsyncNebula
 from ._types import NOT_GIVEN, Omit, NoneType, NotGiven, Transport, ProxiesTypes, omit, not_given
 from ._utils import file_from_path
-from ._client import Client, Nebula, Stream, Timeout, Transport, AsyncClient, AsyncNebula, AsyncStream, RequestOptions
+from ._client import Stream, Timeout, Transport, AsyncStream, RequestOptions
 from ._models import BaseModel
 from ._version import __title__, __version__
 from ._response import APIResponse as APIResponse, AsyncAPIResponse as AsyncAPIResponse
@@ -47,6 +48,12 @@ __all__ = [
     "APITimeoutError",
     "APIConnectionError",
     "APIResponseValidationError",
+    "NebulaException",
+    "NebulaClientException",
+    "NebulaAuthenticationException",
+    "NebulaRateLimitException",
+    "NebulaValidationException",
+    "NebulaNotFoundException",
     "BadRequestError",
     "AuthenticationError",
     "PermissionDeniedError",
@@ -72,6 +79,13 @@ __all__ = [
     "DefaultAsyncHttpxClient",
     "DefaultAioHttpClient",
 ]
+
+NebulaException = APIError
+NebulaClientException = NebulaError
+NebulaAuthenticationException = AuthenticationError
+NebulaRateLimitException = RateLimitError
+NebulaValidationException = BadRequestError
+NebulaNotFoundException = NotFoundError
 
 if not _t.TYPE_CHECKING:
     from ._utils._resources_proxy import resources as resources

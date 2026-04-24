@@ -791,6 +791,7 @@ aiohttp = [
 [package.dev-dependencies]
 dev = [
     { name = "dirty-equals" },
+    { name = "httpx-aiohttp" },
     { name = "importlib-metadata" },
     { name = "mypy" },
     { name = "pyright" },
@@ -828,6 +829,7 @@ provides-extras = ["aiohttp"]
 [package.metadata.requires-dev]
 dev = [
     { name = "dirty-equals", specifier = ">=0.6.0" },
+    { name = "httpx-aiohttp", specifier = ">=0.1.9" },
     { name = "importlib-metadata", specifier = ">=6.7.0" },
     { name = "mypy", specifier = "==1.17" },
     { name = "pyright", specifier = "==1.1.399" },
