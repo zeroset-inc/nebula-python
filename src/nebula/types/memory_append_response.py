@@ -7,16 +7,15 @@ from .._models import BaseModel
 
 __all__ = [
     "MemoryAppendResponse",
-    "NebulaResultsAppendMemoryResponse",
-    "NebulaResultsAppendMemoryResponseResults",
-    "NebulaResultsAppendMemoryResponseResultsMessage",
-    "NebulaResultsAppendMemoryResponseResultsAppendedMessage",
+    "NebulaResultsMessageResponse",
+    "NebulaResultsMessageResponseResults",
+    "NebulaResultsMessageResponseResultsMessage",
     "NebulaResultsIngestionResponse",
     "NebulaResultsIngestionResponseResults",
 ]
 
 
-class NebulaResultsAppendMemoryResponseResultsMessage(BaseModel):
+class NebulaResultsMessageResponseResultsMessage(BaseModel):
     role: Union[Literal["system", "user", "assistant", "function", "tool"], str]
 
     content: Optional[object] = None
@@ -38,24 +37,16 @@ class NebulaResultsAppendMemoryResponseResultsMessage(BaseModel):
     tool_calls: Optional[List[Dict[str, object]]] = None
 
 
-class NebulaResultsAppendMemoryResponseResultsAppendedMessage(BaseModel):
-    message_id: str
-
-    chunk_ids: Optional[List[str]] = None
-
-
-class NebulaResultsAppendMemoryResponseResults(BaseModel):
+class NebulaResultsMessageResponseResults(BaseModel):
     id: str
 
-    message: NebulaResultsAppendMemoryResponseResultsMessage
-
-    appended_messages: Optional[List[NebulaResultsAppendMemoryResponseResultsAppendedMessage]] = None
+    message: NebulaResultsMessageResponseResultsMessage
 
     metadata: Optional[Dict[str, object]] = None
 
 
-class NebulaResultsAppendMemoryResponse(BaseModel):
-    results: NebulaResultsAppendMemoryResponseResults
+class NebulaResultsMessageResponse(BaseModel):
+    results: NebulaResultsMessageResponseResults
 
 
 class NebulaResultsIngestionResponseResults(BaseModel):
@@ -73,4 +64,4 @@ class NebulaResultsIngestionResponse(BaseModel):
     results: NebulaResultsIngestionResponseResults
 
 
-MemoryAppendResponse: TypeAlias = Union[NebulaResultsAppendMemoryResponse, NebulaResultsIngestionResponse]
+MemoryAppendResponse: TypeAlias = Union[NebulaResultsMessageResponse, NebulaResultsIngestionResponse]

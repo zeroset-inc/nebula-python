@@ -11,6 +11,13 @@ __all__ = ["MemoryListParams"]
 
 
 class MemoryListParams(TypedDict, total=False):
+    chunks_limit: Optional[int]
+    """Maximum chunks to inline per engram.
+
+    Defaults to all chunks for backwards compatibility; pass 0 to skip chunk
+    hydration.
+    """
+
     collection_ids: Optional[SequenceNotStr[str]]
     """Optional list of collection IDs to filter engrams by.
 
