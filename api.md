@@ -66,26 +66,6 @@ Methods:
 - <code title="delete /v1/memories/upload">client.memories.<a href="./src/nebula/resources/memories.py">delete_upload</a>(\*\*<a href="src/nebula/types/memory_delete_upload_params.py">params</a>) -> <a href="./src/nebula/types/memory_delete_upload_response.py">MemoryDeleteUploadResponse</a></code>
 - <code title="post /v1/memories/search">client.memories.<a href="./src/nebula/resources/memories.py">search</a>(\*\*<a href="src/nebula/types/memory_search_params.py">params</a>) -> <a href="./src/nebula/types/memory_search_response.py">MemorySearchResponse</a></code>
 
-# Sources
-
-Types:
-
-```python
-from nebula.types import (
-    SourceUpdateResponse,
-    SourceListResponse,
-    SourceDeleteResponse,
-    SourceSearchResponse,
-)
-```
-
-Methods:
-
-- <code title="patch /v1/sources/{id}">client.sources.<a href="./src/nebula/resources/sources.py">update</a>(id, \*\*<a href="src/nebula/types/source_update_params.py">params</a>) -> <a href="./src/nebula/types/source_update_response.py">SourceUpdateResponse</a></code>
-- <code title="get /v1/sources">client.sources.<a href="./src/nebula/resources/sources.py">list</a>(\*\*<a href="src/nebula/types/source_list_params.py">params</a>) -> <a href="./src/nebula/types/source_list_response.py">SourceListResponse</a></code>
-- <code title="delete /v1/sources/{id}">client.sources.<a href="./src/nebula/resources/sources.py">delete</a>(id, \*\*<a href="src/nebula/types/source_delete_params.py">params</a>) -> <a href="./src/nebula/types/source_delete_response.py">SourceDeleteResponse</a></code>
-- <code title="post /v1/sources/search">client.sources.<a href="./src/nebula/resources/sources.py">search</a>(\*\*<a href="src/nebula/types/source_search_params.py">params</a>) -> <a href="./src/nebula/types/source_search_response.py">SourceSearchResponse</a></code>
-
 # Connectors
 
 Types:
@@ -96,12 +76,8 @@ from nebula.types import (
     ConnectorListResponse,
     ConnectorConnectResponse,
     ConnectorDisconnectResponse,
-    ConnectorListChannelsResponse,
-    ConnectorListContentsResponse,
-    ConnectorListFoldersResponse,
     ConnectorListProvidersResponse,
     ConnectorSyncResponse,
-    ConnectorUpdateConfigResponse,
 )
 ```
 
@@ -111,12 +87,8 @@ Methods:
 - <code title="get /v1/connectors">client.connectors.<a href="./src/nebula/resources/connectors.py">list</a>(\*\*<a href="src/nebula/types/connector_list_params.py">params</a>) -> <a href="./src/nebula/types/connector_list_response.py">ConnectorListResponse</a></code>
 - <code title="post /v1/connectors/{provider}/connect">client.connectors.<a href="./src/nebula/resources/connectors.py">connect</a>(provider, \*\*<a href="src/nebula/types/connector_connect_params.py">params</a>) -> <a href="./src/nebula/types/connector_connect_response.py">ConnectorConnectResponse</a></code>
 - <code title="delete /v1/connectors/{connection_id}">client.connectors.<a href="./src/nebula/resources/connectors.py">disconnect</a>(connection_id, \*\*<a href="src/nebula/types/connector_disconnect_params.py">params</a>) -> <a href="./src/nebula/types/connector_disconnect_response.py">ConnectorDisconnectResponse</a></code>
-- <code title="get /v1/connectors/{connection_id}/channels">client.connectors.<a href="./src/nebula/resources/connectors.py">list_channels</a>(connection_id) -> <a href="./src/nebula/types/connector_list_channels_response.py">ConnectorListChannelsResponse</a></code>
-- <code title="get /v1/connectors/{connection_id}/contents">client.connectors.<a href="./src/nebula/resources/connectors.py">list_contents</a>(connection_id, \*\*<a href="src/nebula/types/connector_list_contents_params.py">params</a>) -> <a href="./src/nebula/types/connector_list_contents_response.py">ConnectorListContentsResponse</a></code>
-- <code title="get /v1/connectors/{connection_id}/folders">client.connectors.<a href="./src/nebula/resources/connectors.py">list_folders</a>(connection_id, \*\*<a href="src/nebula/types/connector_list_folders_params.py">params</a>) -> <a href="./src/nebula/types/connector_list_folders_response.py">ConnectorListFoldersResponse</a></code>
 - <code title="get /v1/connectors/providers">client.connectors.<a href="./src/nebula/resources/connectors.py">list_providers</a>() -> <a href="./src/nebula/types/connector_list_providers_response.py">ConnectorListProvidersResponse</a></code>
 - <code title="post /v1/connectors/{connection_id}/sync">client.connectors.<a href="./src/nebula/resources/connectors.py">sync</a>(connection_id) -> <a href="./src/nebula/types/connector_sync_response.py">ConnectorSyncResponse</a></code>
-- <code title="patch /v1/connectors/{connection_id}/config">client.connectors.<a href="./src/nebula/resources/connectors.py">update_config</a>(connection_id, \*\*<a href="src/nebula/types/connector_update_config_params.py">params</a>) -> <a href="./src/nebula/types/connector_update_config_response.py">ConnectorUpdateConfigResponse</a></code>
 
 # Snapshots
 

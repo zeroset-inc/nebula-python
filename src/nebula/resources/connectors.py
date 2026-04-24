@@ -3,18 +3,10 @@
 from __future__ import annotations
 
 from typing import Dict, Optional
-from typing_extensions import Literal
 
 import httpx
 
-from ..types import (
-    connector_list_params,
-    connector_connect_params,
-    connector_disconnect_params,
-    connector_list_folders_params,
-    connector_list_contents_params,
-    connector_update_config_params,
-)
+from ..types import connector_list_params, connector_connect_params, connector_disconnect_params
 from .._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
 from .._utils import path_template, maybe_transform, async_maybe_transform
 from .._compat import cached_property
@@ -31,10 +23,6 @@ from ..types.connector_sync_response import ConnectorSyncResponse
 from ..types.connector_connect_response import ConnectorConnectResponse
 from ..types.connector_retrieve_response import ConnectorRetrieveResponse
 from ..types.connector_disconnect_response import ConnectorDisconnectResponse
-from ..types.connector_list_folders_response import ConnectorListFoldersResponse
-from ..types.connector_list_channels_response import ConnectorListChannelsResponse
-from ..types.connector_list_contents_response import ConnectorListContentsResponse
-from ..types.connector_update_config_response import ConnectorUpdateConfigResponse
 from ..types.connector_list_providers_response import ConnectorListProvidersResponse
 
 __all__ = ["ConnectorsResource", "AsyncConnectorsResource"]
@@ -210,119 +198,6 @@ class ConnectorsResource(SyncAPIResource):
             cast_to=ConnectorDisconnectResponse,
         )
 
-    def list_channels(
-        self,
-        connection_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListChannelsResponse:
-        """
-        List Slack channels for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return self._get(
-            path_template("/v1/connectors/{connection_id}/channels", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ConnectorListChannelsResponse,
-        )
-
-    def list_contents(
-        self,
-        connection_id: str,
-        *,
-        parent_id: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListContentsResponse:
-        """
-        Browse Google Drive folders and files for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return self._get(
-            path_template("/v1/connectors/{connection_id}/contents", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {"parent_id": parent_id}, connector_list_contents_params.ConnectorListContentsParams
-                ),
-            ),
-            cast_to=ConnectorListContentsResponse,
-        )
-
-    def list_folders(
-        self,
-        connection_id: str,
-        *,
-        parent_id: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListFoldersResponse:
-        """
-        Browse Google Drive folders for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return self._get(
-            path_template("/v1/connectors/{connection_id}/folders", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=maybe_transform(
-                    {"parent_id": parent_id}, connector_list_folders_params.ConnectorListFoldersParams
-                ),
-            ),
-            cast_to=ConnectorListFoldersResponse,
-        )
-
     def list_providers(
         self,
         *,
@@ -373,49 +248,6 @@ class ConnectorsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=ConnectorSyncResponse,
-        )
-
-    def update_config(
-        self,
-        connection_id: str,
-        *,
-        config: Dict[str, object],
-        apply: Literal["full_resync"] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorUpdateConfigResponse:
-        """Update connection config (e.g.
-
-        folder selection)
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return self._patch(
-            path_template("/v1/connectors/{connection_id}/config", connection_id=connection_id),
-            body=maybe_transform(
-                {
-                    "config": config,
-                    "apply": apply,
-                },
-                connector_update_config_params.ConnectorUpdateConfigParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ConnectorUpdateConfigResponse,
         )
 
 
@@ -591,119 +423,6 @@ class AsyncConnectorsResource(AsyncAPIResource):
             cast_to=ConnectorDisconnectResponse,
         )
 
-    async def list_channels(
-        self,
-        connection_id: str,
-        *,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListChannelsResponse:
-        """
-        List Slack channels for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return await self._get(
-            path_template("/v1/connectors/{connection_id}/channels", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ConnectorListChannelsResponse,
-        )
-
-    async def list_contents(
-        self,
-        connection_id: str,
-        *,
-        parent_id: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListContentsResponse:
-        """
-        Browse Google Drive folders and files for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return await self._get(
-            path_template("/v1/connectors/{connection_id}/contents", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {"parent_id": parent_id}, connector_list_contents_params.ConnectorListContentsParams
-                ),
-            ),
-            cast_to=ConnectorListContentsResponse,
-        )
-
-    async def list_folders(
-        self,
-        connection_id: str,
-        *,
-        parent_id: Optional[str] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorListFoldersResponse:
-        """
-        Browse Google Drive folders for a connection
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return await self._get(
-            path_template("/v1/connectors/{connection_id}/folders", connection_id=connection_id),
-            options=make_request_options(
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                query=await async_maybe_transform(
-                    {"parent_id": parent_id}, connector_list_folders_params.ConnectorListFoldersParams
-                ),
-            ),
-            cast_to=ConnectorListFoldersResponse,
-        )
-
     async def list_providers(
         self,
         *,
@@ -756,49 +475,6 @@ class AsyncConnectorsResource(AsyncAPIResource):
             cast_to=ConnectorSyncResponse,
         )
 
-    async def update_config(
-        self,
-        connection_id: str,
-        *,
-        config: Dict[str, object],
-        apply: Literal["full_resync"] | Omit = omit,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> ConnectorUpdateConfigResponse:
-        """Update connection config (e.g.
-
-        folder selection)
-
-        Args:
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not connection_id:
-            raise ValueError(f"Expected a non-empty value for `connection_id` but received {connection_id!r}")
-        return await self._patch(
-            path_template("/v1/connectors/{connection_id}/config", connection_id=connection_id),
-            body=await async_maybe_transform(
-                {
-                    "config": config,
-                    "apply": apply,
-                },
-                connector_update_config_params.ConnectorUpdateConfigParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=ConnectorUpdateConfigResponse,
-        )
-
 
 class ConnectorsResourceWithRawResponse:
     def __init__(self, connectors: ConnectorsResource) -> None:
@@ -816,23 +492,11 @@ class ConnectorsResourceWithRawResponse:
         self.disconnect = to_raw_response_wrapper(
             connectors.disconnect,
         )
-        self.list_channels = to_raw_response_wrapper(
-            connectors.list_channels,
-        )
-        self.list_contents = to_raw_response_wrapper(
-            connectors.list_contents,
-        )
-        self.list_folders = to_raw_response_wrapper(
-            connectors.list_folders,
-        )
         self.list_providers = to_raw_response_wrapper(
             connectors.list_providers,
         )
         self.sync = to_raw_response_wrapper(
             connectors.sync,
-        )
-        self.update_config = to_raw_response_wrapper(
-            connectors.update_config,
         )
 
 
@@ -852,23 +516,11 @@ class AsyncConnectorsResourceWithRawResponse:
         self.disconnect = async_to_raw_response_wrapper(
             connectors.disconnect,
         )
-        self.list_channels = async_to_raw_response_wrapper(
-            connectors.list_channels,
-        )
-        self.list_contents = async_to_raw_response_wrapper(
-            connectors.list_contents,
-        )
-        self.list_folders = async_to_raw_response_wrapper(
-            connectors.list_folders,
-        )
         self.list_providers = async_to_raw_response_wrapper(
             connectors.list_providers,
         )
         self.sync = async_to_raw_response_wrapper(
             connectors.sync,
-        )
-        self.update_config = async_to_raw_response_wrapper(
-            connectors.update_config,
         )
 
 
@@ -888,23 +540,11 @@ class ConnectorsResourceWithStreamingResponse:
         self.disconnect = to_streamed_response_wrapper(
             connectors.disconnect,
         )
-        self.list_channels = to_streamed_response_wrapper(
-            connectors.list_channels,
-        )
-        self.list_contents = to_streamed_response_wrapper(
-            connectors.list_contents,
-        )
-        self.list_folders = to_streamed_response_wrapper(
-            connectors.list_folders,
-        )
         self.list_providers = to_streamed_response_wrapper(
             connectors.list_providers,
         )
         self.sync = to_streamed_response_wrapper(
             connectors.sync,
-        )
-        self.update_config = to_streamed_response_wrapper(
-            connectors.update_config,
         )
 
 
@@ -924,21 +564,9 @@ class AsyncConnectorsResourceWithStreamingResponse:
         self.disconnect = async_to_streamed_response_wrapper(
             connectors.disconnect,
         )
-        self.list_channels = async_to_streamed_response_wrapper(
-            connectors.list_channels,
-        )
-        self.list_contents = async_to_streamed_response_wrapper(
-            connectors.list_contents,
-        )
-        self.list_folders = async_to_streamed_response_wrapper(
-            connectors.list_folders,
-        )
         self.list_providers = async_to_streamed_response_wrapper(
             connectors.list_providers,
         )
         self.sync = async_to_streamed_response_wrapper(
             connectors.sync,
-        )
-        self.update_config = async_to_streamed_response_wrapper(
-            connectors.update_config,
         )
