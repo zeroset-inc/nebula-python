@@ -273,6 +273,7 @@ class TestMemories:
     @parametrize
     def test_method_list_with_all_params(self, client: Nebula) -> None:
         memory = client.memories.list(
+            chunks_limit=0,
             collection_ids=["string", "string"],
             ids=["string"],
             include_summary_embeddings=True,
@@ -930,6 +931,7 @@ class TestAsyncMemories:
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncNebula) -> None:
         memory = await async_client.memories.list(
+            chunks_limit=0,
             collection_ids=["string", "string"],
             ids=["string"],
             include_summary_embeddings=True,

@@ -294,6 +294,7 @@ class MemoriesResource(SyncAPIResource):
     def list(
         self,
         *,
+        chunks_limit: Optional[int] | Omit = omit,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         ids: SequenceNotStr[str] | Omit = omit,
         include_summary_embeddings: bool | Omit = omit,
@@ -319,6 +320,9 @@ class MemoriesResource(SyncAPIResource):
         The response includes the engram's text field if available.
 
         Args:
+          chunks_limit: Maximum chunks to inline per engram. Defaults to all chunks for backwards
+              compatibility; pass 0 to skip chunk hydration.
+
           collection_ids: Optional list of collection IDs to filter engrams by. If provided, exactly one
               collection ID must be specified.
 
@@ -354,6 +358,7 @@ class MemoriesResource(SyncAPIResource):
                 timeout=timeout,
                 query=maybe_transform(
                     {
+                        "chunks_limit": chunks_limit,
                         "collection_ids": collection_ids,
                         "ids": ids,
                         "include_summary_embeddings": include_summary_embeddings,
@@ -1027,6 +1032,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
     async def list(
         self,
         *,
+        chunks_limit: Optional[int] | Omit = omit,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         ids: SequenceNotStr[str] | Omit = omit,
         include_summary_embeddings: bool | Omit = omit,
@@ -1052,6 +1058,9 @@ class AsyncMemoriesResource(AsyncAPIResource):
         The response includes the engram's text field if available.
 
         Args:
+          chunks_limit: Maximum chunks to inline per engram. Defaults to all chunks for backwards
+              compatibility; pass 0 to skip chunk hydration.
+
           collection_ids: Optional list of collection IDs to filter engrams by. If provided, exactly one
               collection ID must be specified.
 
@@ -1087,6 +1096,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 timeout=timeout,
                 query=await async_maybe_transform(
                     {
+                        "chunks_limit": chunks_limit,
                         "collection_ids": collection_ids,
                         "ids": ids,
                         "include_summary_embeddings": include_summary_embeddings,
