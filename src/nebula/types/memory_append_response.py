@@ -51,8 +51,6 @@ class NebulaResultsAppendMemoryResponseResults(BaseModel):
 
     appended_messages: Optional[List[NebulaResultsAppendMemoryResponseResultsAppendedMessage]] = None
 
-    chunk_ids: Optional[List[str]] = None
-
     metadata: Optional[Dict[str, object]] = None
 
 
