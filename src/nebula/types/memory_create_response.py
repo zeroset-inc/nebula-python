@@ -1,50 +1,26 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 import builtins
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Optional
 from datetime import datetime
-from typing_extensions import Literal, TypeAlias
+from typing_extensions import Literal
 
 from .._models import BaseModel
 
 __all__ = [
     "MemoryCreateResponse",
-    "NebulaResultsMemoryCreateAcceptedResponse",
-    "NebulaResultsMemoryCreateAcceptedResponseResults",
-    "NebulaResultsSnapshotMutationResult",
-    "NebulaResultsSnapshotMutationResultResults",
-    "NebulaResultsSnapshotMutationResultResultsSnapshot",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraph",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntity",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntityDescriptionEmbeddings",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipDescriptionEmbeddings",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipRelationEmbeddings",
-    "NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationship",
+    "Results",
+    "ResultsSnapshot",
+    "ResultsSnapshotGraph",
+    "ResultsSnapshotGraphEntity",
+    "ResultsSnapshotGraphEntityDescriptionEmbeddings",
+    "ResultsSnapshotGraphRelationshipDescriptionEmbeddings",
+    "ResultsSnapshotGraphRelationshipRelationEmbeddings",
+    "ResultsSnapshotGraphRelationship",
 ]
 
 
-class NebulaResultsMemoryCreateAcceptedResponseResults(BaseModel):
-    """Accepted-response envelope for async memory ingestion."""
-
-    id: str
-
-    message: str
-
-    engram_id: Optional[str] = None
-
-    memory_id: Optional[str] = None
-
-    status: Optional[Literal["parsing", "processing", "queued"]] = None
-
-    task_id: Optional[str] = None
-
-
-class NebulaResultsMemoryCreateAcceptedResponse(BaseModel):
-    results: NebulaResultsMemoryCreateAcceptedResponseResults
-    """Accepted-response envelope for async memory ingestion."""
-
-
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntity(BaseModel):
+class ResultsSnapshotGraphEntity(BaseModel):
     """Canonical entity record used in snapshots, WAL ops, and segments."""
 
     id: str
@@ -72,7 +48,7 @@ class NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntity(BaseModel):
     relationship_count: Optional[int] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntityDescriptionEmbeddings(BaseModel):
+class ResultsSnapshotGraphEntityDescriptionEmbeddings(BaseModel):
     """A positionally-aligned masked embedding matrix."""
 
     dim: Optional[int] = None
@@ -84,7 +60,7 @@ class NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntityDescriptionEm
     values_b64: Optional[str] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipDescriptionEmbeddings(BaseModel):
+class ResultsSnapshotGraphRelationshipDescriptionEmbeddings(BaseModel):
     """A positionally-aligned masked embedding matrix."""
 
     dim: Optional[int] = None
@@ -96,7 +72,7 @@ class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipDescrip
     values_b64: Optional[str] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipRelationEmbeddings(BaseModel):
+class ResultsSnapshotGraphRelationshipRelationEmbeddings(BaseModel):
     """A positionally-aligned masked embedding matrix."""
 
     dim: Optional[int] = None
@@ -108,7 +84,7 @@ class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipRelatio
     values_b64: Optional[str] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationship(BaseModel):
+class ResultsSnapshotGraphRelationship(BaseModel):
     """Canonical relationship record used in snapshots, WAL ops, and segments."""
 
     id: str
@@ -150,30 +126,24 @@ class NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationship(BaseMo
     weight: Optional[float] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshotGraph(BaseModel):
+class ResultsSnapshotGraph(BaseModel):
     """A complete graph payload or a context subgraph payload."""
 
-    entities: Optional[List[NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntity]] = None
+    entities: Optional[List[ResultsSnapshotGraphEntity]] = None
 
-    entity_description_embeddings: Optional[
-        NebulaResultsSnapshotMutationResultResultsSnapshotGraphEntityDescriptionEmbeddings
-    ] = None
+    entity_description_embeddings: Optional[ResultsSnapshotGraphEntityDescriptionEmbeddings] = None
     """A positionally-aligned masked embedding matrix."""
 
-    relationship_description_embeddings: Optional[
-        NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipDescriptionEmbeddings
-    ] = None
+    relationship_description_embeddings: Optional[ResultsSnapshotGraphRelationshipDescriptionEmbeddings] = None
     """A positionally-aligned masked embedding matrix."""
 
-    relationship_relation_embeddings: Optional[
-        NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationshipRelationEmbeddings
-    ] = None
+    relationship_relation_embeddings: Optional[ResultsSnapshotGraphRelationshipRelationEmbeddings] = None
     """A positionally-aligned masked embedding matrix."""
 
-    relationships: Optional[List[NebulaResultsSnapshotMutationResultResultsSnapshotGraphRelationship]] = None
+    relationships: Optional[List[ResultsSnapshotGraphRelationship]] = None
 
 
-class NebulaResultsSnapshotMutationResultResultsSnapshot(BaseModel):
+class ResultsSnapshot(BaseModel):
     """Portable full snapshot owned by the client."""
 
     collection_id: str
@@ -186,20 +156,17 @@ class NebulaResultsSnapshotMutationResultResultsSnapshot(BaseModel):
 
     generation: Optional[int] = None
 
-    graph: Optional[NebulaResultsSnapshotMutationResultResultsSnapshotGraph] = None
+    graph: Optional[ResultsSnapshotGraph] = None
     """A complete graph payload or a context subgraph payload."""
 
 
-class NebulaResultsSnapshotMutationResultResults(BaseModel):
+class Results(BaseModel):
     """Updated snapshot returned by snapshot-mode memory writes."""
 
-    snapshot: NebulaResultsSnapshotMutationResultResultsSnapshot
+    snapshot: ResultsSnapshot
     """Portable full snapshot owned by the client."""
 
 
-class NebulaResultsSnapshotMutationResult(BaseModel):
-    results: NebulaResultsSnapshotMutationResultResults
+class MemoryCreateResponse(BaseModel):
+    results: Results
     """Updated snapshot returned by snapshot-mode memory writes."""
-
-
-MemoryCreateResponse: TypeAlias = Union[NebulaResultsMemoryCreateAcceptedResponse, NebulaResultsSnapshotMutationResult]
