@@ -138,36 +138,31 @@ class MemoriesResource(SyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return cast(
-            MemoryCreateResponse,
-            self._post(
-                "/v1/memories",
-                body=maybe_transform(
-                    {
-                        "chunks": chunks,
-                        "collection_id": collection_id,
-                        "content_parts": content_parts,
-                        "contents": contents,
-                        "engram_type": engram_type,
-                        "ingestion_config": ingestion_config,
-                        "ingestion_mode": ingestion_mode,
-                        "messages": messages,
-                        "metadata": metadata,
-                        "name": name,
-                        "raw_text": raw_text,
-                        "snapshot": snapshot,
-                        "speaker_id": speaker_id,
-                        "speaker_name": speaker_name,
-                    },
-                    memory_create_params.MemoryCreateParams,
-                ),
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, MemoryCreateResponse
-                ),  # Union types cannot be passed in as arguments in the type system
+        return self._post(
+            "/v1/memories",
+            body=maybe_transform(
+                {
+                    "chunks": chunks,
+                    "collection_id": collection_id,
+                    "content_parts": content_parts,
+                    "contents": contents,
+                    "engram_type": engram_type,
+                    "ingestion_config": ingestion_config,
+                    "ingestion_mode": ingestion_mode,
+                    "messages": messages,
+                    "metadata": metadata,
+                    "name": name,
+                    "raw_text": raw_text,
+                    "snapshot": snapshot,
+                    "speaker_id": speaker_id,
+                    "speaker_name": speaker_name,
+                },
+                memory_create_params.MemoryCreateParams,
             ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=MemoryCreateResponse,
         )
 
     def retrieve(
@@ -869,36 +864,31 @@ class AsyncMemoriesResource(AsyncAPIResource):
 
           timeout: Override the client-level default timeout for this request, in seconds
         """
-        return cast(
-            MemoryCreateResponse,
-            await self._post(
-                "/v1/memories",
-                body=await async_maybe_transform(
-                    {
-                        "chunks": chunks,
-                        "collection_id": collection_id,
-                        "content_parts": content_parts,
-                        "contents": contents,
-                        "engram_type": engram_type,
-                        "ingestion_config": ingestion_config,
-                        "ingestion_mode": ingestion_mode,
-                        "messages": messages,
-                        "metadata": metadata,
-                        "name": name,
-                        "raw_text": raw_text,
-                        "snapshot": snapshot,
-                        "speaker_id": speaker_id,
-                        "speaker_name": speaker_name,
-                    },
-                    memory_create_params.MemoryCreateParams,
-                ),
-                options=make_request_options(
-                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-                ),
-                cast_to=cast(
-                    Any, MemoryCreateResponse
-                ),  # Union types cannot be passed in as arguments in the type system
+        return await self._post(
+            "/v1/memories",
+            body=await async_maybe_transform(
+                {
+                    "chunks": chunks,
+                    "collection_id": collection_id,
+                    "content_parts": content_parts,
+                    "contents": contents,
+                    "engram_type": engram_type,
+                    "ingestion_config": ingestion_config,
+                    "ingestion_mode": ingestion_mode,
+                    "messages": messages,
+                    "metadata": metadata,
+                    "name": name,
+                    "raw_text": raw_text,
+                    "snapshot": snapshot,
+                    "speaker_id": speaker_id,
+                    "speaker_name": speaker_name,
+                },
+                memory_create_params.MemoryCreateParams,
             ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=MemoryCreateResponse,
         )
 
     async def retrieve(
