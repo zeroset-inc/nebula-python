@@ -43,8 +43,7 @@ from ._base_client import (
 from .types.health_response import HealthResponse
 
 if TYPE_CHECKING:
-    from .resources import sources, memories, snapshots, connectors, collections
-    from .resources.sources import SourcesResource, AsyncSourcesResource
+    from .resources import memories, snapshots, connectors, collections
     from .resources.memories import MemoriesResource, AsyncMemoriesResource
     from .resources.snapshots import SnapshotsResource, AsyncSnapshotsResource
     from .resources.connectors import ConnectorsResource, AsyncConnectorsResource
@@ -123,12 +122,6 @@ class Nebula(SyncAPIClient):
         from .resources.memories import MemoriesResource
 
         return MemoriesResource(self)
-
-    @cached_property
-    def sources(self) -> SourcesResource:
-        from .resources.sources import SourcesResource
-
-        return SourcesResource(self)
 
     @cached_property
     def connectors(self) -> ConnectorsResource:
@@ -379,12 +372,6 @@ class AsyncNebula(AsyncAPIClient):
         return AsyncMemoriesResource(self)
 
     @cached_property
-    def sources(self) -> AsyncSourcesResource:
-        from .resources.sources import AsyncSourcesResource
-
-        return AsyncSourcesResource(self)
-
-    @cached_property
     def connectors(self) -> AsyncConnectorsResource:
         from .resources.connectors import AsyncConnectorsResource
 
@@ -584,12 +571,6 @@ class NebulaWithRawResponse:
         return MemoriesResourceWithRawResponse(self._client.memories)
 
     @cached_property
-    def sources(self) -> sources.SourcesResourceWithRawResponse:
-        from .resources.sources import SourcesResourceWithRawResponse
-
-        return SourcesResourceWithRawResponse(self._client.sources)
-
-    @cached_property
     def connectors(self) -> connectors.ConnectorsResourceWithRawResponse:
         from .resources.connectors import ConnectorsResourceWithRawResponse
 
@@ -623,12 +604,6 @@ class AsyncNebulaWithRawResponse:
         from .resources.memories import AsyncMemoriesResourceWithRawResponse
 
         return AsyncMemoriesResourceWithRawResponse(self._client.memories)
-
-    @cached_property
-    def sources(self) -> sources.AsyncSourcesResourceWithRawResponse:
-        from .resources.sources import AsyncSourcesResourceWithRawResponse
-
-        return AsyncSourcesResourceWithRawResponse(self._client.sources)
 
     @cached_property
     def connectors(self) -> connectors.AsyncConnectorsResourceWithRawResponse:
@@ -666,12 +641,6 @@ class NebulaWithStreamedResponse:
         return MemoriesResourceWithStreamingResponse(self._client.memories)
 
     @cached_property
-    def sources(self) -> sources.SourcesResourceWithStreamingResponse:
-        from .resources.sources import SourcesResourceWithStreamingResponse
-
-        return SourcesResourceWithStreamingResponse(self._client.sources)
-
-    @cached_property
     def connectors(self) -> connectors.ConnectorsResourceWithStreamingResponse:
         from .resources.connectors import ConnectorsResourceWithStreamingResponse
 
@@ -705,12 +674,6 @@ class AsyncNebulaWithStreamedResponse:
         from .resources.memories import AsyncMemoriesResourceWithStreamingResponse
 
         return AsyncMemoriesResourceWithStreamingResponse(self._client.memories)
-
-    @cached_property
-    def sources(self) -> sources.AsyncSourcesResourceWithStreamingResponse:
-        from .resources.sources import AsyncSourcesResourceWithStreamingResponse
-
-        return AsyncSourcesResourceWithStreamingResponse(self._client.sources)
 
     @cached_property
     def connectors(self) -> connectors.AsyncConnectorsResourceWithStreamingResponse:

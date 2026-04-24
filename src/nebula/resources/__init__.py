@@ -1,13 +1,5 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .sources import (
-    SourcesResource,
-    AsyncSourcesResource,
-    SourcesResourceWithRawResponse,
-    AsyncSourcesResourceWithRawResponse,
-    SourcesResourceWithStreamingResponse,
-    AsyncSourcesResourceWithStreamingResponse,
-)
 from .memories import (
     MemoriesResource,
     AsyncMemoriesResource,
@@ -54,12 +46,6 @@ __all__ = [
     "AsyncMemoriesResourceWithRawResponse",
     "MemoriesResourceWithStreamingResponse",
     "AsyncMemoriesResourceWithStreamingResponse",
-    "SourcesResource",
-    "AsyncSourcesResource",
-    "SourcesResourceWithRawResponse",
-    "AsyncSourcesResourceWithRawResponse",
-    "SourcesResourceWithStreamingResponse",
-    "AsyncSourcesResourceWithStreamingResponse",
     "ConnectorsResource",
     "AsyncConnectorsResource",
     "ConnectorsResourceWithRawResponse",
