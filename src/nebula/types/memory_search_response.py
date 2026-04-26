@@ -14,9 +14,9 @@ __all__ = [
     "NebulaResultsMemoryRecall",
     "NebulaResultsMemoryRecallResults",
     "NebulaResultsMemoryRecallResultsEntity",
-    "NebulaResultsMemoryRecallResultsEpisode",
+    "NebulaResultsMemoryRecallResultsEpisodic",
     "NebulaResultsMemoryRecallResultsInferenceHint",
-    "NebulaResultsMemoryRecallResultsProcedure",
+    "NebulaResultsMemoryRecallResultsProcedural",
     "NebulaResultsMemoryRecallResultsSemantic",
     "NebulaResultsMemoryRecallResultsSemanticEvidenceRef",
     "NebulaResultsMemoryRecallResultsSource",
@@ -33,11 +33,11 @@ class NebulaResultsCompactMemoryRecallResponseResults(BaseModel):
 
     query: str
 
-    episodes: Optional[List[Dict[str, object]]] = None
+    episodic: Optional[List[Dict[str, object]]] = None
 
-    procedures: Optional[List[Dict[str, object]]] = None
+    procedural: Optional[List[Dict[str, object]]] = None
 
-    semantics: Optional[List[Dict[str, object]]] = None
+    semantic: Optional[List[Dict[str, object]]] = None
 
     sources: Optional[List[Dict[str, object]]] = None
 
@@ -67,7 +67,7 @@ class NebulaResultsMemoryRecallResultsEntity(BaseModel):
     profile: Optional[object] = None
 
 
-class NebulaResultsMemoryRecallResultsEpisode(BaseModel):
+class NebulaResultsMemoryRecallResultsEpisodic(BaseModel):
     """An episodic nodegroup activated during memory traversal.
 
     Represents a cluster of temporally related facts/events discovered
@@ -137,7 +137,7 @@ class NebulaResultsMemoryRecallResultsInferenceHint(BaseModel):
     used_for_rewrite: Optional[bool] = None
 
 
-class NebulaResultsMemoryRecallResultsProcedure(BaseModel):
+class NebulaResultsMemoryRecallResultsProcedural(BaseModel):
     """A procedure (user preference) activated during memory traversal.
 
     Procedures are prescriptive -- they describe what the user prefers,
@@ -328,13 +328,13 @@ class NebulaResultsMemoryRecallResults(BaseModel):
 
     entities: Optional[List[NebulaResultsMemoryRecallResultsEntity]] = None
 
-    episodes: Optional[List[NebulaResultsMemoryRecallResultsEpisode]] = None
+    episodic: Optional[List[NebulaResultsMemoryRecallResultsEpisodic]] = None
 
     inference_hints: Optional[List[NebulaResultsMemoryRecallResultsInferenceHint]] = None
 
-    procedures: Optional[List[NebulaResultsMemoryRecallResultsProcedure]] = None
+    procedural: Optional[List[NebulaResultsMemoryRecallResultsProcedural]] = None
 
-    semantics: Optional[List[NebulaResultsMemoryRecallResultsSemantic]] = None
+    semantic: Optional[List[NebulaResultsMemoryRecallResultsSemantic]] = None
 
     sources: Optional[List[NebulaResultsMemoryRecallResultsSource]] = None
 
