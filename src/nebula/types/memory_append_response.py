@@ -7,15 +7,16 @@ from .._models import BaseModel
 
 __all__ = [
     "MemoryAppendResponse",
-    "NebulaResultsMessageResponse",
-    "NebulaResultsMessageResponseResults",
-    "NebulaResultsMessageResponseResultsMessage",
+    "NebulaResultsAppendMemoryResponse",
+    "NebulaResultsAppendMemoryResponseResults",
+    "NebulaResultsAppendMemoryResponseResultsMessage",
+    "NebulaResultsAppendMemoryResponseResultsAppendedMessage",
     "NebulaResultsIngestionResponse",
     "NebulaResultsIngestionResponseResults",
 ]
 
 
-class NebulaResultsMessageResponseResultsMessage(BaseModel):
+class NebulaResultsAppendMemoryResponseResultsMessage(BaseModel):
     role: Union[Literal["system", "user", "assistant", "function", "tool"], str]
 
     content: Optional[object] = None
@@ -37,16 +38,24 @@ class NebulaResultsMessageResponseResultsMessage(BaseModel):
     tool_calls: Optional[List[Dict[str, object]]] = None
 
 
-class NebulaResultsMessageResponseResults(BaseModel):
+class NebulaResultsAppendMemoryResponseResultsAppendedMessage(BaseModel):
+    message_id: str
+
+    chunk_ids: Optional[List[str]] = None
+
+
+class NebulaResultsAppendMemoryResponseResults(BaseModel):
     id: str
 
-    message: NebulaResultsMessageResponseResultsMessage
+    message: NebulaResultsAppendMemoryResponseResultsMessage
+
+    appended_messages: Optional[List[NebulaResultsAppendMemoryResponseResultsAppendedMessage]] = None
 
     metadata: Optional[Dict[str, object]] = None
 
 
-class NebulaResultsMessageResponse(BaseModel):
-    results: NebulaResultsMessageResponseResults
+class NebulaResultsAppendMemoryResponse(BaseModel):
+    results: NebulaResultsAppendMemoryResponseResults
 
 
 class NebulaResultsIngestionResponseResults(BaseModel):
@@ -64,4 +73,4 @@ class NebulaResultsIngestionResponse(BaseModel):
     results: NebulaResultsIngestionResponseResults
 
 
-MemoryAppendResponse: TypeAlias = Union[NebulaResultsMessageResponse, NebulaResultsIngestionResponse]
+MemoryAppendResponse: TypeAlias = Union[NebulaResultsAppendMemoryResponse, NebulaResultsIngestionResponse]
