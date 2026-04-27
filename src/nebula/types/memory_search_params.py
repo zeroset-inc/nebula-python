@@ -24,9 +24,6 @@ __all__ = [
 
 
 class MemorySearchParams(TypedDict, total=False):
-    query: Required[str]
-    """The search query to perform."""
-
     collection_ids: Optional[SequenceNotStr[str]]
     """Optional list of collection UUIDs or names to scope the search."""
 
@@ -39,6 +36,15 @@ class MemorySearchParams(TypedDict, total=False):
 
     filters: Optional[Dict[str, object]]
     """Optional filters to apply to the search."""
+
+    nql: Optional[str]
+    """Pre-written NQL script.
+
+    Executes directly without planner compilation. Mutually exclusive with `query`.
+    """
+
+    query: Optional[str]
+    """Natural-language search query. Mutually exclusive with `nql`."""
 
     search_settings: Optional[SearchSettings]
     """Advanced search settings for fine-tuning search behavior.

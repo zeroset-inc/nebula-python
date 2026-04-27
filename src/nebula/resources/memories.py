@@ -697,10 +697,11 @@ class MemoriesResource(SyncAPIResource):
     def search(
         self,
         *,
-        query: str,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         effort: Optional[Literal["auto", "low", "medium", "high"]] | Omit = omit,
         filters: Optional[Dict[str, object]] | Omit = omit,
+        nql: Optional[str] | Omit = omit,
+        query: Optional[str] | Omit = omit,
         search_settings: Optional[memory_search_params.SearchSettings] | Omit = omit,
         snapshot: Optional[memory_search_params.Snapshot] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -720,8 +721,6 @@ class MemoriesResource(SyncAPIResource):
         relationships} from stateless in-memory traversal.
 
         Args:
-          query: The search query to perform.
-
           collection_ids: Optional list of collection UUIDs or names to scope the search.
 
           effort: Compute effort budget for memory search.
@@ -730,6 +729,11 @@ class MemoriesResource(SyncAPIResource):
               size of the returned MemoryRecall projection.
 
           filters: Optional filters to apply to the search.
+
+          nql: Pre-written NQL script. Executes directly without planner compilation. Mutually
+              exclusive with `query`.
+
+          query: Natural-language search query. Mutually exclusive with `nql`.
 
           search_settings: Advanced search settings for fine-tuning search behavior.
 
@@ -755,10 +759,11 @@ class MemoriesResource(SyncAPIResource):
                 "/v1/memories/search",
                 body=maybe_transform(
                     {
-                        "query": query,
                         "collection_ids": collection_ids,
                         "effort": effort,
                         "filters": filters,
+                        "nql": nql,
+                        "query": query,
                         "search_settings": search_settings,
                         "snapshot": snapshot,
                     },
@@ -1433,10 +1438,11 @@ class AsyncMemoriesResource(AsyncAPIResource):
     async def search(
         self,
         *,
-        query: str,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         effort: Optional[Literal["auto", "low", "medium", "high"]] | Omit = omit,
         filters: Optional[Dict[str, object]] | Omit = omit,
+        nql: Optional[str] | Omit = omit,
+        query: Optional[str] | Omit = omit,
         search_settings: Optional[memory_search_params.SearchSettings] | Omit = omit,
         snapshot: Optional[memory_search_params.Snapshot] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -1456,8 +1462,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
         relationships} from stateless in-memory traversal.
 
         Args:
-          query: The search query to perform.
-
           collection_ids: Optional list of collection UUIDs or names to scope the search.
 
           effort: Compute effort budget for memory search.
@@ -1466,6 +1470,11 @@ class AsyncMemoriesResource(AsyncAPIResource):
               size of the returned MemoryRecall projection.
 
           filters: Optional filters to apply to the search.
+
+          nql: Pre-written NQL script. Executes directly without planner compilation. Mutually
+              exclusive with `query`.
+
+          query: Natural-language search query. Mutually exclusive with `nql`.
 
           search_settings: Advanced search settings for fine-tuning search behavior.
 
@@ -1491,10 +1500,11 @@ class AsyncMemoriesResource(AsyncAPIResource):
                 "/v1/memories/search",
                 body=await async_maybe_transform(
                     {
-                        "query": query,
                         "collection_ids": collection_ids,
                         "effort": effort,
                         "filters": filters,
+                        "nql": nql,
+                        "query": query,
                         "search_settings": search_settings,
                         "snapshot": snapshot,
                     },
