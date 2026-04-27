@@ -84,10 +84,6 @@ class Results(BaseModel):
 
     size_in_bytes: Optional[int] = None
 
-    summary: Optional[str] = None
-
-    summary_embedding: Optional[List[float]] = None
-
     text: Optional[str] = None
 
     title: Optional[str] = None

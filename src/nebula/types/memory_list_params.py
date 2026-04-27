@@ -30,9 +30,6 @@ class MemoryListParams(TypedDict, total=False):
     If not provided, all engrams will be returned.
     """
 
-    include_summary_embeddings: bool
-    """Specifies whether or not to include embeddings of each engram summary."""
-
     limit: int
     """Specifies a limit on the number of objects to return, ranging between 1 and 100.
 

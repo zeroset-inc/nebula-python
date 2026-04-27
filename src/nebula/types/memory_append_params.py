@@ -94,14 +94,6 @@ class IngestionConfig(TypedDict, total=False):
 
     chunking_strategy: str
 
-    chunks_for_engram_summary: int
-
-    engram_summary_max_length: int
-
-    engram_summary_system_prompt: str
-
-    engram_summary_task_prompt: str
-
     excluded_parsers: SequenceNotStr[str]
 
     extra_parsers: Dict[str, object]
@@ -111,10 +103,6 @@ class IngestionConfig(TypedDict, total=False):
     parser_overrides: Dict[str, str]
 
     provider: str
-
-    single_chunk_summary_threshold: int
-
-    skip_engram_summary: bool
 
     vlm: Optional[str]
 
