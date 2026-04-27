@@ -274,6 +274,14 @@ class Message(TypedDict, total=False):
     metadata: Optional[Dict[str, object]]
     """Optional message-level metadata"""
 
+    timestamp: Annotated[Union[str, datetime, None], PropertyInfo(format="iso8601")]
+    """Semantic timestamp for when the message was authored.
+
+    Drives chunk timestamps, the extraction LLM's temporal anchor, and episodic
+    grouping. Without it, relative phrases ('this morning') resolve against
+    ingestion wall-clock and episodes collapse.
+    """
+
 
 class SnapshotGraphEntity(TypedDict, total=False):
     """Canonical entity record used in snapshots, WAL ops, and segments."""

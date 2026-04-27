@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from typing import Dict, Union, Iterable, Optional
-from typing_extensions import Literal, Required, TypeAlias, TypedDict
+from datetime import datetime
+from typing_extensions import Literal, Required, Annotated, TypeAlias, TypedDict
 
 from .._types import SequenceNotStr
+from .._utils import PropertyInfo
 
 __all__ = [
     "MemoryAppendParams",
@@ -191,3 +193,11 @@ class Message(TypedDict, total=False):
 
     source_role_id: Optional[str]
     """Optional SourceRole entity ID"""
+
+    timestamp: Annotated[Union[str, datetime, None], PropertyInfo(format="iso8601")]
+    """Semantic timestamp for when the message was authored.
+
+    Drives chunk timestamps, the extraction LLM's temporal anchor, and episodic
+    grouping. Without it, relative phrases ('this morning') resolve against
+    ingestion wall-clock and episodes collapse.
+    """

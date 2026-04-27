@@ -75,6 +75,7 @@ class TestMemories:
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
+                    "timestamp": parse_datetime("2019-12-27T18:11:19.117Z"),
                 }
             ],
             metadata={"foo": "bar"},
@@ -379,6 +380,7 @@ class TestMemories:
                     "metadata": {"foo": "bar"},
                     "parent_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                     "source_role_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "timestamp": parse_datetime("2019-12-27T18:11:19.117Z"),
                 }
             ],
             metadata={"foo": "bar"},
@@ -552,18 +554,17 @@ class TestMemories:
 
     @parametrize
     def test_method_search(self, client: Nebula) -> None:
-        memory = client.memories.search(
-            query="query",
-        )
+        memory = client.memories.search()
         assert_matches_type(MemorySearchResponse, memory, path=["response"])
 
     @parametrize
     def test_method_search_with_all_params(self, client: Nebula) -> None:
         memory = client.memories.search(
-            query="query",
             collection_ids=["string"],
             effort="auto",
             filters={"foo": "bar"},
+            nql="nql",
+            query="query",
             search_settings={
                 "effort": "auto",
                 "enable_conceptual_expansion": True,
@@ -646,9 +647,7 @@ class TestMemories:
 
     @parametrize
     def test_raw_response_search(self, client: Nebula) -> None:
-        response = client.memories.with_raw_response.search(
-            query="query",
-        )
+        response = client.memories.with_raw_response.search()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -657,9 +656,7 @@ class TestMemories:
 
     @parametrize
     def test_streaming_response_search(self, client: Nebula) -> None:
-        with client.memories.with_streaming_response.search(
-            query="query",
-        ) as response:
+        with client.memories.with_streaming_response.search() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
@@ -720,6 +717,7 @@ class TestAsyncMemories:
                     "role": "user",
                     "authority": 0,
                     "metadata": {"foo": "bar"},
+                    "timestamp": parse_datetime("2019-12-27T18:11:19.117Z"),
                 }
             ],
             metadata={"foo": "bar"},
@@ -1024,6 +1022,7 @@ class TestAsyncMemories:
                     "metadata": {"foo": "bar"},
                     "parent_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
                     "source_role_id": "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                    "timestamp": parse_datetime("2019-12-27T18:11:19.117Z"),
                 }
             ],
             metadata={"foo": "bar"},
@@ -1197,18 +1196,17 @@ class TestAsyncMemories:
 
     @parametrize
     async def test_method_search(self, async_client: AsyncNebula) -> None:
-        memory = await async_client.memories.search(
-            query="query",
-        )
+        memory = await async_client.memories.search()
         assert_matches_type(MemorySearchResponse, memory, path=["response"])
 
     @parametrize
     async def test_method_search_with_all_params(self, async_client: AsyncNebula) -> None:
         memory = await async_client.memories.search(
-            query="query",
             collection_ids=["string"],
             effort="auto",
             filters={"foo": "bar"},
+            nql="nql",
+            query="query",
             search_settings={
                 "effort": "auto",
                 "enable_conceptual_expansion": True,
@@ -1291,9 +1289,7 @@ class TestAsyncMemories:
 
     @parametrize
     async def test_raw_response_search(self, async_client: AsyncNebula) -> None:
-        response = await async_client.memories.with_raw_response.search(
-            query="query",
-        )
+        response = await async_client.memories.with_raw_response.search()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1302,9 +1298,7 @@ class TestAsyncMemories:
 
     @parametrize
     async def test_streaming_response_search(self, async_client: AsyncNebula) -> None:
-        async with async_client.memories.with_streaming_response.search(
-            query="query",
-        ) as response:
+        async with async_client.memories.with_streaming_response.search() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
