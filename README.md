@@ -1,7 +1,7 @@
 # Nebula Python API library
 
 <!-- prettier-ignore -->
-[![PyPI version](https://img.shields.io/pypi/v/nebula.svg?label=pypi%20(stable))](https://pypi.org/project/nebula/)
+[![PyPI version](https://img.shields.io/pypi/v/nebula-sdk.svg?label=pypi%20(stable))](https://pypi.org/project/nebula-sdk/)
 
 The Nebula Python library provides convenient access to the Nebula REST API from any Python 3.9+
 application. The library includes type definitions for all request params and response fields,
@@ -11,17 +11,14 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.trynebula.ai](https://docs.trynebula.ai). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
 ```sh
-# install from this staging repo
-pip install git+ssh://git@github.com/stainless-sdks/nebula-python.git
+# install from PyPI
+pip install nebula-sdk
 ```
-
-> [!NOTE]
-> Once this package is [published to PyPI](https://www.stainless.com/docs/guides/publish), this will become: `pip install nebula`
 
 ## Usage
 
@@ -32,19 +29,20 @@ import os
 from nebula import Nebula
 
 client = Nebula(
-    bearer_token=os.environ.get("NEBULA_BEARER_TOKEN"),  # This is the default and can be omitted
+    access_token=os.environ.get("NEBULA_BEARER_TOKEN"),  # This is the default and can be omitted
 )
 
-response = client.chunks.search(
-    query="query",
+collection = client.collections.create(
+    name="Example collection",
+    description="Memory store for my app",
 )
-print(response.results)
+print(collection.results)
 ```
 
-While you can provide a `bearer_token` keyword argument,
+While you can provide an `api_key` keyword argument,
 we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `NEBULA_BEARER_TOKEN="My Bearer Token"` to your `.env` file
-so that your Bearer Token is not stored in source control.
+to add `NEBULA_API_KEY="My API Key"` to your `.env` file
+so that your API Key is not stored in source control.
 
 ## Async usage
 
@@ -56,15 +54,16 @@ import asyncio
 from nebula import AsyncNebula
 
 client = AsyncNebula(
-    bearer_token=os.environ.get("NEBULA_BEARER_TOKEN"),  # This is the default and can be omitted
+    access_token=os.environ.get("NEBULA_BEARER_TOKEN"),  # This is the default and can be omitted
 )
 
 
 async def main() -> None:
-    response = await client.chunks.search(
-        query="query",
+    collection = await client.collections.create(
+        name="Example collection",
+        description="Memory store for my app",
     )
-    print(response.results)
+    print(collection.results)
 
 
 asyncio.run(main())
@@ -79,8 +78,8 @@ By default, the async client uses `httpx` for HTTP requests. However, for improv
 You can enable this by installing `aiohttp`:
 
 ```sh
-# install from this staging repo
-pip install 'nebula[aiohttp] @ git+ssh://git@github.com/stainless-sdks/nebula-python.git'
+# install from PyPI
+pip install nebula-sdk[aiohttp]
 ```
 
 Then you can enable it by instantiating the client with `http_client=DefaultAioHttpClient()`:
@@ -94,15 +93,16 @@ from nebula import AsyncNebula
 
 async def main() -> None:
     async with AsyncNebula(
-        bearer_token=os.environ.get(
+        access_token=os.environ.get(
             "NEBULA_BEARER_TOKEN"
         ),  # This is the default and can be omitted
         http_client=DefaultAioHttpClient(),
     ) as client:
-        response = await client.chunks.search(
-            query="query",
+        collection = await client.collections.create(
+            name="Example collection",
+            description="Memory store for my app",
         )
-        print(response.results)
+        print(collection.results)
 
 
 asyncio.run(main())
@@ -126,18 +126,10 @@ from nebula import Nebula
 
 client = Nebula()
 
-response = client.chunks.search(
-    query="query",
-    search_settings={
-        "filters": {"category": "bar"},
-        "fulltext_weight": 1,
-        "include_metadatas": True,
-        "include_scores": True,
-        "limit": 20,
-        "semantic_weight": 5,
-    },
+memory = client.memories.create(
+    ingestion_config={},
 )
-print(response.search_settings)
+print(memory.ingestion_config)
 ```
 
 ## Handling errors
@@ -156,8 +148,9 @@ from nebula import Nebula
 client = Nebula()
 
 try:
-    client.chunks.search(
-        query="query",
+    client.collections.create(
+        name="Example collection",
+        description="Memory store for my app",
     )
 except nebula.APIConnectionError as e:
     print("The server could not be reached")
@@ -201,8 +194,9 @@ client = Nebula(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).chunks.search(
-    query="query",
+client.with_options(max_retries=5).collections.create(
+    name="Example collection",
+    description="Memory store for my app",
 )
 ```
 
@@ -226,8 +220,9 @@ client = Nebula(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).chunks.search(
-    query="query",
+client.with_options(timeout=5.0).collections.create(
+    name="Example collection",
+    description="Memory store for my app",
 )
 ```
 
@@ -269,18 +264,19 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from nebula import Nebula
 
 client = Nebula()
-response = client.chunks.with_raw_response.search(
-    query="query",
+response = client.collections.with_raw_response.create(
+    name="Example collection",
+    description="Memory store for my app",
 )
 print(response.headers.get('X-My-Header'))
 
-chunk = response.parse()  # get the object that `chunks.search()` would have returned
-print(chunk.results)
+collection = response.parse()  # get the object that `collections.create()` would have returned
+print(collection.results)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/nebula-python/tree/main/src/nebula/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/nebula-agi/nebula-python/tree/main/src/nebula/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/nebula-python/tree/main/src/nebula/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/nebula-agi/nebula-python/tree/main/src/nebula/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -289,8 +285,9 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.chunks.with_streaming_response.search(
-    query="query",
+with client.collections.with_streaming_response.create(
+    name="Example collection",
+    description="Memory store for my app",
 ) as response:
     print(response.headers.get("X-My-Header"))
 
@@ -386,7 +383,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/nebula-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/nebula-agi/nebula-python/issues) with questions, bugs, or suggestions.
 
 ### Determining the installed version
 

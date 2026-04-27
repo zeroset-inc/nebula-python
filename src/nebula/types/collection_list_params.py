@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from typing import Optional
 from typing_extensions import TypedDict
 
 from .._types import SequenceNotStr
@@ -22,6 +23,9 @@ class CollectionListParams(TypedDict, total=False):
     Defaults to 100.
     """
 
+    name: Optional[str]
+    """Filter collections by name (case-insensitive exact match)."""
+
     offset: int
     """Specifies the number of objects to skip. Defaults to 0."""
 
@@ -30,3 +34,6 @@ class CollectionListParams(TypedDict, total=False):
     If true, only returns collections owned by the user, not all accessible
     collections.
     """
+
+    workspace_id: Optional[str]
+    """Filter by workspace ID. Pass a UUID to scope to a workspace, or omit for all."""

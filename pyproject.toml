@@ -1,17 +1,17 @@
 [project]
-name = "nebula"
-version = "0.0.1"
+name = "nebula-sdk"
+version = "1.3.0"
 description = "The official Python library for the nebula API"
 dynamic = ["readme"]
-license = "Apache-2.0"
+license = "MIT"
 authors = [
-{ name = "Nebula", email = "" },
+{ name = "Nebula", email = "support@trynebula.ai" },
 ]
 
 dependencies = [
   "httpx>=0.23.0, <1",
   "pydantic>=1.9.0, <3",
-  "typing-extensions>=4.10, <5",
+  "typing-extensions>=4.14, <5",
   "anyio>=3.5.0, <5",
   "distro>=1.7.0, <2",
   "sniffio",
@@ -33,12 +33,12 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Operating System :: Microsoft :: Windows",
   "Topic :: Software Development :: Libraries :: Python Modules",
-  "License :: OSI Approved :: Apache Software License"
+  "License :: OSI Approved :: MIT License"
 ]
 
 [project.urls]
-Homepage = "https://github.com/stainless-sdks/nebula-python"
-Repository = "https://github.com/stainless-sdks/nebula-python"
+Homepage = "https://github.com/nebula-agi/nebula-python"
+Repository = "https://github.com/nebula-agi/nebula-python"
 
 [project.optional-dependencies]
 aiohttp = ["aiohttp", "httpx_aiohttp>=0.1.9"]
@@ -67,6 +67,7 @@ dev = [
     "importlib-metadata>=6.7.0",
     "rich>=13.7.1",
     "pytest-xdist>=3.6.1",
+    "httpx-aiohttp>=0.1.9",
 ]
 pydantic-v1 = [
     "pydantic>=1.9.0,<2",
@@ -112,7 +113,7 @@ path = "README.md"
 [[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
 # replace relative links with absolute links
 pattern = '\[(.+?)\]\(((?!https?://)\S+?)\)'
-replacement = '[\1](https://github.com/stainless-sdks/nebula-python/tree/main/\g<2>)'
+replacement = '[\1](https://github.com/nebula-agi/nebula-python/tree/main/\g<2>)'
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

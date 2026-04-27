@@ -9,6 +9,7 @@ import pytest
 
 from nebula import Nebula, AsyncNebula
 from tests.utils import assert_matches_type
+from nebula.types import HealthResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -16,31 +17,28 @@ base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 class TestClient:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_method_get_status(self, client: Nebula) -> None:
-        client_ = client.get_status()
-        assert_matches_type(object, client_, path=["response"])
+    def test_method_health(self, client: Nebula) -> None:
+        client_ = client.health()
+        assert_matches_type(HealthResponse, client_, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_raw_response_get_status(self, client: Nebula) -> None:
-        response = client.with_raw_response.get_status()
+    def test_raw_response_health(self, client: Nebula) -> None:
+        response = client.with_raw_response.health()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         client_ = response.parse()
-        assert_matches_type(object, client_, path=["response"])
+        assert_matches_type(HealthResponse, client_, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    def test_streaming_response_get_status(self, client: Nebula) -> None:
-        with client.with_streaming_response.get_status() as response:
+    def test_streaming_response_health(self, client: Nebula) -> None:
+        with client.with_streaming_response.health() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             client_ = response.parse()
-            assert_matches_type(object, client_, path=["response"])
+            assert_matches_type(HealthResponse, client_, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -50,30 +48,27 @@ class TestAsyncClient:
         "async_client", [False, True, {"http_client": "aiohttp"}], indirect=True, ids=["loose", "strict", "aiohttp"]
     )
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_method_get_status(self, async_client: AsyncNebula) -> None:
-        client = await async_client.get_status()
-        assert_matches_type(object, client, path=["response"])
+    async def test_method_health(self, async_client: AsyncNebula) -> None:
+        client = await async_client.health()
+        assert_matches_type(HealthResponse, client, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_raw_response_get_status(self, async_client: AsyncNebula) -> None:
-        response = await async_client.with_raw_response.get_status()
+    async def test_raw_response_health(self, async_client: AsyncNebula) -> None:
+        response = await async_client.with_raw_response.health()
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         client = await response.parse()
-        assert_matches_type(object, client, path=["response"])
+        assert_matches_type(HealthResponse, client, path=["response"])
 
-    @pytest.mark.skip(reason="Prism tests are disabled")
     @parametrize
-    async def test_streaming_response_get_status(self, async_client: AsyncNebula) -> None:
-        async with async_client.with_streaming_response.get_status() as response:
+    async def test_streaming_response_health(self, async_client: AsyncNebula) -> None:
+        async with async_client.with_streaming_response.health() as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             client = await response.parse()
-            assert_matches_type(object, client, path=["response"])
+            assert_matches_type(HealthResponse, client, path=["response"])
 
         assert cast(Any, response.is_closed) is True
