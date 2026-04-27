@@ -297,7 +297,6 @@ class MemoriesResource(SyncAPIResource):
         chunks_limit: Optional[int] | Omit = omit,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         ids: SequenceNotStr[str] | Omit = omit,
-        include_summary_embeddings: bool | Omit = omit,
         limit: int | Omit = omit,
         metadata_filters: Optional[str] | Omit = omit,
         offset: int | Omit = omit,
@@ -327,8 +326,6 @@ class MemoriesResource(SyncAPIResource):
               collection ID must be specified.
 
           ids: A list of engram IDs to retrieve. If not provided, all engrams will be returned.
-
-          include_summary_embeddings: Specifies whether or not to include embeddings of each engram summary.
 
           limit: Specifies a limit on the number of objects to return, ranging between 1 and 100.
               Defaults to 100.
@@ -361,7 +358,6 @@ class MemoriesResource(SyncAPIResource):
                         "chunks_limit": chunks_limit,
                         "collection_ids": collection_ids,
                         "ids": ids,
-                        "include_summary_embeddings": include_summary_embeddings,
                         "limit": limit,
                         "metadata_filters": metadata_filters,
                         "offset": offset,
@@ -1035,7 +1031,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
         chunks_limit: Optional[int] | Omit = omit,
         collection_ids: Optional[SequenceNotStr[str]] | Omit = omit,
         ids: SequenceNotStr[str] | Omit = omit,
-        include_summary_embeddings: bool | Omit = omit,
         limit: int | Omit = omit,
         metadata_filters: Optional[str] | Omit = omit,
         offset: int | Omit = omit,
@@ -1065,8 +1060,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
               collection ID must be specified.
 
           ids: A list of engram IDs to retrieve. If not provided, all engrams will be returned.
-
-          include_summary_embeddings: Specifies whether or not to include embeddings of each engram summary.
 
           limit: Specifies a limit on the number of objects to return, ranging between 1 and 100.
               Defaults to 100.
@@ -1099,7 +1092,6 @@ class AsyncMemoriesResource(AsyncAPIResource):
                         "chunks_limit": chunks_limit,
                         "collection_ids": collection_ids,
                         "ids": ids,
-                        "include_summary_embeddings": include_summary_embeddings,
                         "limit": limit,
                         "metadata_filters": metadata_filters,
                         "offset": offset,

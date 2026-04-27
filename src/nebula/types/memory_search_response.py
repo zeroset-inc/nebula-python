@@ -319,9 +319,6 @@ class NebulaResultsMemoryRecallResults(BaseModel):
 
     4. **Sources (episodic layer)**: The raw source material that
        grounds the structured knowledge in actual moments/quotes.
-
-    The RecallFocus weights determine how much emphasis each layer gets
-    in filtering and presentation, but all layers are always available.
     """
 
     query: str
@@ -359,9 +356,6 @@ class NebulaResultsMemoryRecall(BaseModel):
 
     4. **Sources (episodic layer)**: The raw source material that grounds the
        structured knowledge in actual moments/quotes.
-
-    The RecallFocus weights determine how much emphasis each layer gets in filtering
-    and presentation, but all layers are always available.
     """
 
 
