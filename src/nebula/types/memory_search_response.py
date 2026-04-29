@@ -21,6 +21,9 @@ __all__ = [
     "NebulaResultsMemoryRecallResultsSemanticEvidenceRef",
     "NebulaResultsMemoryRecallResultsSource",
     "NebulaResultsMemoryRecallResultsSourceEvidenceRef",
+    "NebulaResultsMemoryRecallResultsWorkflow",
+    "NebulaResultsMemoryRecallResultsWorkflowPredictedNextStep",
+    "NebulaResultsMemoryRecallResultsWorkflowStep",
     "NebulaResultsSnapshotSearchResult",
     "NebulaResultsSnapshotSearchResultResults",
     "NebulaResultsSnapshotSearchResultResultsEntity",
@@ -138,11 +141,10 @@ class NebulaResultsMemoryRecallResultsInferenceHint(BaseModel):
 
 
 class NebulaResultsMemoryRecallResultsProcedural(BaseModel):
-    """A procedure (user preference) activated during memory traversal.
+    """A procedure-like memory activated during memory traversal.
 
-    Procedures are prescriptive -- they describe what the user prefers,
-    likes, dislikes, or habitually does. Distinct from facts which are
-    descriptive assertions.
+    This includes preference procedures, atomic traces, and trace-derived
+    strategies. Distinct from facts which are descriptive assertions.
     """
 
     id: str
@@ -302,6 +304,130 @@ class NebulaResultsMemoryRecallResultsSource(BaseModel):
     timestamp: Optional[datetime] = None
 
 
+class NebulaResultsMemoryRecallResultsWorkflowPredictedNextStep(BaseModel):
+    """A single canonical step inside an activated workflow template.
+
+    Rich context fields (how_this_works, typical_entities, typical_tools,
+    causes_next_because) are populated by the template inducer and carry
+    forward the observational detail from the instances that built this
+    template. They exist so an agent can understand *how* a step works,
+    *what tools are used*, and *why* it causes the next step — not just
+    *what* the step is.
+    """
+
+    canonical_description: str
+
+    goal_category: str
+
+    index: int
+
+    object_type: str
+
+    verb_class: str
+
+    causes_next_because: Optional[str] = None
+
+    entity_roles: Optional[List[str]] = None
+
+    how_this_works: Optional[str] = None
+
+    optional: Optional[bool] = None
+
+    typical_entities: Optional[List[str]] = None
+
+    typical_tools: Optional[List[str]] = None
+
+    variable_slots: Optional[List[str]] = None
+
+
+class NebulaResultsMemoryRecallResultsWorkflowStep(BaseModel):
+    """A single canonical step inside an activated workflow template.
+
+    Rich context fields (how_this_works, typical_entities, typical_tools,
+    causes_next_because) are populated by the template inducer and carry
+    forward the observational detail from the instances that built this
+    template. They exist so an agent can understand *how* a step works,
+    *what tools are used*, and *why* it causes the next step — not just
+    *what* the step is.
+    """
+
+    canonical_description: str
+
+    goal_category: str
+
+    index: int
+
+    object_type: str
+
+    verb_class: str
+
+    causes_next_because: Optional[str] = None
+
+    entity_roles: Optional[List[str]] = None
+
+    how_this_works: Optional[str] = None
+
+    optional: Optional[bool] = None
+
+    typical_entities: Optional[List[str]] = None
+
+    typical_tools: Optional[List[str]] = None
+
+    variable_slots: Optional[List[str]] = None
+
+
+class NebulaResultsMemoryRecallResultsWorkflow(BaseModel):
+    """A workflow template activated during memory traversal.
+
+    Workflows are the most structured form of procedure: ordered step
+    sequences derived from Stage 2B causal subgraphs, clustered by
+    taxonomy-triple backbone signature, and canonicalized via LLM-backed
+    template induction.  They answer "walk me through how I do X" and
+    "what comes after step Y" queries, as opposed to ActivatedProcedure
+    which answers "what are my preferences about X".
+    """
+
+    id: str
+
+    goal: str
+
+    name: str
+
+    activation_score: Optional[float] = None
+
+    active_instance_count: Optional[int] = None
+
+    backbone_signature_hash: Optional[str] = None
+
+    branches: Optional[List[Dict[str, object]]] = None
+
+    confidence: Optional[float] = None
+
+    current_step_index: Optional[int] = None
+
+    instance_count: Optional[int] = None
+
+    last_observed_at: Optional[str] = None
+
+    metadata: Optional[Dict[str, object]] = None
+
+    predicted_next_step: Optional[NebulaResultsMemoryRecallResultsWorkflowPredictedNextStep] = None
+    """A single canonical step inside an activated workflow template.
+
+    Rich context fields (how_this_works, typical_entities, typical_tools,
+    causes_next_because) are populated by the template inducer and carry forward the
+    observational detail from the instances that built this template. They exist so
+    an agent can understand _how_ a step works, _what tools are used_, and _why_ it
+    causes the next step — not just _what_ the step is.
+    """
+
+    steps: Optional[List[NebulaResultsMemoryRecallResultsWorkflowStep]] = None
+
+    taxonomy_version: Optional[int] = None
+
+    variable_slots: Optional[Dict[str, object]] = None
+
+
 class NebulaResultsMemoryRecallResults(BaseModel):
     """Hierarchical memory response - all layers, weighted by activation.
 
@@ -336,6 +462,8 @@ class NebulaResultsMemoryRecallResults(BaseModel):
     sources: Optional[List[NebulaResultsMemoryRecallResultsSource]] = None
 
     total_traversal_time_ms: Optional[float] = None
+
+    workflows: Optional[List[NebulaResultsMemoryRecallResultsWorkflow]] = None
 
 
 class NebulaResultsMemoryRecall(BaseModel):
