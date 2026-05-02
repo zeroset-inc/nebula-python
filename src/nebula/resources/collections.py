@@ -219,8 +219,8 @@ class CollectionsResource(SyncAPIResource):
           ids: A list of collection IDs to retrieve. If not provided, all collections will be
               returned.
 
-          limit: Specifies a limit on the number of objects to return, ranging between 1 and 100.
-              Defaults to 100.
+          limit: Specifies a limit on the number of objects to return, ranging between 1
+              and 1000. Defaults to 100.
 
           name: Filter collections by name (case-insensitive exact match).
 
@@ -534,8 +534,8 @@ class AsyncCollectionsResource(AsyncAPIResource):
           ids: A list of collection IDs to retrieve. If not provided, all collections will be
               returned.
 
-          limit: Specifies a limit on the number of objects to return, ranging between 1 and 100.
-              Defaults to 100.
+          limit: Specifies a limit on the number of objects to return, ranging between 1
+              and 1000. Defaults to 100.
 
           name: Filter collections by name (case-insensitive exact match).
 

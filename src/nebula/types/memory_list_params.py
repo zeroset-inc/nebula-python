@@ -31,7 +31,8 @@ class MemoryListParams(TypedDict, total=False):
     """
 
     limit: int
-    """Specifies a limit on the number of objects to return, ranging between 1 and 100.
+    """Specifies a limit on the number of objects to return, ranging between 1
+    and 1000.
 
     Defaults to 100.
     """
