@@ -43,6 +43,18 @@ class MemoryListParams(TypedDict, total=False):
     Example: '{"metadata.source": {"$eq": "playground"}}'
     """
 
+    min_applied_wal_seq: Optional[int]
+    """
+    Read-your-writes assertion: the WAL-tail overlay path waits for at least this
+    seq to be applied before serving (or returns 503 Unavailable on timeout).
+    REQUIRES exactly one collection_ids entry — without a collection scope the
+    request returns 422 (the per-WAL-shard scalar applied_wal_seq is meaningless
+    across collections). When the served shard has not been migrated to
+    wal_compaction_enabled, the field is accepted but the served path is the legacy
+    overlay (the assertion has no effect — the response's applied_wal_seq will be
+    0). Pass back the value the matching upload response surfaced.
+    """
+
     offset: int
     """Specifies the number of objects to skip. Defaults to 0."""
 

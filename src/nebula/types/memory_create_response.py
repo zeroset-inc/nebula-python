@@ -30,6 +30,17 @@ class NebulaResultsMemoryCreateAcceptedResponseResults(BaseModel):
 
     message: str
 
+    applied_wal_seq: Optional[int] = None
+    """
+    WAL committed sequence number from this placeholder write, for read-your-writes
+    assertions on the next collection-scoped list call. A non-zero value indicates
+    the request appended a WAL entry; pass it back as `min_applied_wal_seq` on GET
+    /v1/memories to wait for the entry's visibility before serving. Zero on
+    idempotent observe-existing replays and on multi-shard collections (per-shard
+    scalars are not comparable across shards) — clients should treat zero as 'no
+    assertion to make.' Single-shard collections only.
+    """
+
     engram_id: Optional[str] = None
 
     memory_id: Optional[str] = None
