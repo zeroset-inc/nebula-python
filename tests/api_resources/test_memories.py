@@ -273,6 +273,7 @@ class TestMemories:
             ids=["string"],
             limit=1,
             metadata_filters="metadata_filters",
+            min_applied_wal_seq=1,
             offset=0,
             owner_only=True,
         )
@@ -915,6 +916,7 @@ class TestAsyncMemories:
             ids=["string"],
             limit=1,
             metadata_filters="metadata_filters",
+            min_applied_wal_seq=1,
             offset=0,
             owner_only=True,
         )

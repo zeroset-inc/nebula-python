@@ -299,6 +299,7 @@ class MemoriesResource(SyncAPIResource):
         ids: SequenceNotStr[str] | Omit = omit,
         limit: int | Omit = omit,
         metadata_filters: Optional[str] | Omit = omit,
+        min_applied_wal_seq: Optional[int] | Omit = omit,
         offset: int | Omit = omit,
         owner_only: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -334,6 +335,15 @@ class MemoriesResource(SyncAPIResource):
               JSON string for metadata filtering. Example: '{"metadata.source": {"$eq":
               "playground"}}'
 
+          min_applied_wal_seq: Read-your-writes assertion: the WAL-tail overlay path waits for at least this
+              seq to be applied before serving (or returns 503 Unavailable on timeout).
+              REQUIRES exactly one collection_ids entry — without a collection scope the
+              request returns 422 (the per-WAL-shard scalar applied_wal_seq is meaningless
+              across collections). When the served shard has not been migrated to
+              wal_compaction_enabled, the field is accepted but the served path is the legacy
+              overlay (the assertion has no effect — the response's applied_wal_seq will be
+              0). Pass back the value the matching upload response surfaced.
+
           offset: Specifies the number of objects to skip. Defaults to 0.
 
           owner_only: If true, only returns engrams owned by the user, not all accessible engrams.
@@ -360,6 +370,7 @@ class MemoriesResource(SyncAPIResource):
                         "ids": ids,
                         "limit": limit,
                         "metadata_filters": metadata_filters,
+                        "min_applied_wal_seq": min_applied_wal_seq,
                         "offset": offset,
                         "owner_only": owner_only,
                     },
@@ -1038,6 +1049,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         ids: SequenceNotStr[str] | Omit = omit,
         limit: int | Omit = omit,
         metadata_filters: Optional[str] | Omit = omit,
+        min_applied_wal_seq: Optional[int] | Omit = omit,
         offset: int | Omit = omit,
         owner_only: bool | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -1073,6 +1085,15 @@ class AsyncMemoriesResource(AsyncAPIResource):
               JSON string for metadata filtering. Example: '{"metadata.source": {"$eq":
               "playground"}}'
 
+          min_applied_wal_seq: Read-your-writes assertion: the WAL-tail overlay path waits for at least this
+              seq to be applied before serving (or returns 503 Unavailable on timeout).
+              REQUIRES exactly one collection_ids entry — without a collection scope the
+              request returns 422 (the per-WAL-shard scalar applied_wal_seq is meaningless
+              across collections). When the served shard has not been migrated to
+              wal_compaction_enabled, the field is accepted but the served path is the legacy
+              overlay (the assertion has no effect — the response's applied_wal_seq will be
+              0). Pass back the value the matching upload response surfaced.
+
           offset: Specifies the number of objects to skip. Defaults to 0.
 
           owner_only: If true, only returns engrams owned by the user, not all accessible engrams.
@@ -1099,6 +1120,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
                         "ids": ids,
                         "limit": limit,
                         "metadata_filters": metadata_filters,
+                        "min_applied_wal_seq": min_applied_wal_seq,
                         "offset": offset,
                         "owner_only": owner_only,
                     },

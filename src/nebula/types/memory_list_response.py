@@ -98,6 +98,26 @@ class Result(BaseModel):
 
 
 class MemoryListResponse(BaseModel):
+    """Paginated /v1/memories list response.
+
+    Memories-specific subclass that adds ``applied_wal_seq`` without
+    leaking the field into every paginated engram-list endpoint's wire
+    format. The plain alias :class:`WrappedCollectionEngramsResponse`
+    is the right shape for sibling endpoints (e.g. /collections/{id}/
+    engrams) where the seq isn't surfaced.
+    """
+
     results: List[Result]
 
     total_entries: int
+
+    applied_wal_seq: Optional[int] = None
+    """Highest WAL committed sequence number reflected in this response.
+
+    Non-zero only when the request was served via the WAL-tail fast path
+    (collection-scoped requests on shards with WAL-tail compaction enabled). Zero on
+    the legacy overlay path; clients should treat zero as 'the served path does not
+    honor RYW assertions on this shard.' Pair with `min_applied_wal_seq` on the
+    request to assert read-your-writes against a value returned by a prior
+    memory-create call.
+    """
