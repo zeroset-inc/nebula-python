@@ -58,6 +58,7 @@ class CollectionsResource(SyncAPIResource):
         *,
         name: str,
         description: Optional[str] | Omit = omit,
+        workflows_enabled: bool | Omit = omit,
         workspace_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -88,6 +89,7 @@ class CollectionsResource(SyncAPIResource):
                 {
                     "name": name,
                     "description": description,
+                    "workflows_enabled": workflows_enabled,
                     "workspace_id": workspace_id,
                 },
                 collection_create_params.CollectionCreateParams,
@@ -145,6 +147,7 @@ class CollectionsResource(SyncAPIResource):
         description: Optional[str] | Omit = omit,
         generate_description: bool | Omit = omit,
         name: Optional[str] | Omit = omit,
+        workflows_enabled: Optional[bool] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -180,6 +183,7 @@ class CollectionsResource(SyncAPIResource):
                     "description": description,
                     "generate_description": generate_description,
                     "name": name,
+                    "workflows_enabled": workflows_enabled,
                 },
                 collection_update_params.CollectionUpdateParams,
             ),
@@ -373,6 +377,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         *,
         name: str,
         description: Optional[str] | Omit = omit,
+        workflows_enabled: bool | Omit = omit,
         workspace_id: Optional[str] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -403,6 +408,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
                 {
                     "name": name,
                     "description": description,
+                    "workflows_enabled": workflows_enabled,
                     "workspace_id": workspace_id,
                 },
                 collection_create_params.CollectionCreateParams,
@@ -460,6 +466,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
         description: Optional[str] | Omit = omit,
         generate_description: bool | Omit = omit,
         name: Optional[str] | Omit = omit,
+        workflows_enabled: Optional[bool] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -495,6 +502,7 @@ class AsyncCollectionsResource(AsyncAPIResource):
                     "description": description,
                     "generate_description": generate_description,
                     "name": name,
+                    "workflows_enabled": workflows_enabled,
                 },
                 collection_update_params.CollectionUpdateParams,
             ),

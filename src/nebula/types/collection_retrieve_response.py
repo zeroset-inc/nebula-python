@@ -59,6 +59,8 @@ class Results(BaseModel):
 
     rental_price_monthly_usd: Optional[str] = None
 
+    workflows_enabled: Optional[bool] = None
+
     workspace_id: Optional[str] = None
 
 
