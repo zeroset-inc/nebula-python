@@ -36,6 +36,7 @@ class TestCollections:
         collection = client.collections.create(
             name="name",
             description="description",
+            workflows_enabled=True,
             workspace_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(CollectionCreateResponse, collection, path=["response"])
@@ -117,6 +118,7 @@ class TestCollections:
             description="description",
             generate_description=True,
             name="name",
+            workflows_enabled=True,
         )
         assert_matches_type(CollectionUpdateResponse, collection, path=["response"])
 
@@ -290,6 +292,7 @@ class TestAsyncCollections:
         collection = await async_client.collections.create(
             name="name",
             description="description",
+            workflows_enabled=True,
             workspace_id="182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
         assert_matches_type(CollectionCreateResponse, collection, path=["response"])
@@ -371,6 +374,7 @@ class TestAsyncCollections:
             description="description",
             generate_description=True,
             name="name",
+            workflows_enabled=True,
         )
         assert_matches_type(CollectionUpdateResponse, collection, path=["response"])
 

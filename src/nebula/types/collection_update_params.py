@@ -16,3 +16,5 @@ class CollectionUpdateParams(TypedDict, total=False):
     generate_description: bool
 
     name: Optional[str]
+
+    workflows_enabled: Optional[bool]

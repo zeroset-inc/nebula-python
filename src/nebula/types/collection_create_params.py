@@ -13,4 +13,6 @@ class CollectionCreateParams(TypedDict, total=False):
 
     description: Optional[str]
 
+    workflows_enabled: bool
+
     workspace_id: Optional[str]
