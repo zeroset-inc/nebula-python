@@ -46,7 +46,6 @@ class TestMemories:
                 }
             ],
             contents=["S0"],
-            engram_type="document",
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
                 "automatic_extraction": True,
@@ -69,6 +68,7 @@ class TestMemories:
                 "vlm_ocr_one_page_per_chunk": True,
             },
             ingestion_mode="hi-res",
+            kind="document",
             messages=[
                 {
                     "content": "S0",
@@ -689,7 +689,6 @@ class TestAsyncMemories:
                 }
             ],
             contents=["S0"],
-            engram_type="document",
             ingestion_config={
                 "audio_transcription_model": "audio_transcription_model",
                 "automatic_extraction": True,
@@ -712,6 +711,7 @@ class TestAsyncMemories:
                 "vlm_ocr_one_page_per_chunk": True,
             },
             ingestion_mode="hi-res",
+            kind="document",
             messages=[
                 {
                     "content": "S0",

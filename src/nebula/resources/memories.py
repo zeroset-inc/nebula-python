@@ -69,9 +69,9 @@ class MemoriesResource(SyncAPIResource):
         collection_id: Optional[str] | Omit = omit,
         content_parts: Optional[Iterable[memory_create_params.ContentPart]] | Omit = omit,
         contents: Optional[SequenceNotStr[str]] | Omit = omit,
-        engram_type: Literal["document", "conversation"] | Omit = omit,
         ingestion_config: Optional[memory_create_params.IngestionConfig] | Omit = omit,
         ingestion_mode: Optional[Literal["hi-res", "ocr", "fast", "custom"]] | Omit = omit,
+        kind: Literal["document", "conversation"] | Omit = omit,
         messages: Optional[Iterable[memory_create_params.Message]] | Omit = omit,
         metadata: Optional[Dict[str, object]] | Omit = omit,
         name: Optional[str] | Omit = omit,
@@ -90,7 +90,7 @@ class MemoriesResource(SyncAPIResource):
         Create a new memory (conversation or document) using clean JSON body.
 
         - Use `collection_id` (UUID)
-        - `engram_type` is optional and inferred from payload shape:
+        - `kind` is optional and inferred from payload shape:
           - If `messages` present -> conversation
           - Otherwise -> document
         - For conversations: provide `messages` array
@@ -98,15 +98,13 @@ class MemoriesResource(SyncAPIResource):
         - Use `snapshot` for device-memory mode (mutually exclusive with collection_id)
 
         Args:
-          chunks: Pre-chunked text for document type
+          chunks: Pre-chunked text for document kind
 
           collection_id: Collection UUID (mutually exclusive with snapshot)
 
-          content_parts: Multimodal content parts (text, images, audio, documents) for document type.
+          content_parts: Multimodal content parts (text, images, audio, documents) for document kind.
 
           contents: Batch content strings for snapshot mode
-
-          engram_type: Type of memory to create
 
           ingestion_config: Public ingestion config accepted by memory-ingestion endpoints.
 
@@ -116,13 +114,17 @@ class MemoriesResource(SyncAPIResource):
 
           ingestion_mode: Ingestion mode for documents
 
-          messages: Messages for conversation type
+          kind: Engram discriminator: `document` or `conversation`. When omitted, `conversation`
+              is inferred if `messages` is present; otherwise defaults to `document`.
 
-          metadata: Metadata for the memory
+          messages: Messages for conversation kind
+
+          metadata: User-supplied metadata for the memory. Must not carry platform discriminators or
+              routing markers — use the `kind` / `conversation` / `document` fields instead.
 
           name: Optional name for the memory
 
-          raw_text: Raw text content for document type
+          raw_text: Raw text content for document kind
 
           snapshot: Portable full snapshot owned by the client.
 
@@ -148,9 +150,9 @@ class MemoriesResource(SyncAPIResource):
                         "collection_id": collection_id,
                         "content_parts": content_parts,
                         "contents": contents,
-                        "engram_type": engram_type,
                         "ingestion_config": ingestion_config,
                         "ingestion_mode": ingestion_mode,
+                        "kind": kind,
                         "messages": messages,
                         "metadata": metadata,
                         "name": name,
@@ -817,9 +819,9 @@ class AsyncMemoriesResource(AsyncAPIResource):
         collection_id: Optional[str] | Omit = omit,
         content_parts: Optional[Iterable[memory_create_params.ContentPart]] | Omit = omit,
         contents: Optional[SequenceNotStr[str]] | Omit = omit,
-        engram_type: Literal["document", "conversation"] | Omit = omit,
         ingestion_config: Optional[memory_create_params.IngestionConfig] | Omit = omit,
         ingestion_mode: Optional[Literal["hi-res", "ocr", "fast", "custom"]] | Omit = omit,
+        kind: Literal["document", "conversation"] | Omit = omit,
         messages: Optional[Iterable[memory_create_params.Message]] | Omit = omit,
         metadata: Optional[Dict[str, object]] | Omit = omit,
         name: Optional[str] | Omit = omit,
@@ -838,7 +840,7 @@ class AsyncMemoriesResource(AsyncAPIResource):
         Create a new memory (conversation or document) using clean JSON body.
 
         - Use `collection_id` (UUID)
-        - `engram_type` is optional and inferred from payload shape:
+        - `kind` is optional and inferred from payload shape:
           - If `messages` present -> conversation
           - Otherwise -> document
         - For conversations: provide `messages` array
@@ -846,15 +848,13 @@ class AsyncMemoriesResource(AsyncAPIResource):
         - Use `snapshot` for device-memory mode (mutually exclusive with collection_id)
 
         Args:
-          chunks: Pre-chunked text for document type
+          chunks: Pre-chunked text for document kind
 
           collection_id: Collection UUID (mutually exclusive with snapshot)
 
-          content_parts: Multimodal content parts (text, images, audio, documents) for document type.
+          content_parts: Multimodal content parts (text, images, audio, documents) for document kind.
 
           contents: Batch content strings for snapshot mode
-
-          engram_type: Type of memory to create
 
           ingestion_config: Public ingestion config accepted by memory-ingestion endpoints.
 
@@ -864,13 +864,17 @@ class AsyncMemoriesResource(AsyncAPIResource):
 
           ingestion_mode: Ingestion mode for documents
 
-          messages: Messages for conversation type
+          kind: Engram discriminator: `document` or `conversation`. When omitted, `conversation`
+              is inferred if `messages` is present; otherwise defaults to `document`.
 
-          metadata: Metadata for the memory
+          messages: Messages for conversation kind
+
+          metadata: User-supplied metadata for the memory. Must not carry platform discriminators or
+              routing markers — use the `kind` / `conversation` / `document` fields instead.
 
           name: Optional name for the memory
 
-          raw_text: Raw text content for document type
+          raw_text: Raw text content for document kind
 
           snapshot: Portable full snapshot owned by the client.
 
@@ -896,9 +900,9 @@ class AsyncMemoriesResource(AsyncAPIResource):
                         "collection_id": collection_id,
                         "content_parts": content_parts,
                         "contents": contents,
-                        "engram_type": engram_type,
                         "ingestion_config": ingestion_config,
                         "ingestion_mode": ingestion_mode,
+                        "kind": kind,
                         "messages": messages,
                         "metadata": metadata,
                         "name": name,

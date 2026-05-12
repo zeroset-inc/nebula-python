@@ -35,19 +35,16 @@ __all__ = [
 
 class MemoryCreateParams(TypedDict, total=False):
     chunks: Optional[SequenceNotStr[str]]
-    """Pre-chunked text for document type"""
+    """Pre-chunked text for document kind"""
 
     collection_id: Optional[str]
     """Collection UUID (mutually exclusive with snapshot)"""
 
     content_parts: Optional[Iterable[ContentPart]]
-    """Multimodal content parts (text, images, audio, documents) for document type."""
+    """Multimodal content parts (text, images, audio, documents) for document kind."""
 
     contents: Optional[SequenceNotStr[str]]
     """Batch content strings for snapshot mode"""
-
-    engram_type: Literal["document", "conversation"]
-    """Type of memory to create"""
 
     ingestion_config: Optional[IngestionConfig]
     """Public ingestion config accepted by memory-ingestion endpoints.
@@ -60,17 +57,28 @@ class MemoryCreateParams(TypedDict, total=False):
     ingestion_mode: Optional[Literal["hi-res", "ocr", "fast", "custom"]]
     """Ingestion mode for documents"""
 
+    kind: Literal["document", "conversation"]
+    """Engram discriminator: `document` or `conversation`.
+
+    When omitted, `conversation` is inferred if `messages` is present; otherwise
+    defaults to `document`.
+    """
+
     messages: Optional[Iterable[Message]]
-    """Messages for conversation type"""
+    """Messages for conversation kind"""
 
     metadata: Optional[Dict[str, object]]
-    """Metadata for the memory"""
+    """User-supplied metadata for the memory.
+
+    Must not carry platform discriminators or routing markers — use the `kind` /
+    `conversation` / `document` fields instead.
+    """
 
     name: Optional[str]
     """Optional name for the memory"""
 
     raw_text: Optional[str]
-    """Raw text content for document type"""
+    """Raw text content for document kind"""
 
     snapshot: Optional[Snapshot]
     """Portable full snapshot owned by the client."""
