@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.4.0 (2026-05-13)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/nebula-agi/nebula-python/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* Add workflow synthesis pipeline ([3114b85](https://github.com/nebula-agi/nebula-python/commit/3114b855bf5332f1b50abe3afc3bf5df5fc039ad))
+* graph: unify TASK→EPISODIC + decouple Step 3.5+ from ingest ack ([e97e85b](https://github.com/nebula-agi/nebula-python/commit/e97e85b867bf48a4afd3b3dde1813cd48d200607))
+* **internal/types:** support eagerly validating pydantic iterators ([2f24095](https://github.com/nebula-agi/nebula-python/commit/2f2409504df61e2fb2cfe67b42070c550b013d9b))
+* **overview:** Shape A++ — additive scaffolding for Memories upload→list RYW ([4b05433](https://github.com/nebula-agi/nebula-python/commit/4b05433d7a5c5534b33ca11204fbbca9bb69989e))
+* Rationale grounding + backfill outbox for v4 trace pipeline ([ed3b85f](https://github.com/nebula-agi/nebula-python/commit/ed3b85f0e1df0fdcbbfc991b27886aa36dec66ac))
+* support setting headers via env ([04e9b84](https://github.com/nebula-agi/nebula-python/commit/04e9b8471757c020e86140bcfff73a3270ce8855))
+
+
+### Bug Fixes
+
+* **client:** add missing f-string prefix in file type error message ([f8aec65](https://github.com/nebula-agi/nebula-python/commit/f8aec65e6795d0832ec3ca916a9ed787ea053a9a))
+* use correct field name format for multipart file arrays ([a94c864](https://github.com/nebula-agi/nebula-python/commit/a94c864b605eaa99941458dc897c2319396eeac3))
+
+
+### Chores
+
+* configure new SDK language ([16d124a](https://github.com/nebula-agi/nebula-python/commit/16d124a98eee3764259efc262d4c4c1d790a5d61))
+* **internal:** reformat pyproject.toml ([6247618](https://github.com/nebula-agi/nebula-python/commit/6247618832b915cd5fd68c6c96d958ab7ecbeb9d))
+
+
+### Documentation
+
+* align SDK examples with nebula-sdk v1.3.0; fix stale router descriptions ([9d5d69a](https://github.com/nebula-agi/nebula-python/commit/9d5d69a56dd540f61c501e7dbb9f4dc9840c7a97))
+
+
+### Refactors
+
+* **engrams:** typed EngramKind + ConversationFields/DocumentFields substructure ([4e00a23](https://github.com/nebula-agi/nebula-python/commit/4e00a234ea52c0cd1b1a5b2d063dfe8687736dee))
+
 ## 1.3.0 (2026-04-27)
 
 Full Changelog: [v1.2.2...v1.3.0](https://github.com/nebula-agi/nebula-python/compare/v1.2.2...v1.3.0)
