@@ -91,9 +91,15 @@ class NebulaResultsMemoryRecallResultsEpisodic(BaseModel):
 
     evidence_ids: Optional[List[str]] = None
 
+    is_obligation: Optional[bool] = None
+
     member_semantic_ids: Optional[List[str]] = None
 
+    modality: Optional[str] = None
+
     n_facts: Optional[int] = None
+
+    resolved_at: Optional[datetime] = None
 
     status: Optional[str] = None
 
@@ -189,7 +195,7 @@ class NebulaResultsMemoryRecallResultsSemanticEvidenceRef(BaseModel):
 class NebulaResultsMemoryRecallResultsSemantic(BaseModel):
     """A semantic item activated during memory traversal.
 
-    Represents a structured assertion (fact, inference, or task) that was
+    Represents a structured assertion (fact, inference, or episodic) that was
     found relevant to the query. Links back to its entity and source
     utterances for provenance.
     """
@@ -226,7 +232,7 @@ class NebulaResultsMemoryRecallResultsSemantic(BaseModel):
 
     reasoning: Optional[str] = None
 
-    resolved_at: Optional[str] = None
+    resolved_at: Optional[datetime] = None
 
     source_nodegroup_ids: Optional[List[str]] = None
 
