@@ -1,0 +1,274 @@
+from __future__ import annotations
+
+import asyncio
+from typing import Any
+
+import httpx
+import pytest
+import respx
+
+from nebula import (
+    ClientOptions,
+    NebulaClient,
+    NebulaNotFoundError,
+    NebulaRateLimitError,
+    NebulaValidationError,
+    models,
+)
+
+
+def _make_client(transport: httpx.MockTransport, **overrides: Any) -> NebulaClient:
+    options = ClientOptions(
+        base_url="https://api.example.com",
+        api_key=overrides.pop("api_key", None),
+        bearer_token=overrides.pop("bearer_token", None),
+        transport=transport,
+        **overrides,
+    )
+    return NebulaClient(options)
+
+
+@pytest.mark.asyncio
+async def test_memories_search_sends_post_with_body_and_bearer() -> None:
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": [], "total_entries": 0})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport, bearer_token="secret") as client:
+        result = await client.memories.search(body={"query": "hello"})
+
+    assert result == {"results": [], "total_entries": 0}
+    assert len(captured) == 1
+    req = captured[0]
+    assert req.method == "POST"
+    assert str(req.url) == "https://api.example.com/v1/memories/search"
+    assert req.headers["authorization"] == "Bearer secret"
+    assert req.headers["content-type"] == "application/json"
+    import json
+    assert json.loads(req.content) == {"query": "hello"}
+
+
+@pytest.mark.asyncio
+async def test_collections_list_serializes_query_params() -> None:
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": [], "total_entries": 0})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport, api_key="k1") as client:
+        await client.collections.list(offset=10, limit=5, owner_only=True)
+
+    req = captured[0]
+    assert req.headers["x-api-key"] == "k1"
+    assert "offset=10" in str(req.url)
+    assert "limit=5" in str(req.url)
+    assert "owner_only=true" in str(req.url)
+
+
+@pytest.mark.asyncio
+async def test_path_params_substituted() -> None:
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"id": "abc"})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        await client.memories.retrieve(id="11111111-2222-3333-4444-555555555555")
+
+    assert str(captured[0].url) == (
+        "https://api.example.com/v1/memories/11111111-2222-3333-4444-555555555555"
+    )
+
+
+@pytest.mark.asyncio
+async def test_422_maps_to_validation_error() -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(422, json={"detail": [{"msg": "bad"}]})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        with pytest.raises(NebulaValidationError):
+            await client.memories.search(body={})
+
+
+@pytest.mark.asyncio
+async def test_404_maps_to_not_found_error() -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(404, json={"detail": "missing"})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        with pytest.raises(NebulaNotFoundError):
+            await client.memories.retrieve(id="missing")
+
+
+@pytest.mark.asyncio
+async def test_does_not_retry_post_when_not_idempotent() -> None:
+    attempts = 0
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(503, json={"detail": "down"})
+
+    transport = httpx.MockTransport(handler)
+    from nebula import RetryPolicy
+    async with _make_client(
+        transport, retry=RetryPolicy(max_retries=5, base_seconds=0.001, max_seconds=0.005)
+    ) as client:
+        with pytest.raises(Exception):
+            await client.memories.create(body={"collection_id": "c1"})
+
+    assert attempts == 1
+
+
+@pytest.mark.asyncio
+async def test_retries_get_on_503() -> None:
+    attempts = 0
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        if attempts < 3:
+            return httpx.Response(503, json={"detail": "warming up"})
+        return httpx.Response(200, json={"results": [], "total_entries": 0})
+
+    transport = httpx.MockTransport(handler)
+    from nebula import RetryPolicy
+    async with _make_client(
+        transport, retry=RetryPolicy(max_retries=3, base_seconds=0.001, max_seconds=0.005)
+    ) as client:
+        result = await client.collections.list(limit=10)
+
+    # `result` is now a validated Pydantic model (the model_validate fix);
+    # `model_dump()` round-trips back to the wire shape for assertion.
+    assert result.model_dump() == {"results": [], "total_entries": 0}
+    assert attempts == 3
+
+
+@pytest.mark.asyncio
+async def test_request_body_accepts_pydantic_model_instance() -> None:
+    """Regression: previously the runtime passed a BaseModel to httpx.json,
+    which raised TypeError. The runtime now dumps BaseModels via
+    model_dump(mode='json', by_alias=True) before httpx.
+    """
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": {"id": "mem_1", "message": "ok"}})
+
+    transport = httpx.MockTransport(handler)
+    body = models.CreateMemoryRequest(
+        collection_id="11111111-2222-3333-4444-555555555555",
+        raw_text="hello world",
+    )
+    async with _make_client(transport) as client:
+        await client.memories.create(body=body)
+
+    import json
+    sent = json.loads(captured[0].content)
+    assert sent["collection_id"] == "11111111-2222-3333-4444-555555555555"
+    assert sent["raw_text"] == "hello world"
+    # by_alias=True preserves the wire-shape field names; no exclude_none
+    # so an explicitly-None field would round-trip as null (we don't set
+    # one here, just guard against a future regression that adds it).
+
+
+@pytest.mark.asyncio
+async def test_request_body_list_of_strings_passes_through_unchanged() -> None:
+    """`DeleteMemoriesRequest` is `anyOf[str, list[str]]` — confirms the
+    list path in _serialize_body doesn't mangle plain-string lists."""
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": {"succeeded": 2}})
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        await client.memories.delete_many(body=["id-1", "id-2"])
+
+    import json
+    sent = json.loads(captured[0].content)
+    assert sent == ["id-1", "id-2"]
+
+
+def test_serialize_body_handles_list_of_pydantic_models() -> None:
+    """Direct test of the runtime helper: a list of BaseModel instances
+    serializes each element via model_dump. No spec endpoint currently uses
+    list[BaseModel] bodies, so this guards the helper itself rather than a
+    generated method."""
+    from nebula._runtime.client import _serialize_body
+
+    items = [
+        models.CreateCollectionRequest(name="alpha"),
+        models.CreateCollectionRequest(name="beta", description="b"),
+    ]
+    out = _serialize_body(items)
+    assert isinstance(out, list)
+    assert out[0]["name"] == "alpha"
+    assert out[1]["name"] == "beta"
+    assert out[1]["description"] == "b"
+    # Verify it's a real dict, not a BaseModel.
+    assert isinstance(out[0], dict)
+
+
+def test_serialize_body_passes_through_dict_unchanged() -> None:
+    """Dicts (the most common DX-layer path) skip serialization entirely."""
+    from nebula._runtime.client import _serialize_body
+
+    body = {"collection_id": "c1", "raw_text": "x"}
+    out = _serialize_body(body)
+    assert out is body  # same object, no copy
+
+
+@pytest.mark.asyncio
+async def test_429_retry_after_accepts_http_date() -> None:
+    """RFC 7231 allows Retry-After as either numeric-seconds or HTTP-date.
+    The Python runtime now matches the TS runtime's parser behavior.
+    """
+    from datetime import datetime, timezone, timedelta
+    from email.utils import format_datetime
+
+    future = datetime.now(timezone.utc) + timedelta(seconds=30)
+    http_date = format_datetime(future, usegmt=True)
+
+    def handler(_req: httpx.Request) -> httpx.Response:
+        return httpx.Response(429, json={"detail": "slow"}, headers={"Retry-After": http_date})
+
+    transport = httpx.MockTransport(handler)
+    from nebula import RetryPolicy
+    async with _make_client(
+        transport, retry=RetryPolicy(max_retries=0, base_seconds=0.001, max_seconds=0.005)
+    ) as client:
+        with pytest.raises(NebulaRateLimitError) as excinfo:
+            await client.memories.retrieve(id="x")
+
+    # ~30 seconds (allow a small drift window for the time between header
+    # construction and parser invocation).
+    assert excinfo.value.retry_after is not None
+    assert 25.0 <= excinfo.value.retry_after <= 35.0
+
+
+@pytest.mark.asyncio
+async def test_429_surfaces_rate_limit_error_with_retry_after() -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(429, json={"detail": "slow"}, headers={"Retry-After": "2"})
+
+    transport = httpx.MockTransport(handler)
+    from nebula import RetryPolicy
+    async with _make_client(
+        transport, retry=RetryPolicy(max_retries=0, base_seconds=0.001, max_seconds=0.005)
+    ) as client:
+        with pytest.raises(NebulaRateLimitError) as excinfo:
+            await client.memories.retrieve(id="x")
+
+    assert excinfo.value.retry_after == 2.0
