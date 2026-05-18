@@ -34,8 +34,12 @@ jobs:
       - name: Install Python (reads .python-version)
         run: uv python install
 
-      - name: Install SDK with test extras
-        run: uv pip install --system -e ".[test]"
+      - name: Install SDK with test extras into a venv
+        # `uv pip install --system` fails on Ubuntu 24.04's externally-
+        # managed Python; using a venv is the cross-platform path.
+        run: |
+          uv venv
+          uv pip install -e ".[test]"
 
       - name: Test
-        run: python -m pytest tests/ -q
+        run: .venv/bin/python -m pytest tests/ -q
