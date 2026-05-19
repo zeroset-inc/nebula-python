@@ -62,7 +62,5 @@
     }
   ],
   "release-type": "python",
-  "extra-files": [
-    "src/nebula/_version.py"
-  ]
+  "extra-files": []
 }
