@@ -1,23 +1,28 @@
-# Publish nebula-sdk to PyPI. Triggered by release-please on tag, or
-# manually for re-publish recovery.
+# Manual re-publish recovery for nebula-sdk on PyPI.
+#
+# The PRIMARY publish path lives in release-please.yml — it runs the
+# publish job conditional on `release_created == 'true'` in the same
+# workflow as the release-PR merge. That avoids the GITHUB_TOKEN
+# recursion guard (a `release: published` trigger would never fire when
+# release-please-action creates the release via the default token).
+#
+# This workflow exists only for the rare case where the automatic
+# publish failed mid-run (PyPI hiccup, transient build failure) and an
+# operator needs to re-publish the same tag. Trigger it from the
+# Actions UI with workflow_dispatch.
 #
 # Uses PyPI Trusted Publisher (OIDC) — no API token in repo secrets.
-# Configure the trusted publisher in PyPI project settings:
-#   - Owner: nebula-agi
-#   - Repository: nebula-python
-#   - Workflow: publish-pypi.yml
-#   - Environment: release
+# The Trusted Publisher config must list BOTH release-please.yml and
+# publish-pypi.yml as authorized workflows.
 #
 # Synced from nebula-sdks/custom/downstream-py/.github/workflows/publish-pypi.yml
 # by the upstream nebula-sdk-sync.yml workflow. Edit the template, not the
 # downstream copy.
 
-name: Publish PyPI
+name: Publish PyPI (manual recovery)
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
 
 jobs:
   publish:
