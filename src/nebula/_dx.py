@@ -1,4 +1,11 @@
-# Handwritten Nebula DX layer. Ported from the Stainless-generated _dx.py.
+# Handwritten Nebula DX layer.
+#
+# Carries only the methods that need real dispatch logic (storeMemory's
+# create-vs-append branch, polymorphic delete, auth normalization). The
+# simple unwrap/passthrough methods (get_memory, list_collections,
+# export_snapshot, ...) are generated from
+# `nebula-sdks/config/dx-extensions.yaml` into `_dx_generated.py`, which
+# this class extends via NebulaDX.
 #
 # Source of truth: nebula-sdks/custom/python/_dx.py
 # The generator copies this file into sdks/python/src/nebula/_dx.py on every
@@ -12,10 +19,11 @@ from collections.abc import Mapping, Sequence
 from typing import Any, Optional, cast
 
 from ._client import NebulaClient as GeneratedNebula
+from ._dx_generated import NebulaDX
 from ._runtime import ClientOptions
 
 
-class Nebula(GeneratedNebula):
+class Nebula(NebulaDX):
     """Nebula's handwritten DevEx facade on top of the generated async client."""
 
     def __init__(self, options: Optional[ClientOptions] = None, **compat: Any) -> None:
@@ -98,17 +106,17 @@ class Nebula(GeneratedNebula):
 
         return await asyncio.gather(*(worker(memory) for memory in memories))
 
-    async def get_memory(self, memory_id: str) -> Any:
-        return _unwrap(await self.memories.retrieve(id=memory_id))
-
-    async def update_memory(self, memory_id: str, body: Mapping[str, Any]) -> Any:
-        return _unwrap(await self.memories.update(id=memory_id, body=cast(Any, body)))
+    # ---- memories ----
 
     async def list_memories(
         self,
         collection_ids: Optional[str | Sequence[str]] = None,
         **params: Any,
     ) -> Any:
+        """Override of generated list_memories to add the
+        collection_ids-as-str-or-list shortcut + metadata_filters JSON
+        encoding. The simple generated form is replaced by this richer one.
+        """
         if collection_ids is not None:
             params["collection_ids"] = _listify(collection_ids)
         if isinstance(params.get("metadata_filters"), Mapping):
@@ -116,35 +124,20 @@ class Nebula(GeneratedNebula):
         return _unwrap(await self.memories.list(**params))
 
     async def search(self, query: Optional[str] = None, **params: Any) -> Any:
+        """Memory search shortcut: takes an optional query string plus
+        arbitrary search params. Kept handwritten so callers can do
+        `client.search("hello")` without constructing a body dict."""
         body: dict[str, Any] = {}
         if query is not None:
             body["query"] = query
         body.update(params)
         return _unwrap(await self.memories.search(body=cast(Any, body)))
 
-    async def health_check(self) -> Any:
-        return _unwrap(await self.client.health())
-
     # ---- collections ----
 
-    async def create_collection(self, **params: Any) -> Any:
-        return _unwrap(await self.collections.create(body=cast(Any, params)))
-
-    async def get_collection(self, collection_id: str) -> Any:
-        return _unwrap(await self.collections.retrieve(id=collection_id))
-
-    async def get_collection_by_name(self, name: str) -> Any:
-        return _unwrap(await self.collections.retrieve_by_name(collection_name=name))
-
-    async def list_collections(self, **params: Any) -> Any:
-        return _unwrap(await self.collections.list(**params))
-
-    async def update_collection(self, collection_id: str, **params: Any) -> Any:
-        return _unwrap(
-            await self.collections.update(id=collection_id, body=cast(Any, params))
-        )
-
     async def delete_collection(self, collection_id: str) -> bool:
+        """Override of generated delete_collection to coerce the response
+        {success: bool} envelope into a Python bool return."""
         result = _unwrap(await self.collections.delete(id=collection_id))
         return bool(_extract_value(result, "success"))
 
@@ -169,57 +162,30 @@ class Nebula(GeneratedNebula):
 
     # ---- connectors ----
 
-    async def list_providers(self) -> Any:
-        return _unwrap(await self.connectors.list_providers())
-
     async def connect_provider(
         self,
         provider: str,
         collection_id: str,
         config: Optional[Mapping[str, Any]] = None,
     ) -> Any:
+        """Custom signature: positional provider + collection_id + optional
+        config dict, packed into the wire body shape."""
         body: dict[str, Any] = {"collection_id": collection_id}
         if config is not None:
             body["config"] = dict(config)
         return _unwrap(await self.connectors.connect(provider=provider, body=cast(Any, body)))
-
-    async def list_connections(self, collection_id: str) -> Any:
-        return _unwrap(await self.connectors.list(collection_id=collection_id))
-
-    async def get_connection(self, connection_id: str) -> Any:
-        return _unwrap(await self.connectors.retrieve(connection_id=connection_id))
-
-    async def trigger_sync(self, connection_id: str) -> Any:
-        return _unwrap(await self.connectors.sync(connection_id=connection_id))
-
-    async def disconnect_connection(
-        self,
-        connection_id: str,
-        delete_memories: bool = False,
-    ) -> Any:
-        return _unwrap(
-            await self.connectors.disconnect(
-                connection_id=connection_id, delete_memories=delete_memories
-            )
-        )
 
     async def disconnect(
         self,
         connection_id: str,
         delete_memories: bool = False,
     ) -> Any:
-        return await self.disconnect_connection(connection_id, delete_memories)
-
-    # ---- uploads / snapshots ----
-
-    async def get_upload_url(self, body: Mapping[str, Any]) -> Any:
-        return _unwrap(await self.memories.create_upload(body=cast(Any, body)))
-
-    async def export_snapshot(self, body: Mapping[str, Any]) -> Any:
-        return _unwrap(await self.snapshots.export(body=cast(Any, body)))
-
-    async def import_snapshot(self, body: Mapping[str, Any]) -> Any:
-        return _unwrap(await self.snapshots.import_(body=cast(Any, body)))
+        """Disconnect a connector by id. Positional shortcut; unwraps results."""
+        return _unwrap(
+            await self.connectors.disconnect(
+                connection_id=connection_id, delete_memories=delete_memories
+            )
+        )
 
     # ---- delete dispatch ----
 

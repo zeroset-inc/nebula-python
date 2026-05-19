@@ -57,15 +57,18 @@ async def test_collections_list_serializes_query_params() -> None:
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured.append(request)
-        return httpx.Response(200, json={"results": [], "total_entries": 0})
+        return httpx.Response(
+            200, json={"data": [], "next_cursor": None, "has_more": False}
+        )
 
     transport = httpx.MockTransport(handler)
     async with _make_client(transport, api_key="k1") as client:
-        await client.collections.list(offset=10, limit=5, owner_only=True)
+        await client.collections.list(cursor="MTA=", limit=5, owner_only=True)
 
     req = captured[0]
     assert req.headers["x-api-key"] == "k1"
-    assert "offset=10" in str(req.url)
+    # `=` in `MTA=` (base64-encoded "10") is URL-encoded as `%3D`.
+    assert "cursor=MTA" in str(req.url)
     assert "limit=5" in str(req.url)
     assert "owner_only=true" in str(req.url)
 
@@ -138,7 +141,9 @@ async def test_retries_get_on_503() -> None:
         attempts += 1
         if attempts < 3:
             return httpx.Response(503, json={"detail": "warming up"})
-        return httpx.Response(200, json={"results": [], "total_entries": 0})
+        return httpx.Response(
+            200, json={"data": [], "next_cursor": None, "has_more": False}
+        )
 
     transport = httpx.MockTransport(handler)
     from nebula import RetryPolicy
@@ -148,8 +153,12 @@ async def test_retries_get_on_503() -> None:
         result = await client.collections.list(limit=10)
 
     # `result` is now a validated Pydantic model (the model_validate fix);
-    # `model_dump()` round-trips back to the wire shape for assertion.
-    assert result.model_dump() == {"results": [], "total_entries": 0}
+    # `model_dump()` round-trips back to the wire shape.
+    assert result.model_dump() == {
+        "data": [],
+        "next_cursor": None,
+        "has_more": False,
+    }
     assert attempts == 3
 
 
