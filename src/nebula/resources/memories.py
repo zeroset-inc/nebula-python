@@ -213,7 +213,7 @@ class MemoriesResource:
         limit: Optional[int] = None,
         chunks_limit: Optional[Union[int, None]] = None,
         owner_only: Optional[bool] = None,
-        collection_ids: Optional[Union[Any, None]] = None,
+        collection_ids: Optional[Union[list[str], None]] = None,
         metadata_filters: Optional[Union[str, None]] = None,
         min_applied_wal_seq: Optional[Union[int, None]] = None
     ) -> models.PaginatedListedEngram:
@@ -247,7 +247,7 @@ class MemoriesResource:
 
     async def recall_workflow(
         self,
-        body: Any
+        body: Union[models.CursorRecallRequest, models.PredictRecallRequest, models.ResumeRecallRequest, models.EvidenceRecallRequest, models.BootstrapRecallRequest]
     ) -> models.WorkflowRecallResponse:
         """
         Recall workflow patterns by intent

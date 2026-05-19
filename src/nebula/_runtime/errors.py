@@ -17,11 +17,14 @@ class NebulaTimeoutError(NebulaError):
 
 def _envelope_fields(
     body: Any,
-) -> tuple[Optional[str], Optional[str], Optional[str], Optional[Mapping[str, Any]]]:
+) -> tuple[Optional[str], Optional[str], Optional[str], Any]:
     """Extract (type, message, code, details) from the canonical envelope.
 
     Returns all-None when the body isn't a dict with str `type` + str
-    `message`, so callers fall back to status-derived defaults.
+    `message`, so callers fall back to status-derived defaults. `details`
+    is preserved as-is (typed `Any`) — the server emits arbitrary JSON
+    here, most notably an array of {loc, msg, type} for validation
+    errors. Narrowing to `Mapping` here would silently drop those.
     """
     if not isinstance(body, Mapping):
         return (None, None, None, None)
@@ -30,7 +33,7 @@ def _envelope_fields(
     if not isinstance(etype, str) or not isinstance(emsg, str):
         return (None, None, None, None)
     ecode = body.get("code") if isinstance(body.get("code"), str) else None
-    edetails = body.get("details") if isinstance(body.get("details"), Mapping) else None
+    edetails = body.get("details")
     return (etype, emsg, ecode, edetails)
 
 
@@ -53,7 +56,7 @@ class NebulaAPIError(NebulaError):
         self.request_id = env_rid if isinstance(env_rid, str) else request_id
         self.type: Optional[str] = env_type
         self.code: Optional[str] = env_code
-        self.details: Optional[Mapping[str, Any]] = env_details
+        self.details: Any = env_details
 
 
 class NebulaBadRequestError(NebulaAPIError):

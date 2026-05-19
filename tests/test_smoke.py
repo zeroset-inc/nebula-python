@@ -315,6 +315,36 @@ async def test_canonical_envelope_populates_type_code_details_request_id() -> No
 
 
 @pytest.mark.asyncio
+async def test_array_shaped_details_survive_intact() -> None:
+    # FastAPI's RequestValidationError emits `details` as a list of
+    # {loc, msg, type} entries. Narrowing to Mapping would drop the
+    # array; the runtime preserves it as-is (typed Any).
+    validation_details = [
+        {"loc": ["body", "raw_text"], "msg": "field required", "type": "value_error.missing"},
+        {"loc": ["body", "collection_id"], "msg": "uuid_parsing", "type": "value_error"},
+    ]
+    envelope = {
+        "type": "validation_error",
+        "message": "Request validation failed",
+        "code": "validation_error",
+        "request_id": "rid-validation",
+        "details": validation_details,
+    }
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(422, json=envelope)
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        with pytest.raises(NebulaValidationError) as excinfo:
+            await client.memories.search(body={"query": "x"})
+
+    err = excinfo.value
+    assert isinstance(err.details, list)
+    assert err.details == validation_details
+
+
+@pytest.mark.asyncio
 async def test_non_envelope_body_leaves_envelope_fields_none() -> None:
     def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(
