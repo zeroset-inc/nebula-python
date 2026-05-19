@@ -1,28 +1,29 @@
-# Manual re-publish recovery for nebula-sdk on PyPI.
+# Publish nebula-sdk to PyPI. Triggered by `release: published` (created
+# by the nebula-sdk-bot GitHub App in release-please.yml), or manually via
+# workflow_dispatch for re-publish recovery.
 #
-# The PRIMARY publish path lives in release-please.yml — it runs the
-# publish job conditional on `release_created == 'true'` in the same
-# workflow as the release-PR merge. That avoids the GITHUB_TOKEN
-# recursion guard (a `release: published` trigger would never fire when
-# release-please-action creates the release via the default token).
+# Authentication is PyPI Trusted Publisher (OIDC) — no PYPI_TOKEN secret.
+# The trusted publisher must be configured at
+# https://pypi.org/manage/project/nebula-sdk/settings/publishing/ with:
+#   - Owner: nebula-agi
+#   - Repository: nebula-python
+#   - Workflow filename: publish-pypi.yml
+#   - Environment: release
 #
-# This workflow exists only for the rare case where the automatic
-# publish failed mid-run (PyPI hiccup, transient build failure) and an
-# operator needs to re-publish the same tag. Trigger it from the
-# Actions UI with workflow_dispatch.
-#
-# Uses PyPI Trusted Publisher (OIDC) — no API token in repo secrets.
-# The Trusted Publisher config must list BOTH release-please.yml and
-# publish-pypi.yml as authorized workflows.
+# PEP 740 attestations: `attestations: true` makes the publish action
+# sign the artifacts with a Sigstore bundle that PyPI surfaces to clients
+# (pip's `--require-hashes` + future provenance checking can verify).
 #
 # Synced from nebula-sdks/custom/downstream-py/.github/workflows/publish-pypi.yml
 # by the upstream nebula-sdk-sync.yml workflow. Edit the template, not the
 # downstream copy.
 
-name: Publish PyPI (manual recovery)
+name: Publish PyPI
 
 on:
   workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -31,7 +32,7 @@ jobs:
     environment: release
     permissions:
       contents: read
-      id-token: write
+      id-token: write # OIDC trusted publishing + Sigstore attestation
     steps:
       - uses: actions/checkout@v4
 
@@ -42,5 +43,7 @@ jobs:
       - name: Build sdist + wheel
         run: uv build
 
-      - name: Publish to PyPI (Trusted Publisher)
+      - name: Publish to PyPI (Trusted Publisher + attestations)
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
