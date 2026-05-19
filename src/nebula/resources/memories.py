@@ -141,7 +141,7 @@ class MemoriesResource:
             "path": "/v1/memories/{id}",
             "path_params": {"id": id},
             "query": None,
-            "idempotent": True,
+            "idempotent": False,
         })
         try:
             return models.WrappedGenericBooleanResponse.model_validate(_raw)
@@ -176,7 +176,7 @@ class MemoriesResource:
             "path_params": {},
             "query": None,
             "body": body,
-            "idempotent": True,
+            "idempotent": False,
         })
         return _raw
 
@@ -216,7 +216,7 @@ class MemoriesResource:
         collection_ids: Optional[Union[Any, None]] = None,
         metadata_filters: Optional[Union[str, None]] = None,
         min_applied_wal_seq: Optional[Union[int, None]] = None
-    ) -> models.PaginatedEngram:
+    ) -> models.PaginatedListedEngram:
         """
         List engrams
         
@@ -241,7 +241,7 @@ class MemoriesResource:
             "idempotent": True,
         })
         try:
-            return models.PaginatedEngram.model_validate(_raw)
+            return models.PaginatedListedEngram.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 

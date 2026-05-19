@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Mapping, Optional
 
 
 class NebulaError(Exception):
@@ -15,6 +15,25 @@ class NebulaTimeoutError(NebulaError):
     pass
 
 
+def _envelope_fields(
+    body: Any,
+) -> tuple[Optional[str], Optional[str], Optional[str], Optional[Mapping[str, Any]]]:
+    """Extract (type, message, code, details) from the canonical envelope.
+
+    Returns all-None when the body isn't a dict with str `type` + str
+    `message`, so callers fall back to status-derived defaults.
+    """
+    if not isinstance(body, Mapping):
+        return (None, None, None, None)
+    etype = body.get("type")
+    emsg = body.get("message")
+    if not isinstance(etype, str) or not isinstance(emsg, str):
+        return (None, None, None, None)
+    ecode = body.get("code") if isinstance(body.get("code"), str) else None
+    edetails = body.get("details") if isinstance(body.get("details"), Mapping) else None
+    return (etype, emsg, ecode, edetails)
+
+
 class NebulaAPIError(NebulaError):
     def __init__(
         self,
@@ -23,10 +42,18 @@ class NebulaAPIError(NebulaError):
         request_id: Optional[str] = None,
         message: Optional[str] = None,
     ) -> None:
-        super().__init__(message or f"Nebula API error (status {status})")
+        env_type, env_msg, env_code, env_details = _envelope_fields(body)
+        super().__init__(message or env_msg or f"Nebula API error (status {status})")
         self.status = status
         self.body = body
-        self.request_id = request_id
+        # The envelope's request_id is server-stamped and authoritative;
+        # the header we captured at the transport should match, but if it
+        # doesn't, prefer the envelope.
+        env_rid = body.get("request_id") if isinstance(body, Mapping) else None
+        self.request_id = env_rid if isinstance(env_rid, str) else request_id
+        self.type: Optional[str] = env_type
+        self.code: Optional[str] = env_code
+        self.details: Optional[Mapping[str, Any]] = env_details
 
 
 class NebulaBadRequestError(NebulaAPIError):

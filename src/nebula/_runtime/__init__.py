@@ -15,7 +15,6 @@ from .errors import (
     error_from_response,
 )
 from .retry import RetryPolicy, DEFAULT_RETRY, is_retryable_status, backoff_seconds
-from .pagination import paginate_offset, OffsetPageEnvelope
 
 __all__ = [
     "NebulaCore",
@@ -38,6 +37,4 @@ __all__ = [
     "DEFAULT_RETRY",
     "is_retryable_status",
     "backoff_seconds",
-    "paginate_offset",
-    "OffsetPageEnvelope",
 ]

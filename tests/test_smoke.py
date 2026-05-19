@@ -281,3 +281,57 @@ async def test_429_surfaces_rate_limit_error_with_retry_after() -> None:
             await client.memories.retrieve(id="x")
 
     assert excinfo.value.retry_after == 2.0
+
+
+@pytest.mark.asyncio
+async def test_canonical_envelope_populates_type_code_details_request_id() -> None:
+    envelope = {
+        "type": "validation_error",
+        "message": "raw_text must be non-empty",
+        "code": "raw_text.empty",
+        "request_id": "rid-abc-123",
+        "details": {"field": "raw_text", "limit": 1},
+    }
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            422,
+            json=envelope,
+            headers={"X-Request-Id": "header-rid-should-lose-to-body"},
+        )
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        with pytest.raises(NebulaValidationError) as excinfo:
+            await client.memories.search(body={"query": "x"})
+
+    err = excinfo.value
+    assert err.type == "validation_error"
+    assert err.code == "raw_text.empty"
+    assert err.details == {"field": "raw_text", "limit": 1}
+    # Envelope's request_id wins over the transport header.
+    assert err.request_id == "rid-abc-123"
+    assert str(err) == "raw_text must be non-empty"
+
+
+@pytest.mark.asyncio
+async def test_non_envelope_body_leaves_envelope_fields_none() -> None:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            404,
+            json={"detail": "missing"},
+            headers={"X-Request-Id": "rid-fallback"},
+        )
+
+    transport = httpx.MockTransport(handler)
+    async with _make_client(transport) as client:
+        with pytest.raises(NebulaNotFoundError) as excinfo:
+            await client.memories.retrieve(id="nope")
+
+    err = excinfo.value
+    assert err.type is None
+    assert err.code is None
+    assert err.details is None
+    # Falls back to the transport header when the body isn't an envelope.
+    assert err.request_id == "rid-fallback"
+    assert str(err) == "Nebula API error (status 404)"
