@@ -210,3 +210,40 @@ async def test_legacy_cluster_aliases_delegate_to_collection() -> None:
     async with _make_dx(httpx.MockTransport(handler)) as client:
         await client.get_cluster("c1")
     assert str(captured[0].url) == "https://api.example.com/v1/collections/c1"
+
+
+@pytest.mark.asyncio
+async def test_get_cluster_by_name_forwards_collection_name() -> None:
+    """Regression: get_cluster_by_name(name) used to pass `name` positionally
+    into the kwargs-only generated method, raising TypeError."""
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": {"id": "c1", "name": "alpha"}})
+
+    async with _make_dx(httpx.MockTransport(handler)) as client:
+        await client.get_cluster_by_name("alpha")
+    assert str(captured[0].url) == "https://api.example.com/v1/collections/name/alpha"
+
+
+@pytest.mark.asyncio
+async def test_update_cluster_forwards_id_and_body() -> None:
+    """Regression: update_cluster(collection_id, **params) used to pass
+    `collection_id` positionally into the kwargs-only generated method,
+    raising TypeError."""
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(
+            200, json={"results": {"id": "c1", "name": "renamed"}}
+        )
+
+    async with _make_dx(httpx.MockTransport(handler)) as client:
+        await client.update_cluster("c1", body={"name": "renamed"})
+    assert str(captured[0].url) == "https://api.example.com/v1/collections/c1"
+    assert captured[0].method == "POST"
+    import json
+    body = json.loads(captured[0].content)
+    assert body == {"name": "renamed"}

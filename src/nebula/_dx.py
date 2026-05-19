@@ -142,6 +142,10 @@ class Nebula(NebulaDX):
         return bool(_extract_value(result, "success"))
 
     # Legacy aliases — "cluster" was the old name for "collection".
+    # NOTE: the generated unwrap methods (create_collection,
+    # get_collection_by_name, update_collection, list_collections) accept
+    # `**kwargs` because the underlying resource methods do; we must
+    # forward through their keyword names rather than positionally.
     async def create_cluster(self, **params: Any) -> Any:
         return await self.create_collection(**params)
 
@@ -149,13 +153,13 @@ class Nebula(NebulaDX):
         return await self.get_collection(collection_id)
 
     async def get_cluster_by_name(self, name: str) -> Any:
-        return await self.get_collection_by_name(name)
+        return await self.get_collection_by_name(collection_name=name)
 
     async def list_clusters(self, **params: Any) -> Any:
         return await self.list_collections(**params)
 
     async def update_cluster(self, collection_id: str, **params: Any) -> Any:
-        return await self.update_collection(collection_id, **params)
+        return await self.update_collection(id=collection_id, **params)
 
     async def delete_cluster(self, collection_id: str) -> bool:
         return await self.delete_collection(collection_id)
