@@ -263,8 +263,8 @@ def _memory_params(
             body.setdefault("raw_text", content)
         else:
             body.setdefault("content_parts", content)
-    if body.get("messages") and not body.get("engram_type"):
-        body["engram_type"] = "conversation"
+    if body.get("messages") and not body.get("kind"):
+        body["kind"] = "conversation"
     return body
 
 

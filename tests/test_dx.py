@@ -81,6 +81,25 @@ async def test_store_memory_content_string_maps_to_raw_text() -> None:
 
 
 @pytest.mark.asyncio
+async def test_store_memory_messages_sets_kind_conversation() -> None:
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": {"id": "mem_conv"}})
+
+    async with _make_dx(httpx.MockTransport(handler)) as client:
+        await client.store_memory(
+            collection_id="c1",
+            messages=[{"role": "user", "content": "hi"}],
+        )
+    import json
+    body = json.loads(captured[0].content)
+    assert body["kind"] == "conversation"
+    assert "engram_type" not in body
+
+
+@pytest.mark.asyncio
 async def test_search_unwraps_results() -> None:
     def handler(_req: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"results": {"hits": [{"id": "1"}]}})
