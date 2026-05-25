@@ -2,6 +2,17 @@
 # by the nebula-sdk-bot GitHub App in release-please.yml), or manually via
 # workflow_dispatch for re-publish recovery.
 #
+# Channel routing (PyPI):
+#   - Plain semver (1.6.0)                 → pip installs by default
+#   - PEP 440 pre-release (1.6.0rc1, etc.) → only installed with `--pre`
+#
+# PyPI has no dist-tag analogue to npm's `next`; pip's default resolver
+# already excludes pre-releases unless explicitly opted into. Consumers
+# running `pip install nebula-sdk` get stable; `pip install --pre
+# nebula-sdk` gets the iteration channel. Version pinning to
+# `nebula-sdk>=1.6.0,<2.0.0` likewise excludes 1.6.0rc1 unless the
+# specifier itself names a pre-release.
+#
 # Authentication is PyPI Trusted Publisher (OIDC) — no PYPI_TOKEN secret.
 # The trusted publisher must be configured at
 # https://pypi.org/manage/project/nebula-sdk/settings/publishing/ with:

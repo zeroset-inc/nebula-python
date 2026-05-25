@@ -7,10 +7,19 @@ health.
 ## Install
 
 ```bash
+# Stable
 pip install nebula-sdk
-# or
-uv add nebula-sdk
+# Preview (next iteration, RC versions)
+pip install --pre nebula-sdk
 ```
+
+> **Pre-launch:** The public surface is still being shaped. Plain
+> semver releases (`1.6.0`, `1.7.0`, …) are stable. Iteration ships
+> as PEP 440 pre-release versions (`1.6.0rc1`, `rc2`, …) which
+> pip's default resolver excludes — `pip install nebula-sdk` gets
+> stable; `--pre` opts in to the iteration channel. Version
+> specifiers like `nebula-sdk>=1.6.0,<2.0.0` likewise exclude
+> pre-releases unless the specifier itself names one.
 
 ## Quick start
 
