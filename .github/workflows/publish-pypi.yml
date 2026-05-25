@@ -51,6 +51,22 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Sentinel guard
+        run: |
+          # In-repo main carries `0.0.0+from-source` until release-please
+          # bumps it. The `release:published` trigger checks out the tag
+          # (real version, safe); `workflow_dispatch` defaults to the
+          # dispatched ref — if someone dispatches from main without
+          # picking a tag, PyPI would reject (local-version identifier
+          # `+from-source` is not allowed on upload) AND we'd burn a
+          # `release` env approval. Bail before either happens.
+          version=$(uv version --short 2>/dev/null || grep -E '^version\s*=' pyproject.toml | head -1 | sed -E 's/.*"(.*)"/\1/')
+          if [[ "$version" == *from-source* ]]; then
+            echo "::error::Refusing to publish sentinel version '$version'. Dispatch this workflow against a release tag (e.g. v1.6.0rc0), not main."
+            exit 1
+          fi
+          echo "Publishing $version"
+
       - name: Build sdist + wheel
         run: uv build
 
