@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import Any, Optional, Union
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from .. import _models as models
 from .._runtime import NebulaCore
 
@@ -16,7 +16,7 @@ class MemoriesResource:
         self,
         id: str,
         body: models.AppendMemoryRequest
-    ) -> Any:
+    ) -> Union[models.AppendMemoryResponse, models.IngestionResponse]:
         """
         Append content to an engram
         
@@ -41,12 +41,16 @@ class MemoriesResource:
             "body": body,
             "idempotent": False,
         })
-        return _raw
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
+        try:
+            return TypeAdapter(Union[models.AppendMemoryResponse, models.IngestionResponse]).validate_python(_raw)
+        except ValidationError:
+            return _raw  # type: ignore[return-value]
 
     async def create(
         self,
         body: models.CreateMemoryRequest
-    ) -> models.MemoryCreateResponse:
+    ) -> Union[models.MemoryCreateAcceptedResponse, models.SnapshotMutationResult]:
         """
         Create a new memory (conversation or document)
         
@@ -71,8 +75,9 @@ class MemoriesResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.MemoryCreateResponse.model_validate(_raw)
+            return TypeAdapter(Union[models.MemoryCreateAcceptedResponse, models.SnapshotMutationResult]).validate_python(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -81,7 +86,7 @@ class MemoriesResource:
         filename: str,
         content_type: str,
         file_size: int
-    ) -> models.WrappedPresignedUploadResponse:
+    ) -> models.PresignedUploadResponse:
         """
         Get presigned URL for large file upload
         
@@ -114,15 +119,16 @@ class MemoriesResource:
             "query": {"filename": filename, "content_type": content_type, "file_size": file_size},
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedPresignedUploadResponse.model_validate(_raw)
+            return models.PresignedUploadResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def delete(
         self,
         id: str
-    ) -> models.WrappedGenericBooleanResponse:
+    ) -> models.GenericBooleanResponse:
         """
         Delete an engram
         
@@ -143,8 +149,9 @@ class MemoriesResource:
             "query": None,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedGenericBooleanResponse.model_validate(_raw)
+            return models.GenericBooleanResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -183,7 +190,7 @@ class MemoriesResource:
     async def delete_upload(
         self,
         s3_key: str
-    ) -> models.WrappedGenericMessageResponse:
+    ) -> models.GenericMessageResponse:
         """
         Delete a previously uploaded S3 file
         
@@ -200,8 +207,9 @@ class MemoriesResource:
             "query": {"s3_key": s3_key},
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedGenericMessageResponse.model_validate(_raw)
+            return models.GenericMessageResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -248,7 +256,7 @@ class MemoriesResource:
     async def recall_workflow(
         self,
         body: Union[models.CursorRecallRequest, models.PredictRecallRequest, models.ResumeRecallRequest, models.EvidenceRecallRequest, models.BootstrapRecallRequest]
-    ) -> models.WorkflowRecallResponse:
+    ) -> dict[str, Any]:
         """
         Recall workflow patterns by intent
         
@@ -274,15 +282,13 @@ class MemoriesResource:
             "body": body,
             "idempotent": False,
         })
-        try:
-            return models.WorkflowRecallResponse.model_validate(_raw)
-        except ValidationError:
-            return _raw  # type: ignore[return-value]
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
+        return _raw
 
     async def retrieve(
         self,
         id: str
-    ) -> models.WrappedEngram:
+    ) -> models.Engram:
         """
         Retrieve an engram
         
@@ -305,15 +311,16 @@ class MemoriesResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedEngram.model_validate(_raw)
+            return models.Engram.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def search(
         self,
         body: models.MemorySearchRequest
-    ) -> Any:
+    ) -> Union[models.CompactMemoryRecallResponse, models.MemoryRecall, models.SnapshotSearchResult]:
         """
         Search memories
         
@@ -336,7 +343,11 @@ class MemoriesResource:
             "body": body,
             "idempotent": False,
         })
-        return _raw
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
+        try:
+            return TypeAdapter(Union[models.CompactMemoryRecallResponse, models.MemoryRecall, models.SnapshotSearchResult]).validate_python(_raw)
+        except ValidationError:
+            return _raw  # type: ignore[return-value]
 
     async def update(
         self,
@@ -344,7 +355,7 @@ class MemoriesResource:
         body: models.UpdateMemoryRequest,
         *,
         collection_id: Optional[Union[str, None]] = None
-    ) -> models.WrappedEngram:
+    ) -> models.Engram:
         """
         Update a memory
         
@@ -373,7 +384,8 @@ class MemoriesResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedEngram.model_validate(_raw)
+            return models.Engram.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]

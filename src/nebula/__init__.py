@@ -21,12 +21,11 @@ from ._runtime import (
     NebulaRateLimitError,
     NebulaServerError,
 )
-from ._dx import Nebula, Client
+from ._dx import Nebula
 
 
 __all__ = [
     "Nebula",
-    "Client",
     "NebulaClient",
     "ClientOptions",
     "RetryPolicy",

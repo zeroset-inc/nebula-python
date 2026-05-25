@@ -81,17 +81,45 @@ async def test_store_memory_content_string_maps_to_raw_text() -> None:
 
 
 @pytest.mark.asyncio
-async def test_search_unwraps_results() -> None:
-    def handler(_req: httpx.Request) -> httpx.Response:
-        return httpx.Response(200, json={"results": {"hits": [{"id": "1"}]}})
+async def test_store_memory_messages_sets_kind_conversation() -> None:
+    captured: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        captured.append(request)
+        return httpx.Response(200, json={"results": {"id": "mem_conv"}})
 
     async with _make_dx(httpx.MockTransport(handler)) as client:
-        result = await client.search("find me")
-    assert result == {"hits": [{"id": "1"}]}
+        await client.store_memory(
+            collection_id="c1",
+            messages=[{"role": "user", "content": "hi"}],
+        )
+    import json
+    body = json.loads(captured[0].content)
+    assert body["kind"] == "conversation"
+    assert "engram_type" not in body
 
 
 @pytest.mark.asyncio
-async def test_delete_string_calls_memories_delete() -> None:
+async def test_memories_search_unwraps_envelope() -> None:
+    # SnapshotSearchResult has the shape `{entities, relationships}` —
+    # use it so the union TypeAdapter discriminates to a typed model.
+    def handler(_req: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            200,
+            json={"results": {"entities": [], "relationships": []}},
+        )
+
+    async with _make_dx(httpx.MockTransport(handler)) as client:
+        result = await client.memories.search(body={"query": "find me"})
+    # The response schema is an inline anyOf of Wrapped* variants — the
+    # generator peels `.results` and TypeAdapter discriminates the inner
+    # dict into the matching union variant.
+    assert getattr(result, "entities", None) == []
+    assert getattr(result, "relationships", None) == []
+
+
+@pytest.mark.asyncio
+async def test_memories_delete_hits_path_by_id() -> None:
     captured: list[httpx.Request] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
@@ -99,14 +127,13 @@ async def test_delete_string_calls_memories_delete() -> None:
         return httpx.Response(204)
 
     async with _make_dx(httpx.MockTransport(handler)) as client:
-        ok = await client.delete("mem_to_delete")
-    assert ok is True
+        await client.memories.delete(id="mem_to_delete")
     assert captured[0].method == "DELETE"
     assert str(captured[0].url) == "https://api.example.com/v1/memories/mem_to_delete"
 
 
 @pytest.mark.asyncio
-async def test_delete_list_calls_delete_many() -> None:
+async def test_memories_delete_many_takes_id_list_as_body() -> None:
     captured: list[httpx.Request] = []
 
     def handler(request: httpx.Request) -> httpx.Response:
@@ -114,7 +141,7 @@ async def test_delete_list_calls_delete_many() -> None:
         return httpx.Response(200, json={"results": {"succeeded": 2}})
 
     async with _make_dx(httpx.MockTransport(handler)) as client:
-        await client.delete(["a", "b"])
+        await client.memories.delete_many(body=["a", "b"])
     assert captured[0].method == "POST"
     assert str(captured[0].url) == "https://api.example.com/v1/memories/delete"
     import json
@@ -143,7 +170,7 @@ async def test_compat_api_key_alias_via_init_kwargs() -> None:
         api_key="key_real.token",
     )
     try:
-        await client.get_memory("m1")
+        await client.memories.retrieve(id="m1")
     finally:
         await client.aclose()
 
@@ -168,7 +195,7 @@ async def test_auth_normalization_non_keyshape_routes_to_bearer() -> None:
         ),
     )
     try:
-        await client.get_memory("m1")
+        await client.memories.retrieve(id="m1")
     finally:
         await client.aclose()
 
@@ -177,13 +204,17 @@ async def test_auth_normalization_non_keyshape_routes_to_bearer() -> None:
 
 
 @pytest.mark.asyncio
-async def test_delete_collection_coerces_to_bool() -> None:
+async def test_collections_delete_returns_unwrapped_success() -> None:
     def handler(_req: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"results": {"success": True}})
 
     async with _make_dx(httpx.MockTransport(handler)) as client:
-        ok = await client.delete_collection("c1")
-    assert ok is True
+        resp = await client.collections.delete(id="c1")
+    # Wire envelope `{"results": {"success": True}}` peeled by the
+    # generator → caller sees `GenericBooleanResponse(success=True)`
+    # directly. No DX coercion to a bare bool (that was a removed
+    # convenience).
+    assert getattr(resp, "success", None) is True
 
 
 @pytest.mark.asyncio
@@ -199,51 +230,3 @@ async def test_list_memories_string_becomes_collection_ids() -> None:
     assert "collection_ids=collection-abc" in str(captured[0].url)
 
 
-@pytest.mark.asyncio
-async def test_legacy_cluster_aliases_delegate_to_collection() -> None:
-    captured: list[httpx.Request] = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured.append(request)
-        return httpx.Response(200, json={"results": {"id": "c1", "name": "X"}})
-
-    async with _make_dx(httpx.MockTransport(handler)) as client:
-        await client.get_cluster("c1")
-    assert str(captured[0].url) == "https://api.example.com/v1/collections/c1"
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_by_name_forwards_collection_name() -> None:
-    """Regression: get_cluster_by_name(name) used to pass `name` positionally
-    into the kwargs-only generated method, raising TypeError."""
-    captured: list[httpx.Request] = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured.append(request)
-        return httpx.Response(200, json={"results": {"id": "c1", "name": "alpha"}})
-
-    async with _make_dx(httpx.MockTransport(handler)) as client:
-        await client.get_cluster_by_name("alpha")
-    assert str(captured[0].url) == "https://api.example.com/v1/collections/name/alpha"
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_forwards_id_and_body() -> None:
-    """Regression: update_cluster(collection_id, **params) used to pass
-    `collection_id` positionally into the kwargs-only generated method,
-    raising TypeError."""
-    captured: list[httpx.Request] = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        captured.append(request)
-        return httpx.Response(
-            200, json={"results": {"id": "c1", "name": "renamed"}}
-        )
-
-    async with _make_dx(httpx.MockTransport(handler)) as client:
-        await client.update_cluster("c1", body={"name": "renamed"})
-    assert str(captured[0].url) == "https://api.example.com/v1/collections/c1"
-    assert captured[0].method == "POST"
-    import json
-    body = json.loads(captured[0].content)
-    assert body == {"name": "renamed"}
