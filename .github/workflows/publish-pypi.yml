@@ -13,6 +13,19 @@
 # `nebula-sdk>=1.6.0,<2.0.0` likewise excludes 1.6.0rc1 unless the
 # specifier itself names a pre-release.
 #
+# Two-job structure:
+#   preflight  → no environment, fast sentinel guard on the checked-out
+#                version. Runs immediately on every dispatch/trigger.
+#   publish    → needs preflight, gated on `environment: release`
+#                (reviewer approval). Only requests approval AFTER the
+#                preflight has confirmed there's something real to publish.
+#
+# Why split: a workflow_dispatch from main (with the in-repo sentinel
+# `0.0.0+from-source` in pyproject.toml) would otherwise sit in the
+# approval queue, get approved by a human, then fail fast inside the
+# gated job. The split moves the sentinel check ahead of approval so
+# bad dispatches fail in seconds without burning reviewer attention.
+#
 # Authentication is PyPI Trusted Publisher (OIDC) — no PYPI_TOKEN secret.
 # The trusted publisher must be configured at
 # https://pypi.org/manage/project/nebula-sdk/settings/publishing/ with:
@@ -37,8 +50,36 @@ on:
     types: [published]
 
 jobs:
+  preflight:
+    name: preflight
+    runs-on: ubuntu-latest
+    # Deliberately no `environment:` — we want the sentinel check to
+    # run before any approval is requested.
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sentinel guard
+        id: v
+        run: |
+          # In-repo main carries `0.0.0+from-source` until release-please
+          # bumps it. The `release:published` trigger checks out the tag
+          # (real version, safe); `workflow_dispatch` defaults to the
+          # dispatched ref — if someone dispatches from main without
+          # picking a tag, PyPI would reject (local-version identifier
+          # `+from-source` is not allowed on upload). Bail.
+          version=$(grep -E '^version\s*=' pyproject.toml | head -1 | sed -E 's/.*"(.*)"/\1/')
+          if [[ "$version" == *from-source* ]]; then
+            echo "::error::Refusing to publish sentinel version '$version'. Dispatch this workflow against a release tag (e.g. v1.6.0rc0), not main."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Publishing $version"
+
   publish:
     name: publish
+    needs: preflight
     runs-on: ubuntu-latest
     environment: release
     permissions:
@@ -50,22 +91,6 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-
-      - name: Sentinel guard
-        run: |
-          # In-repo main carries `0.0.0+from-source` until release-please
-          # bumps it. The `release:published` trigger checks out the tag
-          # (real version, safe); `workflow_dispatch` defaults to the
-          # dispatched ref — if someone dispatches from main without
-          # picking a tag, PyPI would reject (local-version identifier
-          # `+from-source` is not allowed on upload) AND we'd burn a
-          # `release` env approval. Bail before either happens.
-          version=$(uv version --short 2>/dev/null || grep -E '^version\s*=' pyproject.toml | head -1 | sed -E 's/.*"(.*)"/\1/')
-          if [[ "$version" == *from-source* ]]; then
-            echo "::error::Refusing to publish sentinel version '$version'. Dispatch this workflow against a release tag (e.g. v1.6.0rc0), not main."
-            exit 1
-          fi
-          echo "Publishing $version"
 
       - name: Build sdist + wheel
         run: uv build
