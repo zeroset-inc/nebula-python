@@ -45,10 +45,20 @@ provided.
 
 ## Auth
 
-The constructor accepts `api_key` / `access_token` plus their camelCase
-aliases `apiKey` / `accessToken` / `bearerToken`. If you pass an API key
-that doesn't look like a Nebula key (not prefixed with `key_` or `neb_`),
-the DX layer automatically routes it through the bearer-token header instead.
+Pass either `api_key` (for Nebula API keys) or `bearer_token` (for JWTs)
+when constructing the client. If you pass an opaque-looking token via
+`api_key` (one that isn't prefixed with `key_` or `neb_`), the DX layer
+automatically routes it through the `Authorization: Bearer` header
+instead — handy when your app exchanges a workspace token for the SDK
+and doesn't want to think about which header to use.
+
+```python
+async with Nebula(ClientOptions(api_key="...")) as client:
+    ...
+
+async with Nebula(ClientOptions(bearer_token="...")) as client:
+    ...
+```
 
 ## Errors
 
