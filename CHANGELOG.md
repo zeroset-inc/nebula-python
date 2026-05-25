@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.6.0-rc.0](https://github.com/zeroset-inc/nebula-python/compare/v1.5.0...v1.6.0-rc.0) (2026-05-25)
+
+
+### Features
+
+* regenerate from nebula@42d478d ([#25](https://github.com/zeroset-inc/nebula-python/issues/25)) ([5be65f9](https://github.com/zeroset-inc/nebula-python/commit/5be65f968ef38c35f086996267aa9e88657ca88d))
+* regenerate from nebula@482822c ([#28](https://github.com/zeroset-inc/nebula-python/issues/28)) ([ed9d0bf](https://github.com/zeroset-inc/nebula-python/commit/ed9d0bfce72453887f6a15239ab914585f6ac579))
+* regenerate from nebula@73d86ef ([#29](https://github.com/zeroset-inc/nebula-python/issues/29)) ([9170d0f](https://github.com/zeroset-inc/nebula-python/commit/9170d0f696b7faf8a1f5c7d9e8a08a194666aafe))
+
+
+### Chores
+
+* move prerelease config under packages."." ([6bfd53f](https://github.com/zeroset-inc/nebula-python/commit/6bfd53ffc0121a1b89bd8c0b3ab4da86f504fcdc))
+* switch release-please to RC prerelease mode ([32fada2](https://github.com/zeroset-inc/nebula-python/commit/32fada219c0658fc2352309415b6114ce19c5dbf))
+
 ## [1.5.0](https://github.com/zeroset-inc/nebula-python/compare/v1.4.0...v1.5.0) (2026-05-25)
 
 
