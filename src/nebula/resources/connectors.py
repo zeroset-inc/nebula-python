@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import Any, Optional, Union
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from .. import _models as models
 from .._runtime import NebulaCore
 
@@ -16,7 +16,7 @@ class ConnectorsResource:
         self,
         provider: str,
         body: models.ConnectRequest
-    ) -> models.WrappedConnectorConnectResponse:
+    ) -> models.ConnectorConnectResponse:
         """
         Start OAuth connection flow
         
@@ -33,8 +33,9 @@ class ConnectorsResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedConnectorConnectResponse.model_validate(_raw)
+            return models.ConnectorConnectResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -43,7 +44,7 @@ class ConnectorsResource:
         connection_id: str,
         *,
         delete_memories: Optional[bool] = None
-    ) -> models.WrappedConnectorDisconnectResponse:
+    ) -> models.ConnectorDisconnectResponse:
         """
         Disconnect an external data source
         
@@ -59,15 +60,16 @@ class ConnectorsResource:
             "query": {"delete_memories": delete_memories},
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedConnectorDisconnectResponse.model_validate(_raw)
+            return models.ConnectorDisconnectResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def list(
         self,
         collection_id: str
-    ) -> models.WrappedListOfConnectorConnectionResponse:
+    ) -> list[models.ConnectorConnectionResponse]:
         """
         List active connections for a collection
         
@@ -83,14 +85,15 @@ class ConnectorsResource:
             "query": {"collection_id": collection_id},
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedListOfConnectorConnectionResponse.model_validate(_raw)
+            return TypeAdapter(list[models.ConnectorConnectionResponse]).validate_python(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def list_providers(
         self
-    ) -> models.WrappedListOfStr:
+    ) -> list[str]:
         """
         List available connector providers
         
@@ -106,15 +109,13 @@ class ConnectorsResource:
             "query": None,
             "idempotent": True,
         })
-        try:
-            return models.WrappedListOfStr.model_validate(_raw)
-        except ValidationError:
-            return _raw  # type: ignore[return-value]
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
+        return _raw
 
     async def retrieve(
         self,
         connection_id: str
-    ) -> models.WrappedConnectorConnectionResponse:
+    ) -> models.ConnectorConnectionResponse:
         """
         Get a single connection by ID
         
@@ -130,15 +131,16 @@ class ConnectorsResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedConnectorConnectionResponse.model_validate(_raw)
+            return models.ConnectorConnectionResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def sync(
         self,
         connection_id: str
-    ) -> models.WrappedConnectorSyncResponse:
+    ) -> models.ConnectorSyncResponse:
         """
         Manually trigger a sync
         
@@ -154,7 +156,8 @@ class ConnectorsResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedConnectorSyncResponse.model_validate(_raw)
+            return models.ConnectorSyncResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]

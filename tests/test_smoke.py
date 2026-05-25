@@ -40,7 +40,9 @@ async def test_memories_search_sends_post_with_body_and_bearer() -> None:
     async with _make_client(transport, bearer_token="secret") as client:
         result = await client.memories.search(body={"query": "hello"})
 
-    assert result == {"results": [], "total_entries": 0}
+    # Inline-anyOf envelope unwrap: caller sees the inner value (the
+    # empty array here), not the `{results: ...}` wire shape.
+    assert result == []
     assert len(captured) == 1
     req = captured[0]
     assert req.method == "POST"
@@ -79,7 +81,12 @@ async def test_path_params_substituted() -> None:
 
     def handler(request: httpx.Request) -> httpx.Response:
         captured.append(request)
-        return httpx.Response(200, json={"id": "abc"})
+        # Wire shape is the `{results: Engram}` envelope; the generator
+        # peels `.results` before model-validating into Engram.
+        return httpx.Response(
+            200,
+            json={"results": {"id": "abc", "kind": "document"}},
+        )
 
     transport = httpx.MockTransport(handler)
     async with _make_client(transport) as client:

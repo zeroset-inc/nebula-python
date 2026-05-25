@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import Any, Optional, Union
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from .. import _models as models
 from .._runtime import NebulaCore
 
@@ -15,7 +15,7 @@ class CollectionsResource:
     async def create(
         self,
         body: models.CreateCollectionRequest
-    ) -> models.WrappedCollectionResponse:
+    ) -> models.CollectionResponse:
         """
         Create a new collection
         
@@ -37,15 +37,16 @@ class CollectionsResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedCollectionResponse.model_validate(_raw)
+            return models.CollectionResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def delete(
         self,
         id: str
-    ) -> models.WrappedGenericBooleanResponse:
+    ) -> models.GenericBooleanResponse:
         """
         Delete collection
         
@@ -66,8 +67,9 @@ class CollectionsResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedGenericBooleanResponse.model_validate(_raw)
+            return models.GenericBooleanResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -112,7 +114,7 @@ class CollectionsResource:
     async def retrieve(
         self,
         id: str
-    ) -> models.WrappedCollectionResponse:
+    ) -> models.CollectionResponse:
         """
         Get collection details
         
@@ -132,8 +134,9 @@ class CollectionsResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedCollectionResponse.model_validate(_raw)
+            return models.CollectionResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -142,7 +145,7 @@ class CollectionsResource:
         collection_name: str,
         *,
         owner_id: Optional[Union[str, None]] = None
-    ) -> models.WrappedCollectionResponse:
+    ) -> models.CollectionResponse:
         """
         Get a collection by name
         
@@ -161,8 +164,9 @@ class CollectionsResource:
             "query": {"owner_id": owner_id},
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedCollectionResponse.model_validate(_raw)
+            return models.CollectionResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
@@ -170,7 +174,7 @@ class CollectionsResource:
         self,
         id: str,
         body: models.UpdateCollectionRequest
-    ) -> models.WrappedCollectionResponse:
+    ) -> models.CollectionResponse:
         """
         Update collection
         
@@ -191,7 +195,8 @@ class CollectionsResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedCollectionResponse.model_validate(_raw)
+            return models.CollectionResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]

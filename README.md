@@ -24,7 +24,7 @@ async def main() -> None:
             collection_id="01234567-...",
             raw_text="hello, world",
         )
-        results = await client.search("hello")
+        results = await client.memories.search(body={"query": "hello"})
         print(results)
 
 asyncio.run(main())

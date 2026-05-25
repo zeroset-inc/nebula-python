@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import Any, Optional, Union
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from .. import _models as models
 from .._runtime import NebulaCore
 
@@ -15,7 +15,7 @@ class SnapshotsResource:
     async def export(
         self,
         body: models.SnapshotExportRequest
-    ) -> models.WrappedSnapshotEnvelope:
+    ) -> models.SnapshotEnvelopeOutput:
         """
         Export a collection snapshot
         
@@ -33,15 +33,16 @@ class SnapshotsResource:
             "body": body,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedSnapshotEnvelope.model_validate(_raw)
+            return models.SnapshotEnvelopeOutput.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
 
     async def import_(
         self,
         body: models.SnapshotImportRequest
-    ) -> models.WrappedSnapshotImportResult:
+    ) -> models.SnapshotImportResult:
         """
         Import a snapshot into an ephemeral collection
         
@@ -59,7 +60,8 @@ class SnapshotsResource:
             "body": body,
             "idempotent": False,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedSnapshotImportResult.model_validate(_raw)
+            return models.SnapshotImportResult.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]
