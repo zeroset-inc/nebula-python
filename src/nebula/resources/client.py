@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from typing import Any, Optional, Union
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 from .. import _models as models
 from .._runtime import NebulaCore
 
@@ -14,7 +14,7 @@ class ClientResource:
 
     async def health(
         self
-    ) -> models.WrappedGenericMessageResponse:
+    ) -> models.GenericMessageResponse:
         """
         Health probe
         
@@ -30,7 +30,8 @@ class ClientResource:
             "query": None,
             "idempotent": True,
         })
+        _raw = _raw["results"] if isinstance(_raw, dict) else getattr(_raw, "results", _raw)
         try:
-            return models.WrappedGenericMessageResponse.model_validate(_raw)
+            return models.GenericMessageResponse.model_validate(_raw)
         except ValidationError:
             return _raw  # type: ignore[return-value]

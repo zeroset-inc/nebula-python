@@ -1,11 +1,14 @@
 # Handwritten Nebula DX layer.
 #
-# Carries only the methods that need real dispatch logic (storeMemory's
-# create-vs-append branch, polymorphic delete, auth normalization). The
-# simple unwrap/passthrough methods (get_memory, list_collections,
-# export_snapshot, ...) are generated from
-# `nebula-sdks/config/dx-extensions.yaml` into `_dx_generated.py`, which
-# this class extends via NebulaDX.
+# Carries only the methods that need real dispatch logic: store_memory's
+# create-vs-append branch, bulk store_memories with a concurrency cap,
+# positional connector helpers (connect_provider, disconnect), and auth
+# normalization.
+#
+# For everything else, use the resource methods directly. Resource methods
+# now return unwrapped values natively (the generator peels the
+# `{results: X}` wire envelope), so there's no separate auto-generated
+# unwrap layer to extend.
 #
 # Source of truth: nebula-sdks/custom/python/_dx.py
 # The generator copies this file into sdks/python/src/nebula/_dx.py on every
@@ -18,33 +21,25 @@ import json
 from collections.abc import Mapping, Sequence
 from typing import Any, Optional, cast
 
-from ._client import NebulaClient as GeneratedNebula
-from ._dx_generated import NebulaDX
+from ._client import NebulaClient
 from ._runtime import ClientOptions
 
 
-class Nebula(NebulaDX):
+class Nebula(NebulaClient):
     """Nebula's handwritten DevEx facade on top of the generated async client."""
 
     def __init__(self, options: Optional[ClientOptions] = None, **compat: Any) -> None:
         """
-        Accepts either a ClientOptions instance, or keyword aliases like:
-          api_key, apiKey
-          access_token, accessToken, bearer_token, bearerToken
-          base_url, baseUrl
+        Accepts either a ClientOptions instance, or the snake_case keyword
+        aliases ``api_key``, ``bearer_token``, ``base_url`` for ergonomic
+        construction without instantiating ClientOptions first.
         """
         if options is None:
             options = ClientOptions()
 
-        api_key = _first_defined(compat.get("api_key"), compat.get("apiKey"), options.api_key)
-        bearer_token = _first_defined(
-            compat.get("access_token"),
-            compat.get("accessToken"),
-            compat.get("bearer_token"),
-            compat.get("bearerToken"),
-            options.bearer_token,
-        )
-        base_url = _first_defined(compat.get("base_url"), compat.get("baseUrl"), options.base_url)
+        api_key = _first_defined(compat.get("api_key"), options.api_key)
+        bearer_token = _first_defined(compat.get("bearer_token"), options.bearer_token)
+        base_url = _first_defined(compat.get("base_url"), options.base_url)
 
         api_key, bearer_token = _normalize_auth(api_key, bearer_token)
 
@@ -75,9 +70,10 @@ class Nebula(NebulaDX):
         body = _memory_params(memory, params)
         memory_id = _memory_id(body)
 
+        # `memories.create` now returns the unwrapped inner type directly
+        # (the generator peels the wire `{results: X}` envelope).
         if body.get("snapshot") is not None:
-            response = await self.memories.create(body=cast(Any, _snapshot_create_params(body)))
-            result = _unwrap(response)
+            result = await self.memories.create(body=cast(Any, _snapshot_create_params(body)))
             return _snapshot_result(result)
 
         if memory_id:
@@ -87,8 +83,7 @@ class Nebula(NebulaDX):
             )
             return str(memory_id)
 
-        response = await self.memories.create(body=cast(Any, _memory_create_params(body)))
-        result = _unwrap(response)
+        result = await self.memories.create(body=cast(Any, _memory_create_params(body)))
         return _extract_id(result)
 
     async def store_memories(
@@ -121,48 +116,7 @@ class Nebula(NebulaDX):
             params["collection_ids"] = _listify(collection_ids)
         if isinstance(params.get("metadata_filters"), Mapping):
             params["metadata_filters"] = json.dumps(params["metadata_filters"])
-        return _unwrap(await self.memories.list(**params))
-
-    async def search(self, query: Optional[str] = None, **params: Any) -> Any:
-        """Memory search shortcut: takes an optional query string plus
-        arbitrary search params. Kept handwritten so callers can do
-        `client.search("hello")` without constructing a body dict."""
-        body: dict[str, Any] = {}
-        if query is not None:
-            body["query"] = query
-        body.update(params)
-        return _unwrap(await self.memories.search(body=cast(Any, body)))
-
-    # ---- collections ----
-
-    async def delete_collection(self, collection_id: str) -> bool:
-        """Override of generated delete_collection to coerce the response
-        {success: bool} envelope into a Python bool return."""
-        result = _unwrap(await self.collections.delete(id=collection_id))
-        return bool(_extract_value(result, "success"))
-
-    # Legacy aliases — "cluster" was the old name for "collection".
-    # NOTE: the generated unwrap methods (create_collection,
-    # get_collection_by_name, update_collection, list_collections) accept
-    # `**kwargs` because the underlying resource methods do; we must
-    # forward through their keyword names rather than positionally.
-    async def create_cluster(self, **params: Any) -> Any:
-        return await self.create_collection(**params)
-
-    async def get_cluster(self, collection_id: str) -> Any:
-        return await self.get_collection(collection_id)
-
-    async def get_cluster_by_name(self, name: str) -> Any:
-        return await self.get_collection_by_name(collection_name=name)
-
-    async def list_clusters(self, **params: Any) -> Any:
-        return await self.list_collections(**params)
-
-    async def update_cluster(self, collection_id: str, **params: Any) -> Any:
-        return await self.update_collection(id=collection_id, **params)
-
-    async def delete_cluster(self, collection_id: str) -> bool:
-        return await self.delete_collection(collection_id)
+        return await self.memories.list(**params)
 
     # ---- connectors ----
 
@@ -177,44 +131,17 @@ class Nebula(NebulaDX):
         body: dict[str, Any] = {"collection_id": collection_id}
         if config is not None:
             body["config"] = dict(config)
-        return _unwrap(await self.connectors.connect(provider=provider, body=cast(Any, body)))
+        return await self.connectors.connect(provider=provider, body=cast(Any, body))
 
     async def disconnect(
         self,
         connection_id: str,
         delete_memories: bool = False,
     ) -> Any:
-        """Disconnect a connector by id. Positional shortcut; unwraps results."""
-        return _unwrap(
-            await self.connectors.disconnect(
-                connection_id=connection_id, delete_memories=delete_memories
-            )
+        """Disconnect a connector by id. Positional shortcut."""
+        return await self.connectors.disconnect(
+            connection_id=connection_id, delete_memories=delete_memories
         )
-
-    # ---- delete dispatch ----
-
-    async def delete_memory(self, memory_id: str) -> bool:
-        await self.memories.delete(id=memory_id)
-        return True
-
-    async def delete_memories(self, memory_ids: Sequence[str]) -> Any:
-        return await self.memories.delete_many(body=cast(Any, list(memory_ids)))
-
-    async def delete(self, path_or_ids: str | Sequence[str]) -> Any:
-        """
-        Polymorphic delete:
-          - delete("memory-id")          -> delete_memory
-          - delete(["id1", "id2"])       -> delete_memories
-          - delete("/some/path")         -> NotImplemented (escape hatch)
-        """
-        if isinstance(path_or_ids, str) and _is_request_path(path_or_ids):
-            raise NotImplementedError(
-                f'delete("{path_or_ids}") raw-path escape hatch is not implemented in this SDK yet'
-            )
-        if isinstance(path_or_ids, str):
-            return await self.delete_memory(path_or_ids)
-        return await self.delete_memories(path_or_ids)
-
 
 # ---------- helpers ----------
 
@@ -263,8 +190,8 @@ def _memory_params(
             body.setdefault("raw_text", content)
         else:
             body.setdefault("content_parts", content)
-    if body.get("messages") and not body.get("engram_type"):
-        body["engram_type"] = "conversation"
+    if body.get("messages") and not body.get("kind"):
+        body["kind"] = "conversation"
     return body
 
 
@@ -307,14 +234,6 @@ def _memory_append_params(body: Mapping[str, Any]) -> dict[str, Any]:
     return params
 
 
-def _unwrap(response: Any) -> Any:
-    if isinstance(response, Mapping) and "results" in response:
-        return response["results"]
-    if hasattr(response, "results"):
-        return response.results
-    return response
-
-
 def _extract_value(obj: Any, name: str, default: Any = None) -> Any:
     if isinstance(obj, Mapping):
         return obj.get(name, default)
@@ -340,15 +259,3 @@ def _extract_id(value: Any) -> str:
 
 def _listify(value: str | Sequence[str]) -> list[str]:
     return [value] if isinstance(value, str) else list(value)
-
-
-def _is_request_path(value: str) -> bool:
-    return (
-        value.startswith("/")
-        or value.startswith("http://")
-        or value.startswith("https://")
-    )
-
-
-# Convenience alias (Stainless ships `Client = Nebula`).
-Client = Nebula

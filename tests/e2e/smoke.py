@@ -58,18 +58,17 @@ async def main() -> None:
         _assert(hasattr(memories_page, "next_cursor"), "list_memories returns .next_cursor (nullable)")
         _assert(hasattr(memories_page, "applied_wal_seq"), "list_memories returns .applied_wal_seq (RYW token)")
 
-        # 3. Create a throwaway collection
+        # 3. Create a throwaway collection — the SDK peels the `{results: X}`
+        # wire envelope, so the return is the inner CollectionResponse model.
         created = await client.collections.create(body={"name": f"e2e-sdk-py-{int(time.time())}"})
-        results = getattr(created, "results", None)
-        collection_id = getattr(results, "id", None) if results else None
+        collection_id = getattr(created, "id", None)
         # Generated pydantic models coerce id fields to typed UUIDs — that's
         # the desired SDK behavior (callers get a real UUID, not a string).
-        _assert(isinstance(collection_id, UUID), "collections.create returns results.id: UUID")
+        _assert(isinstance(collection_id, UUID), "collections.create returns id: UUID")
 
         # 4. Retrieve
         retrieved = await client.collections.retrieve(id=str(collection_id))
-        retrieved_id = getattr(getattr(retrieved, "results", None), "id", None)
-        _assert(retrieved_id == collection_id, "collections.retrieve returns the same id")
+        _assert(getattr(retrieved, "id", None) == collection_id, "collections.retrieve returns the same id")
 
         # 5. Error envelope round-trip — force a 4xx
         error_caught = False
@@ -100,7 +99,7 @@ async def main() -> None:
 
         # 7. Clean up
         deleted = await client.collections.delete(id=str(collection_id))
-        _assert(getattr(getattr(deleted, "results", None), "success", None) is True, "collections.delete returns results.success: True")
+        _assert(getattr(deleted, "success", None) is True, "collections.delete returns success: True")
 
     print("\nAll SDK e2e smoke checks passed.")
 
