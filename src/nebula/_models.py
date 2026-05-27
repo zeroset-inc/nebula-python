@@ -68,7 +68,10 @@ class ActivatedProcedure(BaseModel):
     id: UUID = Field(..., title='Id')
     is_negated: bool | None = Field(False, title='Is Negated')
     metadata: dict[str, Any] | None = Field(None, title='Metadata')
+    stability_confidence: float | None = Field(None, title='Stability Confidence')
     statement: str = Field(..., title='Statement')
+    truth_confidence: float | None = Field(None, title='Truth Confidence')
+    use_confidence: float | None = Field(None, title='Use Confidence')
 
 
 class ActivatedWorkflowStep(BaseModel):
